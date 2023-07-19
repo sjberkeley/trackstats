@@ -6,3 +6,4 @@ file_name = "covid.csv"
 data = bcr.load_dataset('covid')
 bcr.bar_chart_race(df=data, filename="output.mp4")
 
+
