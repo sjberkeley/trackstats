@@ -3,11 +3,60 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import utils         # my utils
 
+# TODO: Doesn't support the no-hundredths case yet ...
+def hms_to_seconds(perf_str):
+    ch = -1
+    cm = -1
+    hundredths = False
+    for ii in range(len(perf_str)):
+        if (perf_str[ii] == ":"):
+            if ch > 0:
+                cm = ii
+            else:
+                ch = ii
+        elif (perf_str[ii] == "."):
+            hundredths = True
+    # if only one colon, then it's minutes
+    if ch > 0 and cm == -1:
+        cm = ch
+        ch = -1
+
+    h = 0
+    m = 0
+    if ch > 0:
+        h = int(perf_str[0:ch])
+        m = int(perf_str[ch+1:cm])
+        s = float(perf_str[cm+1:len(perf_str)])
+    elif cm > 0:
+        m = int(perf_str[0:cm])
+        s = float(perf_str[cm+1:len(perf_str)])
+    else:
+        s = float(perf_str[0:len(perf_str)])
+
+    total_seconds = (h * 3600) + (m * 60) + s
+    return total_seconds, hundredths
+
+def seconds_to_hms(total_seconds):
+    h = int(total_seconds // 3600)
+    m = int((total_seconds % 3600) // 60)
+    s = round(total_seconds % 60, 2)
+    if h > 0:
+        time_str = str(h) + ":" + str(m) + ":" + str(s)
+    elif m > 0:
+        time_str = str(m) + ":" + str(s)
+    else:
+        time_str = str(s)
+    return time_str
+
+
 map100 = {}
 map200 = {}
 map400 = {}
 map400H = {}
 map110H = {}
+map1500 = {}
+map3000 = {}
+map5000 = {}
 
 def get_score(gender, event, performance):
     if event == "100m":
@@ -20,6 +69,13 @@ def get_score(gender, event, performance):
         map = map400H
     elif event == "110mH":
         map = map110H
+    elif event == "1500m":
+        map = map1500
+    elif event == "3000m":
+        map = map3000
+    elif event == "5000m":
+        map = map5000
+    
     if len(map) == 0:
         filename = "scores/" + event + "." + gender + ".scores"
         with open(filename, 'r') as file:
@@ -27,7 +83,7 @@ def get_score(gender, event, performance):
                 words = line.split()
                 map[words[0]] = words[1]
 
-    perf_str = str(performance)
+    perf_str = performance   # str(performance)
     if perf_str[-2] == ".":      # conversion to float may have truncated a trailing zero
         perf_str += "0"
 
@@ -39,32 +95,12 @@ def get_score(gender, event, performance):
             break
 
     while map.get(perf_str) == None:       # key does not exist
-        suffix = int(perf_str[-2:])
-        str_len = len(perf_str)
-        if str_len == 4:
-            prefix = int(perf_str[0])
+        perf_units, hundredths = hms_to_seconds(perf_str)
+        if hundredths:
+            perf_units = round(perf_units + 0.01, 2)
         else:
-            prefix = int(perf_str[-5:-3])
-        if perf_str[-3] == ".":            # hundredths
-            domain = 100
-        else:
-            domain = 60                    # seconds or minutes
-        if field_event:
-            if suffix == 0:
-                suffix = domain
-                prefix -= 1
-            suffix -= 1
-        else:
-            if suffix == domain - 1:
-                suffix = -1
-                prefix += 1
-            suffix += 1
-        if str_len < 6:                    # xx.xx or xx:xx
-            perf_str = str(prefix) + perf_str[-3] + str(suffix)
-        else:
-            perf_str = perf_str[:str_len - 5] + str(prefix) + perf_str[-3] + str(suffix)
-        if perf_str[-2] == ".":      # conversion to float may have truncated a trailing zero
-            perf_str += "0"
+            perf_units = perf_units + 1
+        perf_str = seconds_to_hms(perf_units)
 
     score = map[perf_str]
     return score
@@ -73,19 +109,23 @@ def get_score(gender, event, performance):
 # main program
 #
 gender = "men"
-num_events = 2
+num_events = 3
 
 urls = []
 
 m_urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
 w_urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
 
+# alltime-athletics event titles
 if gender == "women":
     urls.append(w_urls["100 metres"])
     urls.append(w_urls["200 metres"])
     urls.append(w_urls["400 metres"])
     urls.append(w_urls["100m hurdles"])
     urls.append(w_urls["400m hurdles"])
+    urls.append(w_urls["1500 metres"])
+    urls.append(w_urls["3000 metres"])
+    urls.append(w_urls["5000 metres"])
 
 else:
     urls.append(m_urls["100 metres"])
@@ -93,11 +133,13 @@ else:
     urls.append(m_urls["400 metres"])
     urls.append(m_urls["110m hurdles"])
     urls.append(m_urls["400m hurdles"])
-
+    urls.append(m_urls["1500 metres"])
+    urls.append(m_urls["3000 metres"])
+    urls.append(m_urls["5000 metres"])
 
 athletes = {}     # dictionary of lists
-first = 3         # first event on the list
-for event in ("100m", "200m", "400m", "110mH", "400mH"):
+first = 5         # first event on the list
+for event in ("100m", "200m", "400m", "110mH", "400mH", "1500m", "3000m", "5000m"):
     if event == "100m":
         continue
     elif event == "200m":
@@ -105,9 +147,15 @@ for event in ("100m", "200m", "400m", "110mH", "400mH"):
     elif event == "400m":
         continue
     elif event == "110mH":
-        event_num = 0
+        continue
     elif event == "400mH":
+        continue
+    elif event == "1500m":
+        event_num = 0
+    elif event == "3000m":
         event_num = 1
+    elif event == "5000m":
+        event_num = 2
     url = urls[first + event_num]
     # Send an HTTP GET request to the URL
     response = requests.get(url)
@@ -136,6 +184,8 @@ for event in ("100m", "200m", "400m", "110mH", "400mH"):
         num_words = len(words)
         # check for done with outdoor list
         if (num_words < 8 and processing == 1):
+            break
+        if (not words[0].isdigit() and processing == 1):
             break
         if (num_words > 7 and words[0] == "1" and processing == 0):
             processing = 1
@@ -179,5 +229,5 @@ for athlete in athletes.keys():
 
     if max_score > 0:
         list = athletes[max_name]
-        print(max_score, " ", max_name, " ", list[0], " ", list[1], " ", list[2], " ", list[3])  #, " ", list[4], " ", list[5])
+        print(max_score, " ", max_name, " ", list[0], " ", list[1], " ", list[2], " ", list[3], " ", list[4], " ", list[5])
         done_with[max_name] = True

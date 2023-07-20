@@ -79,14 +79,14 @@ def get_stats(words):
     perf = words[1]
     if not perf[-1].isnumeric():       # trailing A denotes altitude, y yards
         if not perf[-2].isnumeric():
-            performance = float(perf[:-2])
+            performance = perf[:-2]
         else:
-            performance = float(perf[:-1])
+            performance = perf[:-1]
     else:
-        performance = float(perf)
+        performance = perf  # float(perf)
 
     index = 2
-    if is_numeric(words[index]):           # wind reading for straightaway and runway
+    if is_numeric(words[index]):       # wind reading for straightaway and runway
         index = index + 1
     name = words[index] + " " + words[index+1]
     index = index + 2
