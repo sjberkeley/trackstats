@@ -101,31 +101,43 @@ if response.status_code == 200:
     # Open csv file
     file_name = gender + event + ".csv"
     file1 = open(file_name,"w")
-    header = "name"
+    array_2d = []
+    header = []
+    header.append("name")
     for year in range(earliest_num_perfs, this_year):
-        header += ","
-        header += str(year)
-    file1.write(header)
-    file1.write("\n")
+        header.append(str(year))
+    array_2d.append(header)
     for name in athletes.keys():
-        marks = name
+        array_1d = []
+        array_1d.append(name)
         list_of_lists = athletes[name]
         any_marks = False
         for year in range(earliest_num_perfs, this_year):    
             list = list_of_lists[year-earliest]
             if len(list) < num_perfs:
-                marks += ","
+                array_1d.append("0.0")
             else:
-                perf_sum = 0
+                perf_sum = 0.0
                 for perf in range(0,num_perfs):
-                    perf_sum += list[perf]
+                    perf_sum += float(list[perf])
                 perf_average = perf_sum / num_perfs
-                marks += ","
-                marks += str(perf_average)
+                array_1d.append(str(perf_average * 100.0))
                 any_marks = True
         if (any_marks):
-            file1.write(marks)
-            file1.write("\n")
+            array_2d.append(array_1d)
+
+    # transpose and write to file
+    # data is transposed for bar_chart_race versus Flourish
+    num_rows = len(array_2d)
+    num_cols = len(array_2d[0])
+
+    for ii in range(num_cols):
+        for jj in range(num_rows):
+            if array_2d[jj][ii] != "0.0":
+                file1.write(array_2d[jj][ii])
+            if jj < num_rows-1:
+                file1.write(",")
+        file1.write("\n")
     file1.close
 
 else:
