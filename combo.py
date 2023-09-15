@@ -138,24 +138,24 @@ else:
     urls.append(m_urls["5000 metres"])
 
 athletes = {}     # dictionary of lists
-first = 5         # first event on the list
+first = 0         # first event on the list
 for event in ("100m", "200m", "400m", "110mH", "400mH", "1500m", "3000m", "5000m"):
     if event == "100m":
-        continue
+        event_num = 0
     elif event == "200m":
-        continue
+        event_num = 1
     elif event == "400m":
-        continue
+        event_num = 2
     elif event == "110mH":
         continue
     elif event == "400mH":
         continue
     elif event == "1500m":
-        event_num = 0
+        continue
     elif event == "3000m":
-        event_num = 1
+        continue
     elif event == "5000m":
-        event_num = 2
+        continue
     url = urls[first + event_num]
     # Send an HTTP GET request to the URL
     response = requests.get(url)
