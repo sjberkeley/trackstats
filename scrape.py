@@ -8,7 +8,8 @@ import utils         # my utils
 #
 this_year = datetime.now().year
 earliest_num_perfs = this_year
-num_perfs = 10
+num_perfs = 10         # number of perfs to average
+starting_year = 0      # start from this year
 field_event = True
 gender = "men"
 event = "400 metres"
@@ -82,25 +83,11 @@ if response.status_code == 200:
                 if date < earliest_num_perfs:
                     earliest_num_perfs = date
 
-                # the following lines are not necessary assuming the list is ordered by performance
-                # 
-                # check if this performance is better than one of the existing
-                #if (field_event):
-                #    worst = 1000000
-                #else:
-                #    worst = 0
-                #worst_index = 0
-                #for ii in range(0, num_perfs):    # index 0 is the year
-                #    if worse_than(field_event, list[ii], worst):
-                #        worst = list[ii]
-                #        worst_index = ii
-
-                #if worse_than(field_event, worst, performance):      #change for field events
-                #    list[worst_index] = performance
-
     # Open csv file
     file_name = gender + event + ".csv"
     file1 = open(file_name,"w")
+    if earliest_num_perfs < starting_year:
+        earliest_num_perfs = starting_year
     array_2d = []
     header = []
     header.append("name")
@@ -121,7 +108,7 @@ if response.status_code == 200:
                 for perf in range(0,num_perfs):
                     perf_sum += float(list[perf])
                 perf_average = perf_sum / num_perfs
-                array_1d.append(str(perf_average * 100.0))
+                array_1d.append(str(perf_average * 1000.0))  # * 100.0
                 any_marks = True
         if (any_marks):
             array_2d.append(array_1d)
@@ -132,9 +119,23 @@ if response.status_code == 200:
     num_cols = len(array_2d[0])
 
     for ii in range(num_cols):
+        if ii > 0:
+            any_values = False
+            for jj in range(num_rows):
+                if ii > 0 and jj > 0 and array_2d[jj][ii] != "0.0":
+                    any_values = True
+            if not any_values:
+                continue
         for jj in range(num_rows):
             if array_2d[jj][ii] != "0.0":
-                file1.write(array_2d[jj][ii])
+                if ii > 0 and jj > 0:
+                    mark = "{:.3f}".format(float(array_2d[jj][ii]))
+                    file1.write(mark)
+                else:
+                    if ii > 0 and jj == 0:
+                        file1.write(array_2d[jj][ii] + '-01-01')
+                    else:
+                        file1.write(array_2d[jj][ii])
             if jj < num_rows-1:
                 file1.write(",")
         file1.write("\n")
