@@ -168,3 +168,23 @@ def get_args(argv):
         field_event = False
 
     return gender, event, field_event
+
+def get_lines_from_url(url):
+    # Send an HTTP GET request to the URL
+    response = requests.get(url)
+
+    # Check if the request was successful (status code 200)
+    if response.status_code != 200:
+        print("Error:", response.status_code)
+        exit
+
+    # Parse the HTML content using BeautifulSoup
+    soup = BeautifulSoup(response.content, "html.parser")
+    
+    # Get the plain text representation of the HTML content
+    plain_text = soup.get_text()
+    
+    # Split the text into lines
+    lines = plain_text.splitlines()
+
+    return lines

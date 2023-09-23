@@ -1,53 +1,6 @@
 import requests
-from bs4 import BeautifulSoup
 from datetime import datetime
 import utils         # my utils
-
-# TODO: Doesn't support the no-hundredths case yet ...
-def hms_to_seconds(perf_str):
-    ch = -1
-    cm = -1
-    hundredths = False
-    for ii in range(len(perf_str)):
-        if (perf_str[ii] == ":"):
-            if ch > 0:
-                cm = ii
-            else:
-                ch = ii
-        elif (perf_str[ii] == "."):
-            hundredths = True
-    # if only one colon, then it's minutes
-    if ch > 0 and cm == -1:
-        cm = ch
-        ch = -1
-
-    h = 0
-    m = 0
-    if ch > 0:
-        h = int(perf_str[0:ch])
-        m = int(perf_str[ch+1:cm])
-        s = float(perf_str[cm+1:len(perf_str)])
-    elif cm > 0:
-        m = int(perf_str[0:cm])
-        s = float(perf_str[cm+1:len(perf_str)])
-    else:
-        s = float(perf_str[0:len(perf_str)])
-
-    total_seconds = (h * 3600) + (m * 60) + s
-    return total_seconds, hundredths
-
-def seconds_to_hms(total_seconds):
-    h = int(total_seconds // 3600)
-    m = int((total_seconds % 3600) // 60)
-    s = round(total_seconds % 60, 2)
-    if h > 0:
-        time_str = str(h) + ":" + str(m) + ":" + str(s)
-    elif m > 0:
-        time_str = str(m) + ":" + str(s)
-    else:
-        time_str = str(s)
-    return time_str
-
 
 map100 = {}
 map200 = {}
@@ -95,12 +48,12 @@ def get_score(gender, event, performance):
             break
 
     while map.get(perf_str) == None:       # key does not exist
-        perf_units, hundredths = hms_to_seconds(perf_str)
+        perf_units, hundredths = utils.hms_to_seconds(perf_str)
         if hundredths:
             perf_units = round(perf_units + 0.01, 2)
         else:
             perf_units = perf_units + 1
-        perf_str = seconds_to_hms(perf_units)
+        perf_str = utils.seconds_to_hms(perf_units)
 
     score = map[perf_str]
     return score
@@ -157,21 +110,8 @@ for event in ("100m", "200m", "400m", "110mH", "400mH", "1500m", "3000m", "5000m
     elif event == "5000m":
         continue
     url = urls[first + event_num]
-    # Send an HTTP GET request to the URL
-    response = requests.get(url)
 
-    # Check if the request was successful (status code 200)
-    if response.status_code != 200:
-        exit
-
-    # Parse the HTML content using BeautifulSoup
-    soup = BeautifulSoup(response.content, "html.parser")
-    
-    # Get the plain text representation of the HTML content
-    plain_text = soup.get_text()
-    
-    # Split the text into lines
-    lines = plain_text.splitlines()
+    lines = utils.get_lines_from_url(url)
 
     # process data
     processing = 0
