@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 import re
+import sys
 
 def is_numeric(string):
     pattern = r'^[-+±]?[0-9]*\.?[0-9]+$'
@@ -26,6 +27,8 @@ def find_earliest_year(lines, this_year):
             processing = 1
         if (processing == 0):
             continue
+        if not words[0].isdigit():
+            break
         date = int(words[num_words-1][6:])
         if date < earliest:
             earliest = date
@@ -102,3 +105,66 @@ def get_stats(words):
     year = int(date[6:])
     return name, year, performance
 
+
+# TODO: Doesn't support the no-hundredths case yet ...
+def hms_to_seconds(perf_str):
+    ch = -1
+    cm = -1
+    hundredths = False
+    for ii in range(len(perf_str)):
+        if (perf_str[ii] == ":"):
+            if ch > 0:
+                cm = ii
+            else:
+                ch = ii
+        elif (perf_str[ii] == "."):
+            hundredths = True
+    # if only one colon, then it's minutes
+    if ch > 0 and cm == -1:
+        cm = ch
+        ch = -1
+
+    h = 0
+    m = 0
+    if ch > 0:
+        h = int(perf_str[0:ch])
+        m = int(perf_str[ch+1:cm])
+        s = float(perf_str[cm+1:len(perf_str)])
+    elif cm > 0:
+        m = int(perf_str[0:cm])
+        s = float(perf_str[cm+1:len(perf_str)])
+    else:
+        s = float(perf_str[0:len(perf_str)])
+
+    total_seconds = (h * 3600) + (m * 60) + s
+    return total_seconds, hundredths
+
+def seconds_to_hms(total_seconds):
+    h = int(total_seconds // 3600)
+    m = int((total_seconds % 3600) // 60)
+    s = round(total_seconds % 60, 2)
+    if h > 0:
+        time_str = str(h) + ":" + str(m) + ":" + str(s)
+    elif m > 0:
+        time_str = str(m) + ":" + str(s)
+    else:
+        time_str = str(s)
+    return time_str
+
+def get_args(argv):
+    num_args = len(argv)
+    if num_args < 3:
+        print("Error: must have at least 2 arguments")
+        exit
+    gender = argv[1]
+    event = argv[2]
+    for ii in range(3, num_args):
+        event = event + " " + argv[ii]
+    if event == "High jump" or event == "Long jump" or event == "Triple jump" or event == "Pole vault" or \
+        event == "Shot put" or event == "Discus throw" or event == "Hammer throw" or event == "Javelin throw" or\
+        event == "Decathon" or event == "Heptathon":
+        field_event = True
+    else:
+        field_event = False
+
+    return gender, event, field_event

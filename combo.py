@@ -191,6 +191,8 @@ for event in ("100m", "200m", "400m", "110mH", "400mH", "1500m", "3000m", "5000m
             processing = 1
         if (processing == 0):
             continue
+        if not words[0].isdigit():
+            break
 
         # extract performance, name and date (year)
         counter += 1

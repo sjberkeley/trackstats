@@ -9,7 +9,7 @@ Python 3 packages required:
 3. request
 4. datetime
 5. PyPDF2
-6. bar_chart_race
+6. bar_chart_race2 (modified)
 7. matplotlib
 
 Other dependencies:

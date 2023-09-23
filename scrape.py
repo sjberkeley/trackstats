@@ -1,18 +1,19 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import sys
 import utils         # my utils
-
+#import bcr
+#import time
 #
 # main program
 #
+gender, event, field_event = utils.get_args(sys.argv)
+
 this_year = datetime.now().year
 earliest_num_perfs = this_year
 num_perfs = 10         # number of perfs to average
 starting_year = 0      # start from this year
-field_event = True
-gender = "men"
-event = "400 metres"
 
 #m_urls = {}
 #w_urls = {}
@@ -60,7 +61,8 @@ if response.status_code == 200:
             processing = 1
         if (processing == 0):
             continue
-
+        if not words[0].isdigit():
+            break
         # extract performance, name and date (year)
         counter += 1
         name, date, performance = utils.get_stats(words)
@@ -83,9 +85,6 @@ if response.status_code == 200:
                 if date < earliest_num_perfs:
                     earliest_num_perfs = date
 
-    # Open csv file
-    file_name = gender + event + ".csv"
-    file1 = open(file_name,"w")
     if earliest_num_perfs < starting_year:
         earliest_num_perfs = starting_year
     array_2d = []
@@ -106,7 +105,8 @@ if response.status_code == 200:
             else:
                 perf_sum = 0.0
                 for perf in range(0,num_perfs):
-                    perf_sum += float(list[perf])
+                    perf_in_seconds, hundredths = utils.hms_to_seconds(list[perf])
+                    perf_sum += perf_in_seconds    # 800 times not handled
                 perf_average = perf_sum / num_perfs
                 array_1d.append(str(perf_average * 1000.0))  # * 100.0
                 any_marks = True
@@ -115,6 +115,10 @@ if response.status_code == 200:
 
     # transpose and write to file
     # data is transposed for bar_chart_race versus Flourish
+    # Open csv file
+    file_name = gender + event + ".csv"
+    file1 = open(file_name,"w")
+
     num_rows = len(array_2d)
     num_cols = len(array_2d[0])
 
@@ -143,3 +147,7 @@ if response.status_code == 200:
 
 else:
     print("Error:", response.status_code)
+
+#time.sleep(10)
+
+#bcr.create_bar_chart_race('menHigh jump.csv', 'menHJ.mp4', field_event)
