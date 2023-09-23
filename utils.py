@@ -188,3 +188,24 @@ def get_lines_from_url(url):
     lines = plain_text.splitlines()
 
     return lines
+
+def strip_preamble(line, processing):
+    status = 2
+    # Skip empty lines
+    if not line.strip():
+        status = 0
+        words = []
+    else:
+        words = line.split()
+        num_words = len(words)
+        # check for done with outdoor list
+        if (num_words < 8 and processing == 1):
+            status = 1
+        elif (num_words > 7 and words[0] == "1" and processing == 0):
+            processing = 1
+        elif (processing == 0):
+            status = 0
+        elif not words[0].isdigit():
+            status = 1
+
+    return status, words, processing

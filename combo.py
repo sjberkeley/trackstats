@@ -117,21 +117,10 @@ for event in ("100m", "200m", "400m", "110mH", "400mH", "1500m", "3000m", "5000m
     processing = 0
     counter = 0
     for line in lines:
-        # Skip empty lines
-        if not line.strip():
+        status, words, processing = utils.strip_preamble(line, processing)
+        if status == 0:
             continue
-        words = line.split()
-        num_words = len(words)
-        # check for done with outdoor list
-        if (num_words < 8 and processing == 1):
-            break
-        if (not words[0].isdigit() and processing == 1):
-            break
-        if (num_words > 7 and words[0] == "1" and processing == 0):
-            processing = 1
-        if (processing == 0):
-            continue
-        if not words[0].isdigit():
+        elif status == 1:
             break
 
         # extract performance, name and date (year)

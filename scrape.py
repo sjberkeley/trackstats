@@ -2,8 +2,6 @@ import requests
 from datetime import datetime
 import sys
 import utils         # my utils
-#import bcr
-#import time
 #
 # main program
 #
@@ -13,9 +11,6 @@ this_year = datetime.now().year
 earliest_num_perfs = this_year
 num_perfs = 10         # number of perfs to average
 starting_year = 0      # start from this year
-
-#m_urls = {}
-#w_urls = {}
 
 m_urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
 w_urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
@@ -36,20 +31,12 @@ earliest = utils.find_earliest_year(lines, this_year)
 processing = 0
 counter = 0
 for line in lines:
-    # Skip empty lines
-    if not line.strip():
+    status, words, processing = utils.strip_preamble(line, processing)
+    if status == 0:
         continue
-    words = line.split()
-    num_words = len(words)
-    # check for done with outdoor list
-    if (num_words < 8 and processing == 1):
+    elif status == 1:
         break
-    if (num_words > 7 and words[0] == "1" and processing == 0):
-        processing = 1
-    if (processing == 0):
-        continue
-    if not words[0].isdigit():
-        break
+
     # extract performance, name and date (year)
     counter += 1
     name, date, performance = utils.get_stats(words)
