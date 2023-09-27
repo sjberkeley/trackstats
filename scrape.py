@@ -82,7 +82,7 @@ for name in athletes.keys():
                 perf_in_seconds, hundredths = utils.hms_to_seconds(list[perf])
                 perf_sum += perf_in_seconds    # 800 times not handled
             perf_average = perf_sum / num_perfs
-            array_1d.append(str(perf_average * 1000.0))  # * 100.0
+            array_1d.append(str(perf_average))  # * 1000.0
             any_marks = True
     if (any_marks):
         array_2d.append(array_1d)
@@ -107,11 +107,12 @@ for ii in range(num_cols):
     for jj in range(num_rows):
         if array_2d[jj][ii] != "0.0":
             if ii > 0 and jj > 0:
+                # mark = utils.seconds_to_hms(float(array_2d[jj][ii]))
                 mark = "{:.3f}".format(float(array_2d[jj][ii]))
                 file1.write(mark)
             else:
                 if ii > 0 and jj == 0:
-                    file1.write(array_2d[jj][ii] + '-01-01')
+                    file1.write(array_2d[jj][ii])    # + '-01-01')
                 else:
                     file1.write(array_2d[jj][ii])
         if jj < num_rows-1:

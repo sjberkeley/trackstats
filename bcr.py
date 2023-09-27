@@ -7,7 +7,7 @@ import utils
 
 def create_bar_chart_race(csv_filename, output_filename, field_event):
     # create bar chart race
-    data = pd.read_csv(csv_filename) #, dtype=float)
+    data = pd.read_csv(csv_filename, dtype=float)
 
     data.set_index('name', inplace=True)
 

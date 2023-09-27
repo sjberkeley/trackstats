@@ -373,13 +373,13 @@ class _BarChartRace:
                 xtext, ytext = self.ax.transLimits.transform((x1, y1))
                 if self.orientation == 'h':
                     xtext += .01
-                    text = f'{x1:,.0f}'
+                    text = f'{x1:,.2f}'   # changed 0 to 2
                     rotation = 0
                     ha = 'left'
                     va = 'center'
                 else:
                     ytext += .015
-                    text = f'{y1:,.0f}'
+                    text = f'{y1:,.2f}'   # changed 0 to 2
                     rotation = 90
                     ha = 'center'
                     va = 'bottom'
