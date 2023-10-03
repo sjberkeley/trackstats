@@ -5,7 +5,10 @@ import utils         # my utils
 #
 # main program
 #
-gender, event, field_event = utils.get_args(sys.argv)
+#gender, event, field_event = utils.get_args(sys.argv)
+gender = "men"
+event = "800 metres"
+field_event = False
 
 this_year = datetime.now().year
 earliest_num_perfs = this_year
@@ -46,12 +49,12 @@ for line in lines:
         list_of_lists = athletes[name]
     else:
         list_of_lists = []
-        for yy in range(earliest, this_year):
+        for yy in range(earliest, this_year+1):
             list = []
             list_of_lists.append(list)
         athletes[name] = list_of_lists
 
-    for yy in range(date, this_year):
+    for yy in range(date, this_year+1):
         list = list_of_lists[yy-earliest]
         if len(list) < num_perfs:
             list.append(performance)
@@ -64,7 +67,7 @@ if earliest_num_perfs < starting_year:
 array_2d = []
 header = []
 header.append("name")
-for year in range(earliest_num_perfs, this_year):
+for year in range(earliest_num_perfs, this_year+1):
     header.append(str(year))
 array_2d.append(header)
 for name in athletes.keys():
@@ -72,7 +75,7 @@ for name in athletes.keys():
     array_1d.append(name)
     list_of_lists = athletes[name]
     any_marks = False
-    for year in range(earliest_num_perfs, this_year):    
+    for year in range(earliest_num_perfs, this_year+1):    
         list = list_of_lists[year-earliest]
         if len(list) < num_perfs:
             array_1d.append("0.0")

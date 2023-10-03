@@ -28,7 +28,10 @@ def create_bar_chart_race(csv_filename, output_filename, field_event):
     )
 
 # main program
-gender, event, field_event = utils.get_args(sys.argv)
+#gender, event, field_event = utils.get_args(sys.argv)
+gender = "men"
+event = "800 metres"
+field_event = False
 
 csv_filename = gender + event + ".csv"
 output_filename = gender + event + ".mp4"

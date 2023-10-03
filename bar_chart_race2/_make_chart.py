@@ -319,6 +319,18 @@ class _BarChartRace:
         height = orig_pos.y1 - bottom
         return [left, bottom, width, height]
             
+    def seconds_to_hms(total_seconds):
+        h = int(total_seconds // 3600)
+        m = int((total_seconds % 3600) // 60)
+        s = round(total_seconds % 60, 2)
+        if h > 0:
+            time_str = str(h) + ":" + str(m) + ":" + str(s)
+        elif m > 0:
+            time_str = str(m) + ":" + str(s)
+        else:
+            time_str = str(s)
+        return time_str
+
     def plot_bars(self, i):
         bar_location = self.df_ranks.iloc[i].values
         top_filt = (bar_location > 0) & (bar_location < self.n_bars + 1)
@@ -373,13 +385,26 @@ class _BarChartRace:
                 xtext, ytext = self.ax.transLimits.transform((x1, y1))
                 if self.orientation == 'h':
                     xtext += .01
-                    text = f'{x1:,.2f}'   # changed 0 to 2
+
+                    h = int(x1 // 3600)
+                    m = int((x1 % 3600) // 60)
+                    s = round(x1 % 60, 3)
+                    if h > 0:
+                        time_str = str(h) + ":" + str(m) + ":" + str(s)
+                    elif m > 0:
+                        time_str = str(m) + ":" + str(s)
+                    else:
+                        time_str = str(s)
+                    text = time_str
+
+                    #text = self.seconds_to_hms(x1)
+                    #text = f'{x1:,.3f}'   # changed 0 to 3
                     rotation = 0
                     ha = 'left'
                     va = 'center'
                 else:
                     ytext += .015
-                    text = f'{y1:,.2f}'   # changed 0 to 2
+                    text = f'{y1:,.3f}'   # changed 0 to 3
                     rotation = 90
                     ha = 'center'
                     va = 'bottom'
