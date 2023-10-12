@@ -4,6 +4,7 @@ import bar_chart_race2 as bcrace
 import numpy as np
 import sys
 import utils
+import requests
 
 def create_bar_chart_race(csv_filename, output_filename, field_event):
     # create bar chart race
@@ -22,6 +23,7 @@ def create_bar_chart_race(csv_filename, output_filename, field_event):
         filename=output_filename,  # Output filename
         title='Average of top 10 marks',  # Chart title
         n_bars=20,
+        period_fmt='{x:10.0f}',
         sort=sortval,
         steps_per_period=10,            # Number of steps per year
         period_length=500,              # Length of each year in milliseconds
@@ -36,3 +38,15 @@ field_event = False
 csv_filename = gender + event + ".csv"
 output_filename = gender + event + ".mp4"
 create_bar_chart_race(csv_filename, output_filename, field_event)
+
+
+url = "https://example.com"  # Replace with the URL you want to refresh
+
+# Send a GET request to the URL
+response = requests.get(url)
+
+# Check the response status code
+if response.status_code == 200:
+    print(f"Successfully refreshed {url}")
+else:
+    print(f"Failed to refresh {url} (Status Code: {response.status_code})")
