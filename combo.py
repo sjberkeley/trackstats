@@ -41,11 +41,7 @@ def get_score(gender, event, performance):
         perf_str += "0"
 
     # if the performance does not exist in the map, find the next lower performance that does
-    field_event = False
-    for event_name in ("HJ", "PV", "LJ", "TJ", "SP", "DT", "HT", "JT", "Decathlon", "Heptathlon"):
-        if event == event_name:
-            field_event = True
-            break
+    field_event = utils.is_field_event(event)
 
     while map.get(perf_str) == None:       # key does not exist
         perf_units, hundredths = utils.hms_to_seconds(perf_str)

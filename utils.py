@@ -209,3 +209,12 @@ def strip_preamble(line, processing):
             status = 1
 
     return status, words, processing
+
+def is_field_event(event):
+    field_event = False
+    for event_name in ("HJ", "PV", "LJ", "TJ", "SP", "DT", "HT", "JT", "Decathlon", "Heptathlon"):
+        if event == event_name:
+            field_event = True
+            break
+
+    return field_event
