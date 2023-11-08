@@ -121,7 +121,7 @@ for event in ("100m", "200m", "400m", "110mH", "400mH", "1500m", "3000m", "5000m
 
         # extract performance, name and date (year)
         counter += 1
-        name, date, performance = utils.get_stats(words)
+        name, date, performance, nation = utils.get_stats(words)
         score = get_score(gender, event, performance)
 
         # populate dictionary

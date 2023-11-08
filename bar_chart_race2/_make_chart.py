@@ -318,15 +318,24 @@ class _BarChartRace:
         width = orig_pos.x1 - left
         height = orig_pos.y1 - bottom
         return [left, bottom, width, height]
-            
-    def seconds_to_hms(total_seconds):
+
+    def two_digit_time(self, t):
+        if t == 0:
+            time_str = "00"
+        elif t < 10:
+            time_str = "0" + str(t)
+        else:
+            time_str = str(t)
+        return time_str
+        
+    def seconds_to_hms(self, total_seconds):
         h = int(total_seconds // 3600)
         m = int((total_seconds % 3600) // 60)
         s = round(total_seconds % 60, 2)
         if h > 0:
-            time_str = str(h) + ":" + str(m) + ":" + str(s)
+            time_str = str(h) + ":" + self.two_digit_time(m) + ":" + self.two_digit_time(s)
         elif m > 0:
-            time_str = str(m) + ":" + str(s)
+            time_str = str(m) + ":" + self.two_digit_time(s)
         else:
             time_str = str(s)
         return time_str
@@ -385,20 +394,12 @@ class _BarChartRace:
                 xtext, ytext = self.ax.transLimits.transform((x1, y1))
                 if self.orientation == 'h':
                     xtext += .01
-
-                    h = int(x1 // 3600)
-                    m = int((x1 % 3600) // 60)
-                    s = round(x1 % 60, 3)
-                    if h > 0:
-                        time_str = str(h) + ":" + str(m) + ":" + str(s)
-                    elif m > 0:
-                        time_str = str(m) + ":" + str(s)
+                    if self.sort == 'asc':    # track event
+                        text = self.seconds_to_hms(x1)
+                    elif x1 > 1000.0:         # multi
+                        text = f'{x1:,.0f}'
                     else:
-                        time_str = str(s)
-                    text = time_str
-
-                    #text = self.seconds_to_hms(x1)
-                    #text = f'{x1:,.3f}'   # changed 0 to 3
+                        text = f'{x1:,.3f}'   # changed 0 to 3
                     rotation = 0
                     ha = 'left'
                     va = 'center'

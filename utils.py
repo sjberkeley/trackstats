@@ -29,7 +29,8 @@ def find_earliest_year(lines, this_year):
             continue
         if not words[0].isdigit():
             break
-        date = int(words[num_words-1][6:])
+        num_chars = len(words[num_words-1])
+        date = int(words[num_words-1][num_chars-4:])
         if date < earliest:
             earliest = date
 
@@ -98,12 +99,14 @@ def get_stats(words):
         index = index + 1
         if not words[index].isupper() or len(words[index]) != 3:
             name += " " + words[index]
-
+            index = index + 1
+    nation = words[index]
+    
     date = words[num_words-1]
     if len(date) > 10:
         date = words[num_words-1][-10:]
-    year = int(date[6:])
-    return name, year, performance
+    year = int(date[-4:])
+    return name, year, performance, nation
 
 
 # TODO: Doesn't support the no-hundredths case yet ...
@@ -162,7 +165,7 @@ def get_args(argv):
         event = event + " " + argv[ii]
     if event == "High jump" or event == "Long jump" or event == "Triple jump" or event == "Pole vault" or \
         event == "Shot put" or event == "Discus throw" or event == "Hammer throw" or event == "Javelin throw" or\
-        event == "Decathon" or event == "Heptathon":
+        event == "Decathlon" or event == "Heptathlon":
         field_event = True
     else:
         field_event = False
@@ -212,7 +215,8 @@ def strip_preamble(line, processing):
 
 def is_field_event(event):
     field_event = False
-    for event_name in ("HJ", "PV", "LJ", "TJ", "SP", "DT", "HT", "JT", "Decathlon", "Heptathlon"):
+    for event_name in ("HJ", "PV", "LJ", "TJ", "SP", "DT", "HT", "JT", "Decathlon", "Heptathlon", \
+        "High jump", "Long jump", "Triple jump", "Pole vault", "Shot put", "Discus throw", "Javelin throw", "Hammer throw"):
         if event == event_name:
             field_event = True
             break
