@@ -126,6 +126,6 @@ def build_csv(gender, event, num_perfs):
     file1.close
 
 
-#build_csv("men", "800 metres", 10)
+build_csv("men", "800 metres", 10)
 #time.sleep(10)
 

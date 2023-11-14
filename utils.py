@@ -68,7 +68,9 @@ def get_urls(links_url):
 
     for link in links:
         event_name = link.text
-        if (event_name == "Back to main page" or event_name == ""):
+        if event_name == "60 metres":       # skip special eventa
+            break
+        if (event_name == "Back to main page" or event_name == "" or event_name == "Old specs"):
             continue
         if event_name not in urls.keys():
             urls[event_name] = "http://www.alltime-athletics.com/" + link.get("href")
@@ -101,7 +103,7 @@ def get_stats(words):
             name += " " + words[index]
             index = index + 1
     nation = words[index]
-    
+
     date = words[num_words-1]
     if len(date) > 10:
         date = words[num_words-1][-10:]

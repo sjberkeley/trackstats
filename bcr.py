@@ -30,6 +30,7 @@ def create_bar_chart_race(gender, event, field_event, num_bars, num_to_avg):
         n_bars=num_bars,
         period_fmt='{x:10.0f}',
         sort=sortval,
+        figsize=(7.5, 5),               # was (6, 3.5)
         steps_per_period=10,            # Number of steps per year
         period_length=500,              # Length of each year in milliseconds
     )
@@ -101,7 +102,7 @@ build_and_upload_bcr("women", "Hammer throw")
 build_and_upload_bcr("women", "Heptathlon")
 
 # url = "https://example.com"  # Replace with the URL you want to refresh
-# 
+ 
 # # Send a GET request to the URL
 # response = requests.get(url)
 # 
