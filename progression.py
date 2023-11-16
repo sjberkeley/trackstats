@@ -1,5 +1,4 @@
 from datetime import datetime
-import sys
 import utils         # my utils
 
 #
@@ -7,22 +6,24 @@ import utils         # my utils
 #
 #gender, event, field_event = utils.get_args(sys.argv)
 def build_record_csv():
-    #gender = "men"
-    event = "800 metres"
+    gender = "men"
+    #event = "800 metres"
 
     this_year = datetime.now().year
 
-    #m_urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-    w_urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+    if gender == "men":
+        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
+    else:
+        urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
 
     latest_earliest_date = 0
     events = {}
-    for url in w_urls:
+    for url in urls:
         if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay" or url == "Javelin throw" \
             or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk" \
             or url == "3000m steeplechase" or url == "Pole vault" or url == "Hammer throw" or url == "Triple jump":
             continue
-        lines = utils.get_lines_from_url(w_urls[url])
+        lines = utils.get_lines_from_url(urls[url])
         # process data
         processing = 0
         last_date = 0
@@ -35,7 +36,7 @@ def build_record_csv():
                 break
 
             # extract performance, name and date (year)
-            name, date, performance, nation = utils.get_stats(words)
+            name, date, performance, nation, this_date = utils.get_stats(words)
             if last_date == 0:
                 last_date = this_year
                 records.append(performance)

@@ -107,8 +107,20 @@ def get_stats(words):
     date = words[num_words-1]
     if len(date) > 10:
         date = words[num_words-1][-10:]
-    year = int(date[-4:])
-    return name, year, performance, nation
+    if len(date) < 10:
+        if date[1] == ".":
+            date = "0" + date
+        elif date[4] == ".":
+            date = date[0:3] + "0" + date[3:9]
+    year = int(date[6:10])
+    month = int(date[3:5])
+    if month > 12:
+        month = 12
+    day = int(date[0:2])
+    if day > 31:
+        day = 31
+    this_date = datetime(year, month, day)
+    return name, year, performance, nation, this_date
 
 
 # TODO: Doesn't support the no-hundredths case yet ...
