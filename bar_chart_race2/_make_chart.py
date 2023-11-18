@@ -61,8 +61,8 @@ class _BarChartRace:
         elif self.filename is not None:
             raise TypeError('`filename` must be None or a string')
             
-        if self.sort not in ('asc', 'desc'):
-            raise ValueError('`sort` must be "asc" or "desc"')
+        if self.sort not in ('asc', 'desc', 'desc_f'):
+            raise ValueError('`sort` must be "asc" or "desc" or "desc_f"')
 
         if self.orientation not in ('h', 'v'):
             raise ValueError('`orientation` must be "h" or "v"')
@@ -89,13 +89,13 @@ class _BarChartRace:
             period_label = {'size': 12}
             if self.orientation == 'h':
                 period_label['x'] = .95
-                period_label['y'] = .15 if self.sort == 'desc' else .85
+                period_label['y'] = .15 if (self.sort == 'desc' or self.sort == 'desc_f') else .85
                 period_label['ha'] = 'right'
                 period_label['va'] = 'center'
             else:
-                period_label['x'] = .95 if self.sort == 'desc' else .05
+                period_label['x'] = .95 if (self.sort == 'desc' or self.sort == 'desc_f') else .05
                 period_label['y'] = .85
-                period_label['ha'] = 'right' if self.sort == 'desc' else 'left'
+                period_label['ha'] = 'right' if (self.sort == 'desc' or self.sort == 'desc_f') else 'left'
                 period_label['va'] = 'center'
         else:
             if 'x' not in period_label or 'y' not in period_label:
@@ -159,7 +159,7 @@ class _BarChartRace:
             n = df_values.shape[1] + 1
             m = df_values.shape[0]
             rank_row = np.arange(1, n)
-            if (self.sort == 'desc' and self.orientation == 'h') or \
+            if ((self.sort == 'desc' or self.sort == 'desc_f') and self.orientation == 'h') or \
                 (self.sort == 'asc' and self.orientation == 'v'):
                 rank_row = rank_row[::-1]
             
@@ -172,7 +172,7 @@ class _BarChartRace:
         col_filt = pd.Series([True] * self.df_values.shape[1])
         if self.n_bars < self.df_ranks.shape[1]:
             orient_sort = self.orientation, self.sort
-            if orient_sort in [('h', 'asc'), ('v', 'desc')]:
+            if orient_sort in [('h', 'asc'), ('v', 'desc'), ('v', 'desc_f')]:
                 # 1 is high
                 col_filt = (self.df_ranks < self.n_bars + .99).any()
             else:
@@ -394,11 +394,11 @@ class _BarChartRace:
                 xtext, ytext = self.ax.transLimits.transform((x1, y1))
                 if self.orientation == 'h':
                     xtext += .01
-                    if self.sort == 'asc':    # track event
+                    if self.sort == 'desc':   # track event
                         text = self.seconds_to_hms(x1)
                     elif x1 > 1000.0:         # multi
                         text = f'{x1:,.0f}'
-                    else:
+                    else:                     # field event
                         text = f'{x1:,.3f}'   # changed 0 to 3
                     rotation = 0
                     ha = 'left'
@@ -520,7 +520,7 @@ def bar_chart_race(df, filename=None, orientation='h', sort='desc', n_bars=None,
     orientation : 'h' or 'v', default 'h'
         Bar orientation - horizontal or vertical
 
-    sort : 'desc' or 'asc', default 'desc'
+    sort : 'desc' or 'asc' or 'desc_f', default 'desc'
         Choose how to sort the bars. Use 'desc' to put largest bars on top 
         and 'asc' to place largest bars on bottom.
 
@@ -594,9 +594,9 @@ def bar_chart_race(df, filename=None, orientation='h', sort='desc', n_bars=None,
         If `False` - don't place label on axes
 
         The default location depends on `orientation` and `sort`
-        * h, desc -> x=.95, y=.15, ha='right', va='center'
+        * h, desc or desc_f -> x=.95, y=.15, ha='right', va='center'
         * h, asc -> x=.95, y=.85, ha='right', va='center'
-        * v, desc -> x=.95, y=.85, ha='right', va='center'
+        * v, desc or desc_f -> x=.95, y=.85, ha='right', va='center'
         * v, asc -> x=.05, y=.85, ha='left', va='center'
 
     period_fmt : str, default `None`
@@ -860,7 +860,7 @@ def prepare_wide_data(df, orientation='h', sort='desc', n_bars=None, interpolate
     orientation : 'h' or 'v', default 'h'
         Bar orientation - horizontal or vertical
 
-    sort : 'desc' or 'asc', default 'desc'
+    sort : 'desc' or 'desc_f' or 'asc', default 'desc'
         Choose how to sort the bars. Use 'desc' to put largest bars on 
         top and 'asc' to place largest bars on bottom.
 
@@ -917,12 +917,12 @@ def prepare_wide_data(df, orientation='h', sort='desc', n_bars=None, interpolate
     df_values = df_values.set_index(df_values.columns[0])
     if compute_ranks:
         # Modification made to allow the longest bars to fall off the chart instead of the shortest, when sort=ascending
-        if sort == 'desc':
+        if sort == 'desc_f':
             ascending_value = False
         else:
             ascending_value = True
         df_ranks = df_values.rank(axis=1, method='first', ascending=ascending_value).clip(upper=n_bars + 1)  # Originally ascending=True
-        if (sort == 'desc' and orientation == 'h') or (sort == 'asc' and orientation == 'v'):
+        if ((sort == 'desc' or sort == 'desc_f') and orientation == 'h') or (sort == 'asc' and orientation == 'v'):
             df_ranks = n_bars + 1 - df_ranks
         df_ranks = df_ranks.interpolate()
     
@@ -972,7 +972,7 @@ def prepare_long_data(df, index, columns, values, aggfunc='sum', orientation='h'
     orientation : 'h' or 'v', default 'h'
         Bar orientation - horizontal or vertical
 
-    sort : 'desc' or 'asc', default 'desc'
+    sort : 'desc' or 'desc_f' or 'asc', default 'desc'
         Choose how to sort the bars. Use 'desc' to put largest bars on 
         top and 'asc' to place largest bars on bottom.
 

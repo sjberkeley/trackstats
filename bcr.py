@@ -18,21 +18,22 @@ def create_bar_chart_race(gender, event, field_event, num_bars, num_to_avg):
     data.set_index('name', inplace=True)
 
     if (field_event == True):
-        sortval = 'desc'
+        sortval = 'desc_f'
     else:
-        sortval = 'asc'
-    # Track events: sort='asc', modified bar_chart_race2
-    # Field events: sort='desc, original bar_chart_race2
+        sortval = 'desc'
+
     bcrace.bar_chart_race(
         df=data,
         filename=output_filename,  # Output filename
-        title=gender + " " + event + ": average of top " + str(num_to_avg) + " marks",  # Chart title
+        title=gender + " " + event + ": average of top " + str(num_to_avg) + " performances",  # Chart title
         n_bars=num_bars,
-        period_fmt='{x:10.0f}',
+        period_fmt='{x:4.0f}',
         sort=sortval,
         figsize=(7.5, 5),               # was (6, 3.5)
-        steps_per_period=10,            # Number of steps per year
-        period_length=500,              # Length of each year in milliseconds
+        steps_per_period=15,            # Number of steps per year
+        period_length=750,             # Length of each year in milliseconds
+        period_label={'x': .8, 'y': .8, 'ha': 'right', 'va': 'center', 'size': 32},
+        #scale="log",
     )
 
 # main program

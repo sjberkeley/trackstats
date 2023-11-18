@@ -27,6 +27,8 @@ def build_csv(gender, event, num_perfs):
     lines = utils.get_lines_from_url(url)
 
     athletes = {}     # dictionary of lists of lists
+    active = {}       # earliest and latest year active
+    nations = {}      # first country represented
 
     # find earliest year
     earliest = utils.find_earliest_year(lines, this_year)
@@ -44,18 +46,22 @@ def build_csv(gender, event, num_perfs):
         # extract performance, name and date (year)
         counter += 1
         name, date, performance, nation, this_date = utils.get_stats(words)
-        name += " (" + nation + ")"
+        #name += " (" + nation + ")"
 
         # populate dictionary
         if name in athletes.keys():
             list_of_lists = athletes[name]
+            active_range = active[name]
         else:
             list_of_lists = []
             for yy in range(earliest, this_year+1):
                 list = []
                 list_of_lists.append(list)
             athletes[name] = list_of_lists
-
+            active_range = [this_year, 0]
+            active[name] = active_range
+            nations[name] = nation
+        
         for yy in range(date, this_year+1):
             list = list_of_lists[yy-earliest]
             if len(list) < num_perfs:
@@ -63,6 +69,11 @@ def build_csv(gender, event, num_perfs):
             else:
                 if date < earliest_num_perfs:
                     earliest_num_perfs = date
+
+        if date < active_range[0]:
+            active_range[0] = date
+        if date > active_range[1]:
+            active_range[1] = date
 
     if earliest_num_perfs < starting_year:
         earliest_num_perfs = starting_year
@@ -72,9 +83,12 @@ def build_csv(gender, event, num_perfs):
     for year in range(earliest_num_perfs, this_year+1):
         header.append(str(year))
     array_2d.append(header)
+
     for name in athletes.keys():
+        active_range = active[name]
+        name_str = name + " (" + nations[name] + ") " + str(active_range[0]) + "-" + str(active_range[1])
         array_1d = []
-        array_1d.append(name)
+        array_1d.append(name_str)
         list_of_lists = athletes[name]
         any_marks = False
         for year in range(earliest_num_perfs, this_year+1):    
@@ -126,6 +140,6 @@ def build_csv(gender, event, num_perfs):
     file1.close
 
 
-build_csv("men", "800 metres", 10)
+#build_csv("men", "800 metres", 10)
 #time.sleep(10)
 
