@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Track Statistics</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        /* Add this inline CSS or in your styles.css file */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .content {
+            flex: 1;
+            width: 100%;
+            max-width: 800px; /* Adjust the maximum width of the content area as needed */
+            padding: 30px;
+        }
+
+        /* Add styles for the sidebar, sash, and other elements as needed */
+        .sash {
+            /* Your sash styles here */
+        }
+
+        #execButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #execButton:hover {
+            background-color: #45a049;
+        }
+
+    </style>
+    <!-- <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Adding Events</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>  -->
+
+</head>
+<body>
+    <header>
+        <h1>Visual Track Statistics</h1>
+    </header>
+    
+    <!-- Sash element for resizing -->
+    <div class="sash" id="sash"></div>
+    
+    <div class="content">
+        <div class="dropdowns">
+            <label for="menu1">Gender:</label>
+            <select id="menu1">
+                <option value="option1">men</option>
+                <option value="option2">women</option>
+            </select>
+
+            <label for="menu2">Event:</label>
+            <select id="menu2">
+                <option value="option1">100 metres</option>
+                <option value="option2">200 metres</option>
+                <option value="option3">400 metres</option>
+                <option value="option4">800 metres</option>
+                <option value="option5">1500 metres</option>
+            </select>
+
+<!--            <button id="myButton">Execute</button>  -->
+
+            <button id="execButton">Execute</button>
+            <div id="output"></div>
+            <py-script src="./event.py"></py-script>
+        </div>
+
+        <div class="video-container">
+            <!-- Embed your video here -->
+            <iframe width="900" height="600" src="http://localhost/men800 metres.mp4" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script type="py" src="scrape.py" worker config="pyconfig.toml"></script>
+    <!--  <py-config>
+        [[fetch]]
+        files = ['scrape.py', 'utils.py']
+        # URL defaults to 'relative to this folder'
+        # Destination defaults to 'adjacent to the Python files we run'
+    </py-config>  -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aws-sdk/dist/aws-sdk.min.js"></script>
+
+    <script>
+        function doAction() {
+            // Configure AWS SDK
+            AWS.config.update({
+              region: 'us-west-1',
+              accessKeyId: 'AKIAWQKKSYK2JP3K7A4K',
+              secretAccessKey: '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',
+            });
+            
+            const lambda = new AWS.Lambda();
+            
+            const params = {
+              FunctionName: 'trackstats',
+              Payload: JSON.stringify({
+                key1: 'value1',
+                key2: 'value2',
+              }),
+            };
+            
+            lambda.invoke(params, (err, data) => {
+              if (err) {
+                console.error(err);
+              } else {
+                const response = JSON.parse(data.Payload);
+                console.log('Lambda Response:', response);
+              }
+            });
+        }
+        document.getElementById("execButton").addEventListener("click", doAction);
+    </script>
+
+</body>
+</html>

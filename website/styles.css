@@ -1,0 +1,47 @@
+/* layout.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+.dropdowns {
+    text-align: center;
+    margin: 20px;
+}
+
+label {
+    margin-right: 20px;
+}
+
+select {
+    padding: 5px;
+}
+
+.video-container {
+    text-align: center;
+    margin: 20px;
+}
+body {
+    display: flex;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+.sash {
+    width: 10px;
+    cursor: col-resize;
+    background-color: #333;
+}
+
