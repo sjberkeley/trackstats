@@ -94,15 +94,34 @@ def get_stats(words):
     index = 2
     if is_numeric(words[index]):       # wind reading for straightaway and runway
         index = index + 1
-    name = words[index] + " " + words[index+1]
-    index = index + 2
-    if not words[index].isupper() or len(words[index]) != 3:
-        name += " " + words[index]
-        index = index + 1
-        if not words[index].isupper() or len(words[index]) != 3:
-            name += " " + words[index]
-            index = index + 1
+    name = words[index]
+    index = index + 1
+    for iter in range(4):
+        if words[index] != "BEl" and words[index] != "EX":      # typo on men marathon and men 20k walk
+            if not words[index].isupper() or len(words[index]) != 3:
+                name += " " + words[index]
+                index = index + 1
+
     nation = words[index]
+
+    index = index + 2
+    if is_numeric(words[index][0]) or words[index] == "D" or words[index] == "q" or words[index] == "*":
+        index = index + 1
+
+    if index == num_words - 1:       # no city ?
+        city = "unknown"
+    else:
+        city = words[index]
+    if num_words > index + 2:
+        index = index + 1
+        city += " " + words[index]
+        if num_words > index + 2:
+            index = index + 1
+            city += " " + words[index]
+
+    comma_index = city.find(',')
+    if comma_index != -1:
+        city = city[0:comma_index] + city[comma_index+1:]
 
     date = words[num_words-1]
     if len(date) > 10:
@@ -120,7 +139,8 @@ def get_stats(words):
     if day > 31:
         day = 31
     this_date = datetime(year, month, day)
-    return name, year, performance, nation, this_date
+
+    return name, year, performance, nation, this_date, city
 
 
 # TODO: Doesn't support the no-hundredths case yet ...
@@ -156,14 +176,25 @@ def hms_to_seconds(perf_str):
     total_seconds = (h * 3600) + (m * 60) + s
     return total_seconds, hundredths
 
-def seconds_to_hms(total_seconds):
+def seconds_to_hms(total_seconds, hundredths):
     h = int(total_seconds // 3600)
     m = int((total_seconds % 3600) // 60)
     s = round(total_seconds % 60, 2)
+    if not hundredths:
+        s = int(s)
     if h > 0:
-        time_str = str(h) + ":" + str(m) + ":" + str(s)
+        time_str = str(h) + ":"
+        if m < 10:
+            time_str += "0"
+        time_str += str(m) + ":"
+        if s < 10:
+            time_str += "0"
+        time_str += str(s)
     elif m > 0:
-        time_str = str(m) + ":" + str(s)
+        time_str = str(m) + ":"
+        if s < 10:
+            time_str += "0"
+        time_str += str(s)
     else:
         time_str = str(s)
     return time_str
@@ -236,3 +267,65 @@ def is_field_event(event):
             break
 
     return field_event
+
+
+def init_score_maps(event_name_map, score_maps):
+    event_name_map["100 metres"] = "100m"
+    event_name_map["10000 metres"] = "10,000m"
+    event_name_map["100m hurdles"] = "100mH"
+    event_name_map["110m hurdles"] = "110mH"
+    event_name_map["1500 metres"] = "1500m"
+    event_name_map["20 km race walk"] = "20kmW"
+    event_name_map["200 metres"] = "200m"
+    event_name_map["3000 metres"] = "3000m"
+    event_name_map["3000m steeplechase"] = "3000mSC"
+    event_name_map["400 metres"] = "400m"
+    event_name_map["400m hurdles"] = "400mH"
+    event_name_map["4x100m relay"] = "4x100m"
+    event_name_map["4x400m relay"] = "4x400m"
+    event_name_map["50 km race walk"] = "50kmW"
+    event_name_map["5000 metres"] = "5000m"
+    event_name_map["800 metres"] = "800m"
+    event_name_map["Decathlon"] = "Decathlon"
+    event_name_map["Discus throw"] = "DT"
+    event_name_map["Hammer throw"] = "HT"
+    event_name_map["Heptathlon"] = "Heptathlon"
+    event_name_map["High jump"] = "HJ"
+    event_name_map["Javelin throw"] = "JT"
+    event_name_map["Long jump"] = "LJ"
+    event_name_map["1 Mile"] = "Mile"
+    event_name_map["Pole vault"] = "PV"
+    event_name_map["Shot put"] = "SP"
+    event_name_map["Triple jump"] = "TJ"
+    event_name_map["half-marathon"] = "HM"
+    event_name_map["marathon"] = "Marathon"
+
+    score_maps["100m"] = {}
+    score_maps["10,000m"] = {}
+    score_maps["100mH"] = {}
+    score_maps["110mH"] = {}
+    score_maps["1500m"] = {}
+    score_maps["20kmW"] = {}
+    score_maps["200m"] = {}
+    score_maps["3000m"] = {}
+    score_maps["3000mSC"] = {}
+    score_maps["400m"] = {}
+    score_maps["400mH"] = {}
+    score_maps["4x100m"] = {}
+    score_maps["4x400m"] = {}
+    score_maps["50kmW"] = {}
+    score_maps["5000m"] = {}
+    score_maps["800m"] = {}
+    score_maps["Decathlon"] = {}
+    score_maps["DT"] = {}
+    score_maps["HT"] = {}
+    score_maps["Heptathlon"] = {}
+    score_maps["HJ"] = {}
+    score_maps["JT"] = {}
+    score_maps["LJ"] = {}
+    score_maps["Mile"] = {}
+    score_maps["PV"] = {}
+    score_maps["SP"] = {}
+    score_maps["TJ"] = {}
+    score_maps["HM"] = {}
+    score_maps["Marathon"] = {}

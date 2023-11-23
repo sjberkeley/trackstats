@@ -36,7 +36,7 @@ def build_record_csv():
                 break
 
             # extract performance, name and date (year)
-            name, date, performance, nation, this_date = utils.get_stats(words)
+            name, date, performance, nation, this_date, city = utils.get_stats(words)
             if last_date == 0:
                 last_date = this_year
                 records.append(performance)

@@ -79,7 +79,7 @@ def build_country_csv():
                     break
     
                 # extract performance, name and date (year)
-                name, date, performance, nation, this_date = utils.get_stats(words)
+                name, date, performance, nation, this_date, city = utils.get_stats(words)
                 if this_date < last_date:
                     if not nation in code_map:
                         print("missing " + nation)

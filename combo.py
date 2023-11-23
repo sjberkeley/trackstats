@@ -49,7 +49,7 @@ def get_score(gender, event, performance):
             perf_units = round(perf_units + 0.01, 2)
         else:
             perf_units = perf_units + 1
-        perf_str = utils.seconds_to_hms(perf_units)
+        perf_str = utils.seconds_to_hms(perf_units, hundredths)
 
     score = map[perf_str]
     return score
@@ -121,7 +121,7 @@ for event in ("100m", "200m", "400m", "110mH", "400mH", "1500m", "3000m", "5000m
 
         # extract performance, name and date (year)
         counter += 1
-        name, date, performance, nation, day = utils.get_stats(words)
+        name, date, performance, nation, day, city = utils.get_stats(words)
         score = get_score(gender, event, performance)
 
         # populate dictionary
