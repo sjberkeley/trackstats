@@ -1,3 +1,7 @@
+#
+# scrape alltime-athletics event page and create csv file for input to bar chart race generator
+#
+
 #import requests
 from datetime import datetime
 import sys

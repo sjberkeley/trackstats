@@ -1,3 +1,7 @@
+#
+# create combo tables (e.g. 100/200/400 combo)
+#
+
 import requests
 from datetime import datetime
 import utils         # my utils
@@ -5,6 +9,7 @@ import utils         # my utils
 map100 = {}
 map200 = {}
 map400 = {}
+map800 = {}
 map400H = {}
 map110H = {}
 map1500 = {}
@@ -22,6 +27,8 @@ def get_score(gender, event, performance):
         map = map400H
     elif event == "110mH":
         map = map110H
+    elif event == "800m":
+        map = map800
     elif event == "1500m":
         map = map1500
     elif event == "3000m":
@@ -58,7 +65,7 @@ def get_score(gender, event, performance):
 # main program
 #
 gender = "men"
-num_events = 3
+num_events = 2
 
 urls = []
 
@@ -72,6 +79,7 @@ if gender == "women":
     urls.append(w_urls["400 metres"])
     urls.append(w_urls["100m hurdles"])
     urls.append(w_urls["400m hurdles"])
+    urls.append(w_urls["800 metres"])
     urls.append(w_urls["1500 metres"])
     urls.append(w_urls["3000 metres"])
     urls.append(w_urls["5000 metres"])
@@ -82,25 +90,28 @@ else:
     urls.append(m_urls["400 metres"])
     urls.append(m_urls["110m hurdles"])
     urls.append(m_urls["400m hurdles"])
+    urls.append(m_urls["800 metres"])
     urls.append(m_urls["1500 metres"])
     urls.append(m_urls["3000 metres"])
     urls.append(m_urls["5000 metres"])
 
 athletes = {}     # dictionary of lists
-first = 0         # first event on the list
-for event in ("100m", "200m", "400m", "110mH", "400mH", "1500m", "3000m", "5000m"):
+first = 5         # first event on the list
+for event in ("100m", "200m", "400m", "110mH", "400mH", "800m", "1500m", "3000m", "5000m"):
     if event == "100m":
-        event_num = 0
+        continue
     elif event == "200m":
-        event_num = 1
+        continue
     elif event == "400m":
-        event_num = 2
+        continue
     elif event == "110mH":
         continue
     elif event == "400mH":
         continue
+    elif event == "800m":
+        event_num = 0
     elif event == "1500m":
-        continue
+        event_num = 1
     elif event == "3000m":
         continue
     elif event == "5000m":
@@ -122,6 +133,8 @@ for event in ("100m", "200m", "400m", "110mH", "400mH", "1500m", "3000m", "5000m
         # extract performance, name and date (year)
         counter += 1
         name, date, performance, nation, day, city = utils.get_stats(words)
+        #if nation != "USA":
+            #continue
         score = get_score(gender, event, performance)
 
         # populate dictionary
@@ -156,5 +169,5 @@ for athlete in athletes.keys():
 
     if max_score > 0:
         list = athletes[max_name]
-        print(max_score, " ", max_name, " ", list[0], " ", list[1], " ", list[2], " ", list[3], " ", list[4], " ", list[5])
+        print(max_score, " ", max_name, " ", list[0], " ", list[1], " ", list[2], " ", list[3])
         done_with[max_name] = True

@@ -1,3 +1,7 @@
+#
+# spreadsheet to create graph of world record progressions in all events, comparing relative advances
+#
+
 from datetime import datetime
 import utils         # my utils
 

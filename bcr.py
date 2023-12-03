@@ -1,3 +1,7 @@
+#
+# generate the bar chart races showing 10-performance averages for all events
+#
+
 import pandas as pd
 #import matplotlib.pyplot as plt
 import bar_chart_race2 as bcrace
@@ -30,8 +34,8 @@ def create_bar_chart_race(gender, event, field_event, num_bars, num_to_avg):
         period_fmt='{x:4.0f}',
         sort=sortval,
         figsize=(7.5, 5),               # was (6, 3.5)
-        steps_per_period=15,            # Number of steps per year
-        period_length=750,             # Length of each year in milliseconds
+        steps_per_period=30,            # Number of steps per year
+        period_length=1500,             # Length of each year in milliseconds
         period_label={'x': .8, 'y': .8, 'ha': 'right', 'va': 'center', 'size': 32},
         #scale="log",
     )
@@ -61,46 +65,46 @@ def build_and_upload_bcr(gender, event):
 
 
 build_and_upload_bcr("men", "100 metres")
-#build_and_upload_bcr("men", "200 metres")
-#build_and_upload_bcr("men", "400 metres")
-#build_and_upload_bcr("men", "800 metres")
-#build_and_upload_bcr("men", "1500 metres")
-#build_and_upload_bcr("men", "3000m steeplechase")
-#build_and_upload_bcr("men", "5000 metres")
-#build_and_upload_bcr("men", "10000 metres")
-#build_and_upload_bcr("men", "marathon")
-#build_and_upload_bcr("men", "110m hurdles")
-#build_and_upload_bcr("men", "400m hurdles")
-#build_and_upload_bcr("men", "High jump")
-#build_and_upload_bcr("men", "Long jump")
-#build_and_upload_bcr("men", "Triple jump")
-#build_and_upload_bcr("men", "Pole vault")
-#build_and_upload_bcr("men", "Shot put")
-#build_and_upload_bcr("men", "Discus throw")
-#build_and_upload_bcr("men", "Javelin throw")
-#build_and_upload_bcr("men", "Hammer throw")
-#build_and_upload_bcr("men", "Decathlon")
-#
-#build_and_upload_bcr("women", "100 metres")
-#build_and_upload_bcr("women", "200 metres")
-#build_and_upload_bcr("women", "400 metres")
-#build_and_upload_bcr("women", "800 metres")
-#build_and_upload_bcr("women", "1500 metres")
-#build_and_upload_bcr("women", "3000m steeplechase")
-#build_and_upload_bcr("women", "5000 metres")
-#build_and_upload_bcr("women", "10000 metres")
-#build_and_upload_bcr("women", "marathon")
-#build_and_upload_bcr("women", "100m hurdles")
-#build_and_upload_bcr("women", "400m hurdles")
-#build_and_upload_bcr("women", "High jump")
-#build_and_upload_bcr("women", "Long jump")
-#build_and_upload_bcr("women", "Triple jump")
-#build_and_upload_bcr("women", "Pole vault")
-#build_and_upload_bcr("women", "Shot put")
-#build_and_upload_bcr("women", "Discus throw")
-#build_and_upload_bcr("women", "Javelin throw")
-#build_and_upload_bcr("women", "Hammer throw")
-#build_and_upload_bcr("women", "Heptathlon")
+build_and_upload_bcr("men", "200 metres")
+build_and_upload_bcr("men", "400 metres")
+build_and_upload_bcr("men", "800 metres")
+build_and_upload_bcr("men", "1500 metres")
+build_and_upload_bcr("men", "3000m steeplechase")
+build_and_upload_bcr("men", "5000 metres")
+build_and_upload_bcr("men", "10000 metres")
+build_and_upload_bcr("men", "marathon")
+build_and_upload_bcr("men", "110m hurdles")
+build_and_upload_bcr("men", "400m hurdles")
+build_and_upload_bcr("men", "High jump")
+build_and_upload_bcr("men", "Long jump")
+build_and_upload_bcr("men", "Triple jump")
+build_and_upload_bcr("men", "Pole vault")
+build_and_upload_bcr("men", "Shot put")
+build_and_upload_bcr("men", "Discus throw")
+build_and_upload_bcr("men", "Javelin throw")
+build_and_upload_bcr("men", "Hammer throw")
+build_and_upload_bcr("men", "Decathlon")
+
+build_and_upload_bcr("women", "100 metres")
+build_and_upload_bcr("women", "200 metres")
+build_and_upload_bcr("women", "400 metres")
+build_and_upload_bcr("women", "800 metres")
+build_and_upload_bcr("women", "1500 metres")
+build_and_upload_bcr("women", "3000m steeplechase")
+build_and_upload_bcr("women", "5000 metres")
+build_and_upload_bcr("women", "10000 metres")
+build_and_upload_bcr("women", "marathon")
+build_and_upload_bcr("women", "100m hurdles")
+build_and_upload_bcr("women", "400m hurdles")
+build_and_upload_bcr("women", "High jump")
+build_and_upload_bcr("women", "Long jump")
+build_and_upload_bcr("women", "Triple jump")
+build_and_upload_bcr("women", "Pole vault")
+build_and_upload_bcr("women", "Shot put")
+build_and_upload_bcr("women", "Discus throw")
+build_and_upload_bcr("women", "Javelin throw")
+build_and_upload_bcr("women", "Hammer throw")
+build_and_upload_bcr("women", "Heptathlon")
 
 # url = "https://example.com"  # Replace with the URL you want to refresh
  

@@ -1,3 +1,7 @@
+#
+# generate bar chart race showing city rankings according to total WA scores
+#
+
 from datetime import datetime
 import utils         # my utils
 import bar_chart_race2 as bcrace
@@ -157,8 +161,8 @@ bcrace.bar_chart_race(
     period_fmt='{x:4.0f}',
     sort='desc_f',
     figsize=(7.5, 5),               # was (6, 3.5)
-    steps_per_period=15,            # Number of steps per year
-    period_length=750,             # Length of each year in milliseconds
+    steps_per_period=30,            # Number of steps per year
+    period_length=1500,             # Length of each year in milliseconds
     period_label={'x': .8, 'y': .8, 'ha': 'right', 'va': 'center', 'size': 32},
 )
 

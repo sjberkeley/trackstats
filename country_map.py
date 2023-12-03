@@ -1,3 +1,7 @@
+#
+# create spreadsheet for world map showing the number of world records set by athletes from each nation
+#
+
 from datetime import datetime
 import utils         # my utils
 

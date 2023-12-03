@@ -1,3 +1,7 @@
+#
+# parse WF scoring tables (PDF) and create fast lookup tables (performance => score)
+#
+
 from curses import pair_number
 import PyPDF2
 from PyPDF2 import PdfReader
