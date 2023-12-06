@@ -8,58 +8,6 @@ import bar_chart_race2 as bcrace
 import pandas as pd
 import utils
 
-def get_WA_score(gender, event, performance):
-    wa_event = event_name_map[event]
-    map = score_maps[wa_event]
-
-    if len(map) == 0:
-        filename = "scores/" + wa_event + "." + gender + ".scores"
-        with open(filename, 'r') as file:
-            for line in file:
-                words = line.split()
-                map[words[0]] = words[1]
-
-    perf_str = performance   # str(performance)
-    if perf_str[-2] == ".":      # conversion to float may have truncated a trailing zero
-        perf_str += "0"
-    
-    if event == "half-marathon" or event == "marathon" or event == "20 km race walk" or event == "50 km race walk":
-        index = perf_str.find(".")
-        if index != -1:      # truncate decimal
-            perf_str = perf_str[0:index]
-
-    # if the performance does not exist in the map, find the next lower performance that does
-    field_event = utils.is_field_event(event)
-
-    if event == "Decathlon" or event == "Heptathlon":
-        perf_units = int(perf_str)
-        if perf_units < 1000 or perf_units > 10000:
-            return 0
-        while map.get(perf_str) == None:       # key does not exist
-            perf_units = int(perf_str)
-            perf_units = perf_units - 1
-            perf_str = str(perf_units)
-    elif field_event:
-        if perf_str[-4] == ".":   # one too many decimal places, round down
-            perf_str = perf_str[:-1]
-        perf_units = float(perf_str)
-        while map.get(perf_str) == None:       # key does not exist
-            perf_units = round(perf_units - 0.01, 2)
-            perf_str = str(perf_units)
-            if perf_str[-2] == ".":
-                perf_str += "0"
-    else:            
-        while map.get(perf_str) == None:       # key does not exist
-            perf_units, hundredths = utils.hms_to_seconds(perf_str)
-            if hundredths:
-                perf_units = round(perf_units + 0.01, 2)
-            else:
-                perf_units = perf_units + 1
-            perf_str = utils.seconds_to_hms(perf_units, hundredths)
-
-    score = map[perf_str]
-    return score
-
 #
 # main program
 #
@@ -67,14 +15,11 @@ def get_WA_score(gender, event, performance):
 event_name_map = {}
 score_maps = {}
 utils.init_score_maps(event_name_map, score_maps)
-#
-# main program
-#
+
 #gender, event, field_event = utils.get_args(sys.argv)
 this_year = datetime.now().year
 
 earliest_date = this_year
-events = {}
 total_scores = {}
 
 for gender in ("men", "women"):
@@ -97,8 +42,6 @@ for gender in ("men", "women"):
         lines = utils.get_lines_from_url(urls[url])
         # process data
         processing = 0
-        last_date = 0
-        records = []
         for line in lines:
             status, words, processing = utils.strip_preamble(line, processing)
             if status == 0:
@@ -108,7 +51,7 @@ for gender in ("men", "women"):
 
             # extract performance, name and date (year)
             name, date, performance, nation, this_date, city = utils.get_stats(words)
-            score = get_WA_score(gender, event, performance)
+            score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
             if city in total_scores.keys():
                 scores = total_scores[city]
                 for year in range(date, this_year+1):
@@ -145,7 +88,8 @@ for row in range(num_rows+1):
             row_str += str(scores[year])
     year += 1
     file1.write(row_str + "\n")
-    
+
+file1.write(row_str + "\n")
 file1.close
 
 # create bar chart race

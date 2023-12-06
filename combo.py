@@ -64,7 +64,7 @@ def get_score(gender, event, performance):
 #
 # main program
 #
-gender = "men"
+gender = "women"
 num_events = 2
 
 urls = []

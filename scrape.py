@@ -120,6 +120,7 @@ def build_csv(gender, event, num_perfs):
     num_cols = len(array_2d[0])
 
     for ii in range(num_cols):
+        line = ""
         if ii > 0:
             any_values = False
             for jj in range(num_rows):
@@ -132,15 +133,15 @@ def build_csv(gender, event, num_perfs):
                 if ii > 0 and jj > 0:
                     # mark = utils.seconds_to_hms(float(array_2d[jj][ii]))
                     mark = "{:.3f}".format(float(array_2d[jj][ii]))
-                    file1.write(mark)
+                    line += mark
                 else:
-                    if ii > 0 and jj == 0:
-                        file1.write(array_2d[jj][ii])    # + '-01-01')
-                    else:
-                        file1.write(array_2d[jj][ii])
+                    line += array_2d[jj][ii]
             if jj < num_rows-1:
-                file1.write(",")
-        file1.write("\n")
+                line += ","
+        line += "\n"
+        file1.write(line)
+
+    file1.write(line)     # add an extra copy of the last year to make it easier to pause there
     file1.close
 
 
