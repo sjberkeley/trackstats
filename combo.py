@@ -6,149 +6,65 @@ import requests
 from datetime import datetime
 import utils         # my utils
 
-map100 = {}
-map200 = {}
-map400 = {}
-map800 = {}
-map400H = {}
-map110H = {}
-map1500 = {}
-map3000 = {}
-map5000 = {}
+event_name_map = {}
+score_maps = {}
+utils.init_score_maps(event_name_map, score_maps)
 
-def get_score(gender, event, performance):
-    if event == "100m":
-        map = map100
-    elif event == "200m":
-        map = map200
-    elif event == "400m":
-        map = map400
-    elif event == "400mH":
-        map = map400H
-    elif event == "110mH":
-        map = map110H
-    elif event == "800m":
-        map = map800
-    elif event == "1500m":
-        map = map1500
-    elif event == "3000m":
-        map = map3000
-    elif event == "5000m":
-        map = map5000
-    
-    if len(map) == 0:
-        filename = "scores/" + event + "." + gender + ".scores"
-        with open(filename, 'r') as file:
-            for line in file:
-                words = line.split()
-                map[words[0]] = words[1]
+#gender, event, field_event = utils.get_args(sys.argv)
+this_year = datetime.now().year
 
-    perf_str = performance   # str(performance)
-    if perf_str[-2] == ".":      # conversion to float may have truncated a trailing zero
-        perf_str += "0"
-
-    # if the performance does not exist in the map, find the next lower performance that does
-    field_event = utils.is_field_event(event)
-
-    while map.get(perf_str) == None:       # key does not exist
-        perf_units, hundredths = utils.hms_to_seconds(perf_str)
-        if hundredths:
-            perf_units = round(perf_units + 0.01, 2)
-        else:
-            perf_units = perf_units + 1
-        perf_str = utils.seconds_to_hms(perf_units, hundredths)
-
-    score = map[perf_str]
-    return score
-
-#
-# main program
-#
-gender = "women"
-num_events = 2
-
-urls = []
-
-m_urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-w_urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
-
-# alltime-athletics event titles
-if gender == "women":
-    urls.append(w_urls["100 metres"])
-    urls.append(w_urls["200 metres"])
-    urls.append(w_urls["400 metres"])
-    urls.append(w_urls["100m hurdles"])
-    urls.append(w_urls["400m hurdles"])
-    urls.append(w_urls["800 metres"])
-    urls.append(w_urls["1500 metres"])
-    urls.append(w_urls["3000 metres"])
-    urls.append(w_urls["5000 metres"])
-
-else:
-    urls.append(m_urls["100 metres"])
-    urls.append(m_urls["200 metres"])
-    urls.append(m_urls["400 metres"])
-    urls.append(m_urls["110m hurdles"])
-    urls.append(m_urls["400m hurdles"])
-    urls.append(m_urls["800 metres"])
-    urls.append(m_urls["1500 metres"])
-    urls.append(m_urls["3000 metres"])
-    urls.append(m_urls["5000 metres"])
-
+earliest_date = this_year
 athletes = {}     # dictionary of lists
-first = 5         # first event on the list
-for event in ("100m", "200m", "400m", "110mH", "400mH", "800m", "1500m", "3000m", "5000m"):
-    if event == "100m":
-        continue
-    elif event == "200m":
-        continue
-    elif event == "400m":
-        continue
-    elif event == "110mH":
-        continue
-    elif event == "400mH":
-        continue
-    elif event == "800m":
-        event_num = 0
-    elif event == "1500m":
-        event_num = 1
-    elif event == "3000m":
-        continue
-    elif event == "5000m":
-        continue
-    url = urls[first + event_num]
 
-    lines = utils.get_lines_from_url(url)
+num_events = 5
+event_num = 0
 
-    # process data
-    processing = 0
-    counter = 0
-    for line in lines:
-        status, words, processing = utils.strip_preamble(line, processing)
-        if status == 0:
+for gender in ("men", "women"):
+    if gender == "men":
+        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
+    else:
+        continue
+        #urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+
+    for url in urls:
+        if url != "800 metres" and url != "1500 metres" \
+            and url != "5000 metres" and url != "10000 metres" and url != "marathon":
+        #if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
+            #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk":
+            #or url == "Javelin throw" \
+            #or url == "3000m steeplechase" or url == "Pole vault" or url == "Hammer throw" or url == "Triple jump":
             continue
-        elif status == 1:
-            break
 
-        # extract performance, name and date (year)
-        counter += 1
-        name, date, performance, nation, day, city = utils.get_stats(words)
-        #if nation != "USA":
-            #continue
-        score = get_score(gender, event, performance)
+        event = url        
+        print(gender, " ", event)
+        lines = utils.get_lines_from_url(urls[url])
+        # process data
+        processing = 0
+        for line in lines:
+            status, words, processing = utils.strip_preamble(line, processing)
+            if status == 0:
+                continue
+            elif status == 1:
+                break
 
-        # populate dictionary
-        if name in athletes.keys():
-            list = athletes[name]
-        else:
-            list = []
-            athletes[name] = list
-        if len(list) == event_num * 2:
-            list.append(performance)
-            list.append(score)
+            # extract performance, name and date (year)
+            name, date, performance, nation, this_date, city = utils.get_stats(words)
+            score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
+
+            # populate dictionary
+            if name in athletes.keys():
+                list = athletes[name]
+            else:
+                list = []
+                athletes[name] = list
+            if len(list) == event_num * 2:
+                list.append(performance)
+                list.append(score)
+        event_num = event_num + 1
 
 # now create a map with each athlete's aggregate score as the key
 done_with = {}
+count = 0
 for athlete in athletes.keys():
     if done_with.get(athlete) != None:
         continue
@@ -169,5 +85,8 @@ for athlete in athletes.keys():
 
     if max_score > 0:
         list = athletes[max_name]
-        print(max_score, " ", max_name, " ", list[0], " ", list[1], " ", list[2], " ", list[3])
+        count = count + 1
+        print(("%3d. %4d %25s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
+              (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7], list[8], list[9]))
         done_with[max_name] = True
+
