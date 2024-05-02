@@ -154,13 +154,23 @@ def get_stats(words):
         index = index + 1
     name = words[index]
     index = index + 1
-    for iter in range(4):
+    for iter in range(5):
+        nation = words[index]
         if words[index] != "BEl" and words[index] != "EX":      # typo on men marathon and men 20k walk
-            if not words[index].isupper() or len(words[index]) != 3:
+            wordlen = len(words[index])
+            maybe_nation = ""
+            if wordlen > 2:
+                maybe_nation = words[index][-3:wordlen]
+            if maybe_nation.isupper():                          # last word of name runs into nation
+                if wordlen > 3:
+                    name += " " + words[index][:-3]
+                nation = maybe_nation
+                break
+            elif words[index].isupper() and wordlen == 3:       # nation already set
+                break
+            else:                                               # another part of name
                 name += " " + words[index]
-                index = index + 1
-
-    nation = words[index]
+            index = index + 1
 
     index = index + 2
     if is_numeric(words[index][0]) or words[index] == "D" or words[index] == "q" or words[index] == "*":
@@ -191,6 +201,8 @@ def get_stats(words):
             date = date[0:3] + "0" + date[3:9]
     year = int(date[6:10])
     month = int(date[3:5])
+    if month < 1:
+        month = 1
     if month > 12:
         month = 12
     day = int(date[0:2])

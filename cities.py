@@ -13,8 +13,6 @@ import utils
 #
 
 event_name_map = {}
-score_maps = {}
-utils.init_score_maps(event_name_map, score_maps)
 
 #gender, event, field_event = utils.get_args(sys.argv)
 this_year = datetime.now().year
@@ -24,6 +22,8 @@ total_scores = {}
 
 for gender in ("men", "women"):
     #event = "800 metres"
+    score_maps = {}
+    utils.init_score_maps(event_name_map, score_maps)
 
     if gender == "men":
         urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
