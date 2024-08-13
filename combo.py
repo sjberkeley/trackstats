@@ -16,7 +16,7 @@ this_year = datetime.now().year
 earliest_date = this_year
 athletes = {}     # dictionary of lists
 
-num_events = 5
+num_events = 3
 event_num = 0
 
 for gender in ("men", "women"):
@@ -27,8 +27,8 @@ for gender in ("men", "women"):
         #urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
 
     for url in urls:
-        if url != "800 metres" and url != "1500 metres" \
-            and url != "5000 metres" and url != "10000 metres" and url != "marathon":
+        #if url != "800 metres" and url != "1500 metres" \
+        if url != "100 metres" and url != "200 metres" and url != "400 metres" and url != "300 metres":
         #if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
             #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk":
             #or url == "Javelin throw" \
@@ -56,12 +56,59 @@ for gender in ("men", "women"):
                 list = athletes[name]
             else:
                 list = []
+                for mark in range(6):
+                    list.append("0")
                 athletes[name] = list
-            if len(list) == event_num * 2:
-                list.append(performance)
-                list.append(score)
+            # check if this is the first mark for this athlete
+            index = event_num * 2
+            if list[index] == "0":
+                list[index] = performance
+                list[index + 1] = score
         event_num = event_num + 1
 
+# manual updates
+list = athletes["Usain Bolt"]
+list[4] = "45.28"
+list[5] = "1160"
+list = athletes["Yohan Blake"]
+list[4] = "46.32"
+list[5] = "1090"
+list = athletes["Wallace Spearmon"]
+list[4] = "45.22"
+list[5] = "1165"
+list = athletes["Asafa Powell"]
+list[4] = "45.94"
+list[5] = "1115"
+list = athletes["Obadele Thompson"]
+list[4] = "45.38"
+list[5] = "1154"
+list = athletes["Noah Lyles"]
+list[4] = "47.04"
+list[5] = "1042"
+list = athletes["Frank Fredericks"]
+list[4] = "46.28"
+list[5] = "1093"
+list = athletes["Walter Dix"]
+list[4] = "46.75"
+list[5] = "1061"
+list = athletes["Zharnel Hughes"]
+list[4] = "46.58"
+list[5] = "1073"
+list = athletes["Erriyon Knighton"]
+list[4] = "46.15"
+list[5] = "1101"
+list = athletes["Francis Obikwelu"]
+list[4] = "46.29"
+list[5] = "1092"
+list = athletes["Isaac Makwala"]
+list[0] = "10.22"
+list[1] = "1138"
+list = athletes["Steven Gardiner"]
+list[0] = "10.35"
+list[1] = "1089"
+list = athletes["Jereem Richards"]
+list[0] = "10.19"
+list[1] = "1142"
 # now create a map with each athlete's aggregate score as the key
 done_with = {}
 count = 0
@@ -74,7 +121,7 @@ for athlete in athletes.keys():
         if done_with.get(name) != None:
             continue
         list = athletes[name]
-        if len(list) < num_events * 2:
+        if list[0] == "0" or list[2] == "0" or list[4] == "0":
             continue
         total_score = 0
         for ii in range(0, num_events):
@@ -86,7 +133,7 @@ for athlete in athletes.keys():
     if max_score > 0:
         list = athletes[max_name]
         count = count + 1
-        print(("%3d. %4d %25s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
-              (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7], list[8], list[9]))
+        print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s)") % \
+              (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5]))
         done_with[max_name] = True
 

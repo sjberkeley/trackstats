@@ -11,6 +11,7 @@ Python 3 packages required:
 5. PyPDF2
 6. bar_chart_race2 (modified)
 7. matplotlib
+8. dataclasses (new in 3.7)
 
 Other dependencies:
 
