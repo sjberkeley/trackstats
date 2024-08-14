@@ -27,8 +27,8 @@ for gender in ("men", "women"):
         #urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
 
     for url in urls:
-        #if url != "800 metres" and url != "1500 metres" \
-        if url != "100 metres" and url != "200 metres" and url != "400 metres" and url != "300 metres":
+        #if url != "800 metres" and url != "1500 metres":
+        if url != "100 metres" and url != "200 metres" and url != "400 metres":
         #if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
             #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk":
             #or url == "Javelin throw" \
@@ -56,7 +56,7 @@ for gender in ("men", "women"):
                 list = athletes[name]
             else:
                 list = []
-                for mark in range(6):
+                for mark in range(num_events * 2):
                     list.append("0")
                 athletes[name] = list
             # check if this is the first mark for this athlete
@@ -67,48 +67,50 @@ for gender in ("men", "women"):
         event_num = event_num + 1
 
 # manual updates
-list = athletes["Usain Bolt"]
-list[4] = "45.28"
-list[5] = "1160"
-list = athletes["Yohan Blake"]
-list[4] = "46.32"
-list[5] = "1090"
-list = athletes["Wallace Spearmon"]
-list[4] = "45.22"
-list[5] = "1165"
-list = athletes["Asafa Powell"]
-list[4] = "45.94"
-list[5] = "1115"
-list = athletes["Obadele Thompson"]
-list[4] = "45.38"
-list[5] = "1154"
-list = athletes["Noah Lyles"]
-list[4] = "47.04"
-list[5] = "1042"
-list = athletes["Frank Fredericks"]
-list[4] = "46.28"
-list[5] = "1093"
-list = athletes["Walter Dix"]
-list[4] = "46.75"
-list[5] = "1061"
-list = athletes["Zharnel Hughes"]
-list[4] = "46.58"
-list[5] = "1073"
-list = athletes["Erriyon Knighton"]
-list[4] = "46.15"
-list[5] = "1101"
-list = athletes["Francis Obikwelu"]
-list[4] = "46.29"
-list[5] = "1092"
-list = athletes["Isaac Makwala"]
-list[0] = "10.22"
-list[1] = "1138"
-list = athletes["Steven Gardiner"]
-list[0] = "10.35"
-list[1] = "1089"
-list = athletes["Jereem Richards"]
-list[0] = "10.19"
-list[1] = "1142"
+if "Usain Bolt" in athletes.keys():
+    list = athletes["Usain Bolt"]
+    list[4] = "45.28"
+    list[5] = "1160"
+    list = athletes["Yohan Blake"]
+    list[4] = "46.32"
+    list[5] = "1090"
+    list = athletes["Wallace Spearmon"]
+    list[4] = "45.22"
+    list[5] = "1165"
+    list = athletes["Asafa Powell"]
+    list[4] = "45.94"
+    list[5] = "1115"
+    list = athletes["Obadele Thompson"]
+    list[4] = "45.38"
+    list[5] = "1154"
+    list = athletes["Noah Lyles"]
+    list[4] = "47.04"
+    list[5] = "1042"
+    list = athletes["Frank Fredericks"]
+    list[4] = "46.28"
+    list[5] = "1093"
+    list = athletes["Walter Dix"]
+    list[4] = "46.75"
+    list[5] = "1061"
+    list = athletes["Zharnel Hughes"]
+    list[4] = "46.58"
+    list[5] = "1073"
+    list = athletes["Erriyon Knighton"]
+    list[4] = "46.15"
+    list[5] = "1101"
+    list = athletes["Francis Obikwelu"]
+    list[4] = "46.29"
+    list[5] = "1092"
+    list = athletes["Isaac Makwala"]
+    list[0] = "10.22"
+    list[1] = "1138"
+    list = athletes["Steven Gardiner"]
+    list[0] = "10.35"
+    list[1] = "1089"
+    list = athletes["Jereem Richards"]
+    list[0] = "10.19"
+    list[1] = "1142"
+
 # now create a map with each athlete's aggregate score as the key
 done_with = {}
 count = 0
@@ -121,7 +123,7 @@ for athlete in athletes.keys():
         if done_with.get(name) != None:
             continue
         list = athletes[name]
-        if list[0] == "0" or list[2] == "0" or list[4] == "0":
+        if list[0] == "0" or list[2] == "0": # or list[4] == "0":
             continue
         total_score = 0
         for ii in range(0, num_events):
@@ -133,7 +135,11 @@ for athlete in athletes.keys():
     if max_score > 0:
         list = athletes[max_name]
         count = count + 1
-        print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s)") % \
+        if num_events == 2:
+            print(("%3d. %4d %27s %8s (%4s) %8s (%4s)") % \
+              (count, max_score, max_name, list[0], list[1], list[2], list[3]))
+        else:
+            print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s)") % \
               (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5]))
         done_with[max_name] = True
 
