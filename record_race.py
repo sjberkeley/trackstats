@@ -52,7 +52,7 @@ def build_scores_csv(file_name):
                     break
     
                 # extract performance, name and date (year)
-                name, date, performance, nation, this_date, city = utils.get_stats(words)
+                name, date, performance, nation, this_date, city, position, full_date = utils.get_stats(words)
                 score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
                 if date < current_date:
                     num_years = current_date - date

@@ -49,7 +49,7 @@ for gender in ("men", "women"):
                 break
 
             # extract performance, name and date (year)
-            name, date, performance, nation, this_date, city = utils.get_stats(words)
+            name, date, performance, nation, this_date, city, position, full_date = utils.get_stats(words)
             score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
             if nation in total_scores.keys():
                 total_scores[nation] = total_scores[nation] + int(score)

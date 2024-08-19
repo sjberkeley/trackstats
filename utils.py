@@ -173,7 +173,9 @@ def get_stats(words):
             index = index + 1
 
     index = index + 2
+    position = "*"
     if is_numeric(words[index][0]) or words[index] == "D" or words[index] == "q" or words[index] == "*":
+        position = words[index]
         index = index + 1
 
     if index == num_words - 1:       # no city ?
@@ -193,7 +195,10 @@ def get_stats(words):
 
     date = words[num_words-1]
     if len(date) > 10:
-        date = words[num_words-1][-10:]
+        if date[10] == ">":       # Anna Cockrell in 400 hurdles
+            date = words[num_words-1][0:9]
+        else:
+            date = words[num_words-1][-10:]
     if len(date) < 10:
         if date[1] == ".":
             date = "0" + date
@@ -210,7 +215,7 @@ def get_stats(words):
         day = 31
     this_date = datetime(year, month, day)
 
-    return name, year, performance, nation, this_date, city
+    return name, year, performance, nation, this_date, city, position, date
 
 
 # TODO: Doesn't support the no-hundredths case yet ...

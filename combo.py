@@ -23,8 +23,8 @@ for gender in ("men", "women"):
     if gender == "men":
         urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
     else:
-        continue
         #urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+        continue
 
     for url in urls:
         #if url != "800 metres" and url != "1500 metres":
@@ -48,7 +48,7 @@ for gender in ("men", "women"):
                 break
 
             # extract performance, name and date (year)
-            name, date, performance, nation, this_date, city = utils.get_stats(words)
+            name, year, performance, nation, this_date, city, position, date = utils.get_stats(words)
             score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
 
             # populate dictionary
@@ -101,6 +101,9 @@ if "Usain Bolt" in athletes.keys():
     list = athletes["Francis Obikwelu"]
     list[4] = "46.29"
     list[5] = "1092"
+    list = athletes["Calvin Smith"]
+    list[4] = "46.39"       # Calvin Smith junior ran 44.81
+    list[5] = "1085"
     list = athletes["Isaac Makwala"]
     list[0] = "10.22"
     list[1] = "1138"
@@ -110,6 +113,41 @@ if "Usain Bolt" in athletes.keys():
     list = athletes["Jereem Richards"]
     list[0] = "10.19"
     list[1] = "1142"
+
+if "Marita Koch" in athletes.keys():
+    list = athletes["Merlene Ottey"]
+    list[4] = "51.12"
+    list[5] = "1161"
+    list = athletes["Evelyn Ashford"]
+    list[4] = "51.08"
+    list[5] = "1162"
+    list = athletes["Veronica Campbell-Brown"]
+    list[4] = "52.24"
+    list[5] = "1117"
+    list = athletes["Sherone Simpson"]
+    list[4] = "51.25"
+    list[5] = "1156"
+    list = athletes["Kerron Stewart"]
+    list[4] = "51.83"
+    list[5] = "1133"
+    list = athletes["Brittany Brown"]
+    list[4] = "51.15"
+    list[5] = "1160"
+    list = athletes["Chandra Cheeseborough"]
+    list[0] = "11.13"
+    list[1] = "1172"
+    list = athletes["Kathy Cook"]
+    list[0] = "11.10"
+    list[1] = "1178"
+    list = athletes["Irena Szewinska"]
+    list[0] = "11.13"
+    list[1] = "1172"
+    list = athletes["Cathy Freeman"]
+    list[0] = "11.24"
+    list[1] = "1148"
+    list = athletes["Salwa Eid Naser"]
+    list[0] = "11.24"
+    list[1] = "1148"
 
 # now create a map with each athlete's aggregate score as the key
 done_with = {}
