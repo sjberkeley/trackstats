@@ -148,6 +148,19 @@ if "Marita Koch" in athletes.keys():
     list = athletes["Salwa Eid Naser"]
     list[0] = "11.24"
     list[1] = "1148"
+    if num_events == 4:
+        list = athletes["Shaunae Miller-Uibo"]
+        list[6] = "2:12.86"
+        list[7] = "983"
+        list = athletes["Irina Privalova"]
+        list[6] = "2:09.40"
+        list[7] = "1000"
+        list = athletes["Christine Mboma"]
+        list[6] = "2:03.27"
+        list[7] = "1104"
+        list = athletes["Aminatou Seyni"]
+        list[6] = "2:18.86"
+        list[7] = "849"
 
 # now create a map with each athlete's aggregate score as the key
 done_with = {}
@@ -176,8 +189,11 @@ for athlete in athletes.keys():
         if num_events == 2:
             print(("%3d. %4d %27s %8s (%4s) %8s (%4s)") % \
               (count, max_score, max_name, list[0], list[1], list[2], list[3]))
-        else:
+        elif num_events == 3:
             print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s)") % \
               (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5]))
+        else:
+            print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
+              (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7]))
         done_with[max_name] = True
 
