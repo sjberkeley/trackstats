@@ -196,7 +196,7 @@ def get_stats(words):
     date = words[num_words-1]
     if len(date) > 10:
         if date[10] == ">":       # Anna Cockrell in 400 hurdles
-            date = words[num_words-1][0:9]
+            date = words[num_words-1][0:10]
         else:
             date = words[num_words-1][-10:]
     if len(date) < 10:

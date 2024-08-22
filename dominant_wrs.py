@@ -18,7 +18,7 @@ athletes = {}     # dictionary of lists
 dates = {}
 earliest = {}
 all_lines = {}
-max_comps = 10
+max_comps = 500
 
 for gender in ("men", "women"):
 
@@ -28,8 +28,8 @@ for gender in ("men", "women"):
         urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
 
     for url in urls:
-        #if url != "100 metres":
-        if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
+        if url != "200 metres":
+        #if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
             #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk":
             #or url == "Javelin throw" \
             #or url == "3000m steeplechase" or url == "Pole vault" or url == "Hammer throw" or url == "Triple jump":
@@ -66,6 +66,16 @@ for gender in ("men", "women"):
 
 for name in dates.keys():
     datelist = dates[name]
+    # check that at least one date is 1990 or later
+    ok = False
+    for date in datelist:
+        year = date[0:4]
+        if year >= "1980":
+            ok = True
+            break
+    if not ok:
+        continue
+
     datelist.sort(reverse=True)
     if len(datelist) < max_comps:
         earliest[name] = datelist[len(datelist)-1]
@@ -111,9 +121,11 @@ for gender_event in all_lines.keys():
             if WR:
                 list[2] = list[2] + 1
 
-print ("WRs wins comps name")
+print ("WRs  wins  comps  comps/WRs  comps/wins              name")
 for name in athletes.keys():
     list = athletes[name]
-    if list[2] > 0 and list[0] == max_comps:
-        print(("%2d   %2d    %2d %27s") % (list[2], list[1], list[0], name))
+    if list[2] > 0: # and list[0] > 10: # and list[0] == max_comps:
+        ratio1 = float(list[0]) / float(list[2])
+        ratio2 = float(list[0]) / float(list[1])
+        print(("%2d   %3d    %3d    %3.3f      %3.3f  %27s") % (list[2], list[1], list[0], ratio1, ratio2, name))
 

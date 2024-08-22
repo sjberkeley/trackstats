@@ -21,10 +21,10 @@ event_num = 0
 
 for gender in ("men", "women"):
     if gender == "men":
-        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-    else:
-        #urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+        #urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
         continue
+    else:
+        urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
 
     for url in urls:
         #if url != "800 metres" and url != "1500 metres":
@@ -148,6 +148,9 @@ if "Marita Koch" in athletes.keys():
     list = athletes["Salwa Eid Naser"]
     list[0] = "11.24"
     list[1] = "1148"
+    list = athletes["Rhasidat Adeleke"]
+    list[0] = "11.13"
+    list[1] = "1172"
     if num_events == 4:
         list = athletes["Shaunae Miller-Uibo"]
         list[6] = "2:12.86"
