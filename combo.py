@@ -21,13 +21,14 @@ event_num = 0
 
 for gender in ("men", "women"):
     if gender == "men":
-        #urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-        continue
+        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
     else:
-        urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+        #urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+        continue
 
     for url in urls:
-        #if url != "800 metres" and url != "1500 metres":
+        #if url != "1500 metres" and url != "1 Mile" and url != "3000 metres" \
+            #and url != "5000 metres" and url != "2000 metres" and url != "2 Miles":
         if url != "100 metres" and url != "200 metres" and url != "400 metres":
         #if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
             #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk":
@@ -165,6 +166,11 @@ if "Marita Koch" in athletes.keys():
         list[6] = "2:18.86"
         list[7] = "849"
 
+if "Hicham El Guerrouj" in athletes.keys():
+    list = athletes["Hicham El Guerrouj"]
+    list[10] = "8:06.61"
+    list[11] = "1274"
+
 # now create a map with each athlete's aggregate score as the key
 done_with = {}
 count = 0
@@ -177,7 +183,7 @@ for athlete in athletes.keys():
         if done_with.get(name) != None:
             continue
         list = athletes[name]
-        if list[0] == "0" or list[2] == "0": # or list[4] == "0":
+        if list[0] == "0" or list[2] == "0" or list[4] == "0" or list[6] == "0" or list[8] == "0" or list[10] == "0":
             continue
         total_score = 0
         for ii in range(0, num_events):
@@ -195,8 +201,14 @@ for athlete in athletes.keys():
         elif num_events == 3:
             print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s)") % \
               (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5]))
-        else:
+        elif num_events == 4:
             print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
               (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7]))
+        elif num_events == 5:
+            print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
+              (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7], list[8], list[9]))
+        else:    # 1500 through 5000 in distance order
+            print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
+              (count, max_score, max_name, list[0], list[1], list[2], list[3], list[8], list[9], list[4], list[5], list[10], list[11], list[6], list[7]))
         done_with[max_name] = True
 

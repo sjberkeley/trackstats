@@ -127,7 +127,7 @@ def get_urls(links_url):
 
     for link in links:
         event_name = link.text
-        if event_name == "60 metres":       # skip special eventa
+        if event_name == "60 metres":       # skip special events
             break
         if (event_name == "Back to main page" or event_name == "" or event_name == "Old specs"):
             continue
@@ -353,6 +353,7 @@ def init_score_maps(event_name_map, score_maps):
     event_name_map["1500 metres"] = "1500m"
     event_name_map["20 km race walk"] = "20kmW"
     event_name_map["200 metres"] = "200m"
+    event_name_map["2000 metres"] = "2000m"
     event_name_map["3000 metres"] = "3000m"
     event_name_map["3000m steeplechase"] = "3000mSC"
     event_name_map["400 metres"] = "400m"
@@ -370,6 +371,7 @@ def init_score_maps(event_name_map, score_maps):
     event_name_map["Javelin throw"] = "JT"
     event_name_map["Long jump"] = "LJ"
     event_name_map["1 Mile"] = "Mile"
+    event_name_map["2 Miles"] = "2 Miles"
     event_name_map["Pole vault"] = "PV"
     event_name_map["Shot put"] = "SP"
     event_name_map["Triple jump"] = "TJ"
@@ -383,6 +385,7 @@ def init_score_maps(event_name_map, score_maps):
     score_maps["1500m"] = {}
     score_maps["20kmW"] = {}
     score_maps["200m"] = {}
+    score_maps["2000m"] = {}
     score_maps["3000m"] = {}
     score_maps["3000mSC"] = {}
     score_maps["400m"] = {}
@@ -400,6 +403,7 @@ def init_score_maps(event_name_map, score_maps):
     score_maps["JT"] = {}
     score_maps["LJ"] = {}
     score_maps["Mile"] = {}
+    score_maps["2 Miles"] = {}
     score_maps["PV"] = {}
     score_maps["SP"] = {}
     score_maps["TJ"] = {}
