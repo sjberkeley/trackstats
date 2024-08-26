@@ -1,5 +1,5 @@
 #
-# national records ranked by WA score
+# world records ranked by WA score
 #
 # After running this, run "sort -r scores.sorted"
 #
@@ -12,8 +12,7 @@ event_name_map = {}
 
 #gender, event, field_event = utils.get_args(sys.argv)
 
-country = "IRL"
-file1 = open("scores.sorted", "w")
+file1 = open("wr_scores.sorted", "w")
 
 for gender in ("men", "women"):
     score_maps = {}
@@ -44,11 +43,10 @@ for gender in ("men", "women"):
 
             # extract performance, name and date (year)
             name, year, performance, nation, this_date, city, position, date = utils.get_stats(words)
-            if nation == country:
-                score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
-                if len(score) < 4:
-                    file1.write(" ")
-                file1.write(score + " " + gender + " " + event + " " + name + " " + performance + "\n")
-                break
+            score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
+            if len(score) < 4:
+                file1.write(" ")
+            file1.write(score + " " + gender + " " + event + " " + name + " " + performance + "\n")
+            break
 
 file1.close

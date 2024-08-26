@@ -11,6 +11,7 @@ import utils
 import requests
 import scrape
 import boto3
+from datetime import datetime
 
 def create_bar_chart_race(gender, event, field_event, num_bars, num_to_avg):
     csv_filename = gender + event + ".csv"
@@ -29,7 +30,7 @@ def create_bar_chart_race(gender, event, field_event, num_bars, num_to_avg):
     bcrace.bar_chart_race(
         df=data,
         filename=output_filename,  # Output filename
-        title=gender + " " + event + ": average of top " + str(num_to_avg) + " performances",  # Chart title
+        title=gender + " " + event + ": average of top " + str(num_to_avg) + " performances (last updated " + str(datetime.now().date()) + ")",  # Chart title
         n_bars=num_bars,
         period_fmt='{x:4.0f}',
         sort=sortval,
@@ -67,7 +68,7 @@ def build_and_upload_bcr(gender, event):
 #build_and_upload_bcr("men", "100 metres")
 #build_and_upload_bcr("men", "200 metres")
 #build_and_upload_bcr("men", "400 metres")
-#build_and_upload_bcr("men", "800 metres")
+build_and_upload_bcr("men", "800 metres")
 #build_and_upload_bcr("men", "1500 metres")
 #build_and_upload_bcr("men", "3000 metres")
 #build_and_upload_bcr("men", "3000m steeplechase")
@@ -77,7 +78,7 @@ def build_and_upload_bcr(gender, event):
 #build_and_upload_bcr("men", "110m hurdles")
 #build_and_upload_bcr("men", "400m hurdles")
 #build_and_upload_bcr("men", "High jump")
-build_and_upload_bcr("men", "Long jump")
+#build_and_upload_bcr("men", "Long jump")
 #build_and_upload_bcr("men", "Triple jump")
 #build_and_upload_bcr("men", "Pole vault")
 #build_and_upload_bcr("men", "Shot put")

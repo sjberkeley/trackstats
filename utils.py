@@ -10,6 +10,7 @@ import sys
 import bar_chart_race2 as bcrace
 import pandas as pd
 
+# need to fix bug with Gabby Thomas 400m score (49.68) - 1217 when it should be 1218
 def get_WA_score(gender, event, performance, event_name_map, score_maps):
     wa_event = event_name_map[event]
     map = score_maps[wa_event]
