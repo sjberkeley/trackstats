@@ -27,9 +27,9 @@ for gender in ("men", "women"):
         continue
 
     for url in urls:
-        #if url != "1500 metres" and url != "1 Mile" and url != "3000 metres" \
+        if url != "1500 metres" and url != "3000 metres" and url != "5000 metres":
             #and url != "5000 metres" and url != "2000 metres" and url != "2 Miles":
-        if url != "100 metres" and url != "200 metres" and url != "400 metres":
+        #if url != "100 metres" and url != "200 metres" and url != "400 metres":
         #if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
             #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk":
             #or url == "Javelin throw" \
@@ -166,10 +166,10 @@ if "Marita Koch" in athletes.keys():
         list[6] = "2:18.86"
         list[7] = "849"
 
-if "Hicham El Guerrouj" in athletes.keys():
-    list = athletes["Hicham El Guerrouj"]
-    list[10] = "8:06.61"
-    list[11] = "1274"
+#if "Hicham El Guerrouj" in athletes.keys():
+    #list = athletes["Hicham El Guerrouj"]
+    #list[10] = "8:06.61"
+    #list[11] = "1274"
 
 # now create a map with each athlete's aggregate score as the key
 done_with = {}
@@ -183,7 +183,7 @@ for athlete in athletes.keys():
         if done_with.get(name) != None:
             continue
         list = athletes[name]
-        if list[0] == "0" or list[2] == "0" or list[4] == "0" or list[6] == "0" or list[8] == "0" or list[10] == "0":
+        if list[0] == "0" or list[2] == "0" or list[4] == "0": # or list[6] == "0" or list[8] == "0" or list[10] == "0":
             continue
         total_score = 0
         for ii in range(0, num_events):

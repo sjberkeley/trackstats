@@ -344,7 +344,6 @@ def is_field_event(event):
 
     return field_event
 
-
 def init_score_maps(event_name_map, score_maps):
     event_name_map["100 metres"] = "100m"
     event_name_map["10000 metres"] = "10,000m"
@@ -409,3 +408,47 @@ def init_score_maps(event_name_map, score_maps):
     score_maps["TJ"] = {}
     score_maps["HM"] = {}
     score_maps["Marathon"] = {}
+
+
+def near(seed, ymd):
+    #assume it's the same year
+    if seed < ymd:
+        first = seed
+        last = ymd
+    else:
+        first = ymd
+        last = seed
+
+    if first[5:7] == last[5:7]:    #same month
+        total = int(last[8:10]) - int(first[8:10]) + 1
+    else:
+        month_range = int(last[5:7]) - int(first[5:7]) + 1
+        month = int(first[5:7])
+        total = 0
+        for ii in range(month_range):
+            num_days = 31
+            if month == 4 or month == 6 or month == 9 or month == 11:
+                num_days = 30
+            elif month == 2:
+                num_days = 28
+
+            start = 0
+            end = num_days
+            if ii == 0:
+                start = int(first[8:10])
+            elif ii == month_range - 1:
+                end = int(last[8:10])
+
+            total = total + (end - start)
+            month = month + 1
+
+    return total
+
+def days_in_month(month):
+    num_days = 31
+    if month == 4 or month == 6 or month == 9 or month == 11:
+        num_days = 30
+    elif month == 2:
+        num_days = 28
+    
+    return num_days
