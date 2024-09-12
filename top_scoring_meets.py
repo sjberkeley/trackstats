@@ -52,7 +52,7 @@ for gender in ("men", "women"):
             name, date, performance, nation, this_date, city, position, full_date = utils.get_stats(words)
 
             score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
-            #print(score, name, city, full_date, performance)
+            #print(score, event, gender, line)
 
             # exclude heats and semis
             if len(position) == 3 and (position[1]=="h" or position[1]=="s"):
@@ -61,7 +61,7 @@ for gender in ("men", "women"):
                 continue
 
             ymd = full_date[6:10] + "." + full_date[3:5] + "." + full_date[0:2]
-            city_year = city + "." + str(date)
+            city_year = city + " " + str(date)
             if city_year in all_years.keys():
                 scores = all_years[city_year]
                 year_dates = all_year_dates[city_year]
@@ -82,6 +82,7 @@ for gender in ("men", "women"):
 # Open file
 file_name = "meets.unsorted"
 file1 = open(file_name,"w")
+
 file_name = "championships.unsorted"
 file2 = open(file_name,"w")
 for city_year in all_years.keys():
@@ -114,10 +115,10 @@ for city_year in all_years.keys():
         if done:
             duration = last - first + 1
             if duration <= max_meet:
-                file1.write(("%8d  %30s  %3d  %10s %10s") % (total_score, city_year, duration, year_dates[first], year_dates[last]))
+                file1.write(("%8d  %24s  %10s %10s") % (total_score, city_year, year_dates[first], year_dates[last]))
                 file1.write("\n")
             else:
-                file2.write(("%8d  %30s  %3d  %10s %10s") % (total_score, city_year, duration, year_dates[first], year_dates[last]))
+                file2.write(("%8d  %24s  %10s %10s") % (total_score, city_year, year_dates[first], year_dates[last]))
                 file2.write("\n")                
 
             total_score = 0
