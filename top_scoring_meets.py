@@ -39,6 +39,7 @@ for gender in ("men", "women"):
 
         event = url        
         print(gender, " ", event)
+        rank = 0
         lines = utils.get_lines_from_url(urls[url])
         # process data
         processing = 0
@@ -49,9 +50,23 @@ for gender in ("men", "women"):
             elif status == 1:
                 break
 
+            rank = rank + 1
+            multiplier = 1
+#            if rank <= 20:
+#                multiplier = 10
+#            elif rank <= 100:
+#                multiplier = 5
+#            elif rank <= 500:
+#                multiplier = 2
+#            elif rank <= 1000:
+#                multiplier = 1
+#            else:
+#                break
+            
             name, date, performance, nation, this_date, city, position, full_date = utils.get_stats(words)
 
-            score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
+            raw_score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
+            score = int(raw_score) * multiplier
             #print(score, event, gender, line)
 
             # exclude heats and semis
@@ -66,14 +81,14 @@ for gender in ("men", "women"):
                 scores = all_years[city_year]
                 year_dates = all_year_dates[city_year]
                 if ymd in scores.keys():
-                    scores[ymd] = scores[ymd] + int(score)
+                    scores[ymd] = scores[ymd] + score
                 else:
-                    scores[ymd] = int(score)
+                    scores[ymd] = score
                     year_dates.append(ymd)
                 
             else:
                 scores = {}
-                scores[ymd] = int(score)
+                scores[ymd] = score
                 all_years[city_year] = scores
                 year_dates = []
                 year_dates.append(ymd)
