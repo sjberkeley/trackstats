@@ -16,18 +16,18 @@ this_year = datetime.now().year
 earliest_date = this_year
 athletes = {}     # dictionary of lists
 
-num_events = 3
+num_events = 2
 event_num = 0
 
 for gender in ("men", "women"):
     if gender == "men":
-        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-    else:
-        #urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+        #urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
         continue
+    else:
+        urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
 
     for url in urls:
-        if url != "1500 metres" and url != "3000 metres" and url != "5000 metres":
+        if url != "100m hurdles" and url != "Long jump":
             #and url != "5000 metres" and url != "2000 metres" and url != "2 Miles":
         #if url != "100 metres" and url != "200 metres" and url != "400 metres":
         #if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
@@ -183,7 +183,7 @@ for athlete in athletes.keys():
         if done_with.get(name) != None:
             continue
         list = athletes[name]
-        if list[0] == "0" or list[2] == "0" or list[4] == "0": # or list[6] == "0" or list[8] == "0" or list[10] == "0":
+        if list[0] == "0" or list[2] == "0":  # or list[4] == "0" or list[6] == "0" or list[8] == "0" or list[10] == "0":
             continue
         total_score = 0
         for ii in range(0, num_events):

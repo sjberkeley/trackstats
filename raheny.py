@@ -4,7 +4,6 @@
 
 from datetime import datetime
 import utils         # my utils
-import bar_chart_race2 as bcrace
 import pandas as pd
 import utils
 

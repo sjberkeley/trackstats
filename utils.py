@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import re
 import sys
-import bar_chart_race2 as bcrace
 import pandas as pd
 
 # need to fix bug with Gabby Thomas 400m score (49.68) - 1217 when it should be 1218

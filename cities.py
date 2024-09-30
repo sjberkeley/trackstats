@@ -100,7 +100,7 @@ data.set_index('city', inplace=True)
 bcrace.bar_chart_race(
     df=data,
     filename="city_scores.mp4",  # Output filename
-    title="Cumulative aggregate World Athletics scoring points by city",
+    title="Cumulative aggregate World Athletics scoring points by city (last updated " + str(datetime.now().date()) + ")",
     n_bars=20,
     period_fmt='{x:4.0f}',
     sort='desc_f',
