@@ -21,6 +21,9 @@ def get_WA_score(gender, event, performance, event_name_map, score_maps):
                 words = line.split()
                 map[words[0]] = words[1]
 
+    if (performance < min(map) or performance > max(map)):
+        return 0
+
     perf_str = performance   # str(performance)
     if perf_str[-2] == ".":      # conversion to float may have truncated a trailing zero
         perf_str += "0"

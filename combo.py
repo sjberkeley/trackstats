@@ -16,7 +16,7 @@ this_year = datetime.now().year
 earliest_date = this_year
 athletes = {}     # dictionary of lists
 
-num_events = 2
+num_events = 3
 event_num = 0
 
 for gender in ("men", "women"):
@@ -27,7 +27,7 @@ for gender in ("men", "women"):
         urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
 
     for url in urls:
-        if url != "100m hurdles" and url != "Long jump":
+        if url != "100 metres" and url != "200 metres" and url != "400 metres":
             #and url != "5000 metres" and url != "2000 metres" and url != "2 Miles":
         #if url != "100 metres" and url != "200 metres" and url != "400 metres":
         #if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
