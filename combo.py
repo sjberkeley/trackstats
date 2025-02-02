@@ -21,10 +21,10 @@ event_num = 0
 
 for gender in ("men", "women"):
     if gender == "men":
-        #urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-        continue
+        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
     else:
-        urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+        #urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+        continue
 
     for url in urls:
         if url != "100 metres" and url != "200 metres" and url != "400 metres":

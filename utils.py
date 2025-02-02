@@ -21,10 +21,17 @@ def get_WA_score(gender, event, performance, event_name_map, score_maps):
                 words = line.split()
                 map[words[0]] = words[1]
 
-    if (performance < min(map) or performance > max(map)):
-        return 0
+    perf_str = performance       # str(performance)
+    field_event = is_field_event(event)
+    if not field_event and event != "Decathlon" and event != "Heptathlon":
+        perf_units, hundredths = hms_to_seconds(perf_str)
+        if hundredths:
+            perf_units = round(perf_units, 2)
+        perf_str = seconds_to_hms(perf_units, hundredths)
 
-    perf_str = performance   # str(performance)
+    if (perf_str < min(map) or perf_str > max(map)):
+        return "0"
+
     if perf_str[-2] == ".":      # conversion to float may have truncated a trailing zero
         perf_str += "0"
     
@@ -34,8 +41,6 @@ def get_WA_score(gender, event, performance, event_name_map, score_maps):
             perf_str = perf_str[0:index]
 
     # if the performance does not exist in the map, find the next lower performance that does
-    field_event = is_field_event(event)
-
     if event == "Decathlon" or event == "Heptathlon":
         perf_units = int(perf_str)
         if perf_units < 1000 or perf_units > 10000:
@@ -348,7 +353,7 @@ def is_field_event(event):
 
 def init_score_maps(event_name_map, score_maps):
     event_name_map["100 metres"] = "100m"
-    event_name_map["10000 metres"] = "10,000m"
+    event_name_map["10000 metres"] = "10000m"
     event_name_map["100m hurdles"] = "100mH"
     event_name_map["110m hurdles"] = "110mH"
     event_name_map["1500 metres"] = "1500m"
@@ -356,7 +361,7 @@ def init_score_maps(event_name_map, score_maps):
     event_name_map["200 metres"] = "200m"
     event_name_map["2000 metres"] = "2000m"
     event_name_map["3000 metres"] = "3000m"
-    event_name_map["3000m steeplechase"] = "3000mSC"
+    event_name_map["3000m steeplechase"] = "3000m SC"
     event_name_map["400 metres"] = "400m"
     event_name_map["400m hurdles"] = "400mH"
     event_name_map["4x100m relay"] = "4x100m"
@@ -364,10 +369,10 @@ def init_score_maps(event_name_map, score_maps):
     event_name_map["50 km race walk"] = "50kmW"
     event_name_map["5000 metres"] = "5000m"
     event_name_map["800 metres"] = "800m"
-    event_name_map["Decathlon"] = "Decathlon"
+    event_name_map["Decathlon"] = "Dec."
     event_name_map["Discus throw"] = "DT"
     event_name_map["Hammer throw"] = "HT"
-    event_name_map["Heptathlon"] = "Heptathlon"
+    event_name_map["Heptathlon"] = "Hept."
     event_name_map["High jump"] = "HJ"
     event_name_map["Javelin throw"] = "JT"
     event_name_map["Long jump"] = "LJ"
@@ -380,7 +385,7 @@ def init_score_maps(event_name_map, score_maps):
     event_name_map["marathon"] = "Marathon"
 
     score_maps["100m"] = {}
-    score_maps["10,000m"] = {}
+    score_maps["10000m"] = {}
     score_maps["100mH"] = {}
     score_maps["110mH"] = {}
     score_maps["1500m"] = {}
@@ -388,7 +393,7 @@ def init_score_maps(event_name_map, score_maps):
     score_maps["200m"] = {}
     score_maps["2000m"] = {}
     score_maps["3000m"] = {}
-    score_maps["3000mSC"] = {}
+    score_maps["3000m SC"] = {}
     score_maps["400m"] = {}
     score_maps["400mH"] = {}
     score_maps["4x100m"] = {}
@@ -396,10 +401,10 @@ def init_score_maps(event_name_map, score_maps):
     score_maps["50kmW"] = {}
     score_maps["5000m"] = {}
     score_maps["800m"] = {}
-    score_maps["Decathlon"] = {}
+    score_maps["Dec."] = {}
     score_maps["DT"] = {}
     score_maps["HT"] = {}
-    score_maps["Heptathlon"] = {}
+    score_maps["Hept."] = {}
     score_maps["HJ"] = {}
     score_maps["JT"] = {}
     score_maps["LJ"] = {}
