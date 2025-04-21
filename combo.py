@@ -85,8 +85,8 @@ if "Usain Bolt" in athletes.keys():
     list[4] = "45.38"
     list[5] = "1154"
     list = athletes["Noah Lyles"]
-    list[4] = "47.04"
-    list[5] = "1042"
+    list[4] = "45.87"
+    list[5] = "1120"
     list = athletes["Frank Fredericks"]
     list[4] = "46.28"
     list[5] = "1093"
@@ -114,6 +114,9 @@ if "Usain Bolt" in athletes.keys():
     list = athletes["Jereem Richards"]
     list[0] = "10.19"
     list[1] = "1142"
+    list = athletes["Xavier Carter"]
+    list[0] = "10.00"
+    list[1] = "1206"
 
 if "Marita Koch" in athletes.keys():
     list = athletes["Merlene Ottey"]
