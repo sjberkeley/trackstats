@@ -29,12 +29,12 @@ def get_WA_score(gender, event, performance, event_name_map, score_maps):
             perf_units = round(perf_units, 2)
         perf_str = seconds_to_hms(perf_units, hundredths)
 
+    if perf_str[-2] == ".":      # conversion to float may have truncated a trailing zero
+        perf_str += "0"
+
     if (perf_str < min(map) or perf_str > max(map)):
         return "0"
 
-    if perf_str[-2] == ".":      # conversion to float may have truncated a trailing zero
-        perf_str += "0"
-    
     if event == "half-marathon" or event == "marathon" or event == "20 km race walk" or event == "50 km race walk":
         index = perf_str.find(".")
         if index != -1:      # truncate decimal
