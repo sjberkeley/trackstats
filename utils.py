@@ -66,6 +66,8 @@ def get_WA_score(gender, event, performance, event_name_map, score_maps):
             else:
                 perf_units = perf_units + 1
             perf_str = seconds_to_hms(perf_units, hundredths)
+            if perf_str[-2] == ".":      # conversion to float may have truncated a trailing zero
+                perf_str += "0"
 
     score = map[perf_str]
     return score

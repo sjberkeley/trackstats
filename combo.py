@@ -105,6 +105,9 @@ if "Usain Bolt" in athletes.keys():
     list = athletes["Calvin Smith"]
     list[4] = "46.39"       # Calvin Smith junior ran 44.81
     list[5] = "1085"
+    list = athletes["Dennis Mitchell"]
+    list[4] = "46.75"
+    list[5] = "1162"
     list = athletes["Isaac Makwala"]
     list[0] = "10.22"
     list[1] = "1138"
@@ -117,6 +120,11 @@ if "Usain Bolt" in athletes.keys():
     list = athletes["Xavier Carter"]
     list[0] = "10.00"
     list[1] = "1206"
+    list = athletes["Jacory Patterson"]
+    list[0] = "10.11"
+    list[1] = "1169"
+    list[4] = "44.27"
+    list[5] = "1231"
 
 if "Marita Koch" in athletes.keys():
     list = athletes["Merlene Ottey"]
@@ -152,6 +160,8 @@ if "Marita Koch" in athletes.keys():
     list = athletes["Salwa Eid Naser"]
     list[0] = "11.24"
     list[1] = "1148"
+    list[2] = "22.45"
+    list[3] = "1191"
     list = athletes["Rhasidat Adeleke"]
     list[0] = "11.13"
     list[1] = "1172"
