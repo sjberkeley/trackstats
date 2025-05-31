@@ -2,9 +2,10 @@
 # create combo tables (e.g. 100/200/400 combo)
 #
 
-import requests
+#import requests
 from datetime import datetime
 import utils         # my utils
+from Alltime import Alltime
 
 event_name_map = {}
 score_maps = {}
@@ -18,12 +19,11 @@ athletes = {}     # dictionary of lists
 
 num_events = 3
 event_num = 0
+data_source = Alltime()
 
 for gender in ("men", "women"):
+    urls = data_source.get_urls("http://www.alltime-athletics.com/" + gender + ".htm")
     if gender == "men":
-        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-    else:
-        #urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
         continue
 
     for url in urls:
@@ -42,14 +42,14 @@ for gender in ("men", "women"):
         # process data
         processing = 0
         for line in lines:
-            status, words, processing = utils.strip_preamble(line, processing)
+            status, words, processing = data_source.strip_preamble(line, processing)
             if status == 0:
                 continue
             elif status == 1:
                 break
 
             # extract performance, name and date (year)
-            name, year, performance, nation, this_date, city, position, date = utils.get_stats(words)
+            name, year, performance, nation, this_date, city, position, date = data_source.get_stats(words)
             score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
 
             # populate dictionary
@@ -97,8 +97,8 @@ if "Usain Bolt" in athletes.keys():
     list[4] = "46.58"
     list[5] = "1073"
     list = athletes["Erriyon Knighton"]
-    list[4] = "46.15"
-    list[5] = "1101"
+    list[4] = "45.37"
+    list[5] = "1154"
     list = athletes["Francis Obikwelu"]
     list[4] = "46.29"
     list[5] = "1092"
@@ -123,8 +123,8 @@ if "Usain Bolt" in athletes.keys():
     list = athletes["Jacory Patterson"]
     list[0] = "10.11"
     list[1] = "1169"
-    list[4] = "44.27"
-    list[5] = "1231"
+    list[4] = "43.98"
+    list[5] = "1252"
 
 if "Marita Koch" in athletes.keys():
     list = athletes["Merlene Ottey"]
@@ -165,6 +165,9 @@ if "Marita Koch" in athletes.keys():
     list = athletes["Rhasidat Adeleke"]
     list[0] = "11.13"
     list[1] = "1172"
+    list = athletes["Dina Asher-Smith"]
+    list[4] = "52.13"
+    list[5] = "1121"
     if num_events == 4:
         list = athletes["Shaunae Miller-Uibo"]
         list[6] = "2:12.86"

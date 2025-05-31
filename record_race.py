@@ -20,10 +20,7 @@ def build_scores_csv(file_name, gender):
     score_maps = {}
     utils.init_score_maps(event_name_map, score_maps)
 
-    if gender == "men":
-        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-    else:
-        urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+    urls = utils.get_urls("http://www.alltime-athletics.com/" + gender + ".htm")
     
     for url in urls:
         if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay" \
