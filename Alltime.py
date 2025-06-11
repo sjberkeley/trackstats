@@ -1,13 +1,10 @@
 #
-# miscellaneous utilities for content on visualtrackstats.com
+# Scraping lists from alltime-athletics.com
 #
 
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-#import re
-#import sys
-#import pandas as pd
 import utils
 
 # need to fix bug with Gabby Thomas 400m score (49.68) - 1217 when it should be 1218
@@ -41,8 +38,12 @@ class Alltime:
     
         return urls
 
-    def strip_preamble(self, line, processing):
-        status = 2
+    def get_lines_from_urls(self, url):
+        return utils.get_lines_from_url(url)
+        
+    def strip_preamble(self, lines, index, processing):
+        line = lines[index]
+        status = 2       # process the line
         # Skip empty lines
         if not line.strip():
             status = 0
@@ -52,20 +53,21 @@ class Alltime:
             num_words = len(words)
             # check for done with outdoor list
             if (num_words < 8 and processing == 1):
-                status = 1
+                status = 1     # quit
             elif (num_words > 7 and words[0] == "1" and processing == 0):
                 processing = 1
             elif (processing == 0):
-                status = 0
+                status = 0     # skip the line
             elif not words[0].isdigit():
-                status = 1
-    
-        return status, words, processing
+                status = 1     # quit
+        index = index + 1
+
+        return status, words, processing, index
     
     #
     # extract the name, date and performance
     #
-    def get_stats(self, words):
+    def get_stats(self, words, lines, line_num):
         num_words = len(words)
         perf = words[1]
         if not perf[-1].isnumeric():       # trailing A denotes altitude, y yards
@@ -142,5 +144,5 @@ class Alltime:
             day = 31
         this_date = datetime(year, month, day)
     
-        return name, year, performance, nation, this_date, city, position, date
+        return name, year, performance, nation, this_date, city, position, date, line_num
 

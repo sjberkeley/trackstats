@@ -192,7 +192,7 @@ def get_args(argv):
 
 def get_lines_from_url(url):
     # Send an HTTP GET request to the URL
-    response = requests.get(url)
+    response = requests.get(url, verify=False)    # Fix this later by installing SSL certificates
 
     # Check if the request was successful (status code 200)
     if response.status_code != 200:
@@ -328,6 +328,32 @@ def days_in_month(month):
         num_days = 28
     
     return num_days
+
+def month_num(month):
+    if month == "JAN":
+        return 1
+    elif month == "FEB":
+        return 2
+    elif month == "MAR":
+        return 3
+    elif month == "APR":
+        return 4
+    elif month == "MAY":
+        return 5
+    elif month == "JUN":
+        return 6
+    elif month == "JUL":
+        return 7
+    elif month == "AUG":
+        return 8
+    elif month == "SEP":
+        return 9
+    elif month == "OCT":
+        return 10
+    elif month == "NOV":
+        return 11
+    elif month == "DEC":
+        return 12
 
 
 # These next 3 functions are being moved into the Alltime class and its derived class WA

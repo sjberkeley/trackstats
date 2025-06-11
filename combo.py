@@ -1,11 +1,11 @@
 #
 # create combo tables (e.g. 100/200/400 combo)
 #
-
-#import requests
+#ddimport requests
 from datetime import datetime
 import utils         # my utils
 from Alltime import Alltime
+from WA_toplists import WA_toplists
 
 event_name_map = {}
 score_maps = {}
@@ -19,11 +19,11 @@ athletes = {}     # dictionary of lists
 
 num_events = 3
 event_num = 0
-data_source = Alltime()
+data_source = WA_toplists()
 
 for gender in ("men", "women"):
     urls = data_source.get_urls("http://www.alltime-athletics.com/" + gender + ".htm")
-    if gender == "men":
+    if gender == "women":
         continue
 
     for url in urls:
@@ -38,18 +38,24 @@ for gender in ("men", "women"):
 
         event = url        
         print(gender, " ", event)
-        lines = utils.get_lines_from_url(urls[url])
+        lines = data_source.get_lines_from_urls(urls[url])
+        #for ii in range(len(lines)):
+            #print(lines[ii])
         # process data
         processing = 0
-        for line in lines:
-            status, words, processing = data_source.strip_preamble(line, processing)
+        index = 0
+        num_lines = len(lines)
+        line_num = 0
+        while line_num < num_lines:
+
+            status, words, processing, line_num = data_source.strip_preamble(lines, line_num, processing)
             if status == 0:
                 continue
             elif status == 1:
                 break
 
             # extract performance, name and date (year)
-            name, year, performance, nation, this_date, city, position, date = data_source.get_stats(words)
+            name, year, performance, nation, this_date, city, position, date, line_num = data_source.get_stats(words, lines, line_num)
             score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
 
             # populate dictionary
@@ -68,6 +74,11 @@ for gender in ("men", "women"):
         event_num = event_num + 1
 
 # manual updates
+if "Calvin SMITH" in athletes.keys():
+    list = athletes["Calvin SMITH"]
+    list[4] = "46.39"       # Calvin Smith junior ran 44.81
+    list[5] = "1085"
+
 if "Usain Bolt" in athletes.keys():
     list = athletes["Usain Bolt"]
     list[4] = "45.28"
@@ -214,7 +225,7 @@ for athlete in athletes.keys():
         if num_events == 2:
             print(("%3d. %4d %27s %8s (%4s) %8s (%4s)") % \
               (count, max_score, max_name, list[0], list[1], list[2], list[3]))
-        elif num_events == 3:
+        elif num_events == 3 and list[4] != "0":
             print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s)") % \
               (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5]))
         elif num_events == 4:
@@ -223,7 +234,7 @@ for athlete in athletes.keys():
         elif num_events == 5:
             print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
               (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7], list[8], list[9]))
-        else:    # 1500 through 5000 in distance order
+        elif num_events == 6:    # 1500 through 5000 in distance order
             print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
               (count, max_score, max_name, list[0], list[1], list[2], list[3], list[8], list[9], list[4], list[5], list[10], list[11], list[6], list[7]))
         done_with[max_name] = True
