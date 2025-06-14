@@ -3,6 +3,8 @@
 #
 
 import requests
+import certifi
+import urllib3
 from bs4 import BeautifulSoup
 from datetime import datetime
 import re
@@ -22,6 +24,8 @@ def get_WA_score(gender, event, performance, event_name_map, score_maps):
                 map[words[0]] = words[1]
 
     perf_str = performance       # str(performance)
+    if perf_str[-1] == "h":        # hand timed
+        perf_str = perf_str[:-1]      
     field_event = is_field_event(event)
     if not field_event and event != "Decathlon" and event != "Heptathlon":
         perf_units, hundredths = hms_to_seconds(perf_str)
@@ -191,8 +195,11 @@ def get_args(argv):
     return gender, event, field_event
 
 def get_lines_from_url(url):
+    # Suppress certificate warning for now
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
     # Send an HTTP GET request to the URL
-    response = requests.get(url, verify=False)    # Fix this later by installing SSL certificates
+    response = requests.get(url, verify=False)   # verify=certifi.where())  # Fix this later by installing SSL certificates
 
     # Check if the request was successful (status code 200)
     if response.status_code != 200:

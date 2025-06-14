@@ -1,7 +1,6 @@
 #
 # create combo tables (e.g. 100/200/400 combo)
 #
-#ddimport requests
 from datetime import datetime
 import utils         # my utils
 from Alltime import Alltime
@@ -22,7 +21,7 @@ event_num = 0
 data_source = WA_toplists()
 
 for gender in ("men", "women"):
-    urls = data_source.get_urls("http://www.alltime-athletics.com/" + gender + ".htm")
+    urls = data_source.get_urls(gender)
     if gender == "women":
         continue
 
@@ -39,8 +38,6 @@ for gender in ("men", "women"):
         event = url        
         print(gender, " ", event)
         lines = data_source.get_lines_from_urls(urls[url])
-        #for ii in range(len(lines)):
-            #print(lines[ii])
         # process data
         processing = 0
         index = 0

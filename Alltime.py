@@ -12,7 +12,8 @@ class Alltime:
     #
     # Get the urls of the pages to scrape
     #
-    def get_urls(self, links_url):
+    def get_urls(self, gender):
+        links_url = "http://www.alltime-athletics.com/" + gender + ".htm"
         response = requests.get(links_url)
     
         # Check if the request was successful (status code 200)
