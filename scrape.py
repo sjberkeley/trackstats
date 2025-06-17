@@ -6,12 +6,15 @@
 from datetime import datetime
 import sys
 import utils         # my utils
+from Alltime import Alltime
+from WA_toplists import WA_toplists
 
 #
 # main program
 #
 #gender, event, field_event = utils.get_args(sys.argv)
 def build_csv(gender, event, num_perfs):
+    data_source = Alltime()
     #gender = "men"
     #event = "800 metres"
     field_event = utils.is_field_event(event)
@@ -20,15 +23,15 @@ def build_csv(gender, event, num_perfs):
     earliest_num_perfs = this_year
     starting_year = 0      # start from this year
 
-    m_urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-    w_urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+    m_urls = data_source.get_urls("men", False)
+    w_urls = data_source.get_urls("women", False)
 
     if gender == "women":
         url = w_urls[event]
     else:
         url = m_urls[event]
 
-    lines = utils.get_lines_from_url(url)
+    lines = data_source.get_lines_from_urls(url)
 
     athletes = {}     # dictionary of lists of lists
     active = {}       # earliest and latest year active
@@ -40,8 +43,11 @@ def build_csv(gender, event, num_perfs):
     # process data
     processing = 0
     counter = 0
-    for line in lines:
-        status, words, processing = utils.strip_preamble(line, processing)
+    num_lines = len(lines)
+    line_num = 0
+    while line_num < num_lines:
+
+        status, words, processing, line_num = data_source.strip_preamble(lines, line_num, processing)
         if status == 0:
             continue
         elif status == 1:
@@ -49,7 +55,7 @@ def build_csv(gender, event, num_perfs):
 
         # extract performance, name and date (year)
         counter += 1
-        name, date, performance, nation, this_date, city, position, full_date = utils.get_stats(words)
+        name, year, performance, nation, this_date, city, position, date, line_num = data_source.get_stats(words, lines, line_num)
 
         # populate dictionary
         if name in athletes.keys():
@@ -65,18 +71,18 @@ def build_csv(gender, event, num_perfs):
             active[name] = active_range
             nations[name] = nation
         
-        for yy in range(date, this_year+1):
+        for yy in range(year, this_year+1):
             list = list_of_lists[yy-earliest]
             if len(list) < num_perfs:
                 list.append(performance)
             else:
-                if date < earliest_num_perfs:
-                    earliest_num_perfs = date
+                if year < earliest_num_perfs:
+                    earliest_num_perfs = year
 
-        if date < active_range[0]:
-            active_range[0] = date
-        if date > active_range[1]:
-            active_range[1] = date
+        if year < active_range[0]:
+            active_range[0] = year
+        if year > active_range[1]:
+            active_range[1] = year
 
     if earliest_num_perfs < starting_year:
         earliest_num_perfs = starting_year

@@ -16,18 +16,18 @@ this_year = datetime.now().year
 earliest_date = this_year
 athletes = {}     # dictionary of lists
 
-num_events = 3
+num_events = 4
 event_num = 0
 data_source = WA_toplists()
 source_type = type(data_source)
 
 for gender in ("men", "women"):
-    urls = data_source.get_urls(gender)
+    urls = data_source.get_urls(gender, True)
     if gender == "women":
         continue
 
     for url in urls:
-        if url != "100 metres" and url != "200 metres" and url != "400 metres":
+        if url != "800 metres" and url != "1500 metres" and url != "3000 metres" and url != "5000 metres":
             #and url != "5000 metres" and url != "2000 metres" and url != "2 Miles":
         #if url != "100 metres" and url != "200 metres" and url != "400 metres":
         #if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
@@ -66,7 +66,7 @@ for gender in ("men", "women"):
                 athletes[name] = list
             # check if this is the first mark for this athlete
             index = event_num * 2
-            if list[index] == "0":
+            if list[index] == "0":    # crash here may mean num_events not updated
                 list[index] = performance
                 list[index + 1] = score
         event_num = event_num + 1

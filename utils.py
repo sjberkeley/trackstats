@@ -10,6 +10,8 @@ from datetime import datetime
 import re
 import sys
 import pandas as pd
+from Alltime import Alltime
+from WA_toplists import WA_toplists
 
 # need to fix bug with Gabby Thomas 400m score (49.68) - 1217 when it should be 1218
 def get_WA_score(gender, event, performance, event_name_map, score_maps):
@@ -83,30 +85,53 @@ def is_numeric(string):
 # find the earliest year in which a mark is posted
 #
 def find_earliest_year(lines, this_year):
-    # find earliest year
+    data_source = Alltime()
     earliest = this_year
+    num_lines = len(lines)
+    line_num = 0
     processing = 0
-    for line in lines:
-        # Skip empty lines
-        if not line.strip():
+    while line_num < num_lines:
+
+        status, words, processing, line_num = data_source.strip_preamble(lines, line_num, processing)
+        if status == 0:
             continue
-        words = line.split()
-        num_words = len(words)
-        # check for done with outdoor list
-        if (num_words < 8 and processing == 1):
+        elif status == 1:
             break
-        if (num_words > 7 and words[0] == "1" and processing == 0):
-            processing = 1
-        if (processing == 0):
-            continue
-        if not words[0].isdigit():
-            break
-        num_chars = len(words[num_words-1])
-        date = int(words[num_words-1][num_chars-4:])
-        if date < earliest:
-            earliest = date
+
+        # extract performance, name and date (year)
+        name, year, performance, nation, this_date, city, position, date, line_num = data_source.get_stats(words, lines, line_num)
+
+        if year < earliest:
+            earliest = year
 
     return earliest
+
+
+#def find_earliest_year(lines, this_year):
+#    # find earliest year
+#    earliest = this_year
+#    processing = 0
+#    for line in lines:
+#        # Skip empty lines
+#        if not line.strip():
+#            continue
+#        words = line.split()
+#        num_words = len(words)
+#        # check for done with outdoor list
+#        if (num_words < 8 and processing == 1):
+#            break
+#        if (num_words > 7 and words[0] == "1" and processing == 0):
+#            processing = 1
+#        if (processing == 0):
+#            continue
+#        if not words[0].isdigit():
+#            break
+#        num_chars = len(words[num_words-1])
+#        date = int(words[num_words-1][num_chars-4:])
+#        if date < earliest:
+#            earliest = date
+#
+#    return earliest
 
 #
 # check if one performance is worse than another
@@ -415,7 +440,7 @@ def get_stats(words):
     index = index + 1
     for iter in range(5):
         nation = words[index]
-        if words[index] != "BEl" and words[index] != "EX":      # typo on men marathon and men 20k walk
+        if words[index] != "BEl" and words[index] != "EX" and words[index] != "RI":      # typo on men marathon and men 20k walk
             wordlen = len(words[index])
             maybe_nation = ""
             if wordlen > 2:

@@ -12,7 +12,7 @@ class Alltime:
     #
     # Get the urls of the pages to scrape
     #
-    def get_urls(self, gender):
+    def get_urls(self, gender, bestOnly):
         links_url = "http://www.alltime-athletics.com/" + gender + ".htm"
         response = requests.get(links_url)
     
@@ -86,7 +86,7 @@ class Alltime:
         index = index + 1
         for iter in range(5):
             nation = words[index]
-            if words[index] != "BEl" and words[index] != "EX":      # typo on men marathon and men 20k walk
+            if words[index] != "BEl" and words[index] != "EX" and words[index] != "RI":      # typo on men marathon and men 20k walk
                 wordlen = len(words[index])
                 maybe_nation = ""
                 if wordlen > 2:
