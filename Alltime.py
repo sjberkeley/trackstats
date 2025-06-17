@@ -147,3 +147,27 @@ class Alltime:
     
         return name, year, performance, nation, this_date, city, position, date, line_num
 
+#
+# find the earliest year in which a mark is posted
+#
+    def find_earliest_year(self, lines, this_year):
+        earliest = this_year
+        num_lines = len(lines)
+        line_num = 0
+        processing = 0
+        while line_num < num_lines:
+
+            status, words, processing, line_num = self.strip_preamble(lines, line_num, processing)
+            if status == 0:
+                continue
+            elif status == 1:
+                break
+
+            # extract performance, name and date (year)
+            name, year, performance, nation, this_date, city, position, date, line_num = self.get_stats(words, lines, line_num)
+
+            if year < earliest:
+                earliest = year
+
+        return earliest
+

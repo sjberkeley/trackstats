@@ -4,8 +4,9 @@
 
 from datetime import datetime
 import utils
+from Alltime import Alltime
 
-class WA_toplists:
+class WA_toplists(Alltime):
     #
     # Get the urls of the pages to scrape
     #

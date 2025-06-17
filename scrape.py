@@ -38,7 +38,7 @@ def build_csv(gender, event, num_perfs):
     nations = {}      # first country represented
 
     # find earliest year
-    earliest = utils.find_earliest_year(lines, this_year)
+    earliest = data_source.find_earliest_year(lines, this_year)
 
     # process data
     processing = 0

@@ -81,57 +81,32 @@ def get_WA_score(gender, event, performance, event_name_map, score_maps):
 def is_numeric(string):
     pattern = r'^[-+±]?[0-9]*\.?[0-9]+$'
     return bool(re.match(pattern, string))
-#
-# find the earliest year in which a mark is posted
-#
+
 def find_earliest_year(lines, this_year):
-    data_source = Alltime()
+    # find earliest year
     earliest = this_year
-    num_lines = len(lines)
-    line_num = 0
     processing = 0
-    while line_num < num_lines:
-
-        status, words, processing, line_num = data_source.strip_preamble(lines, line_num, processing)
-        if status == 0:
+    for line in lines:
+        # Skip empty lines
+        if not line.strip():
             continue
-        elif status == 1:
+        words = line.split()
+        num_words = len(words)
+        # check for done with outdoor list
+        if (num_words < 8 and processing == 1):
             break
-
-        # extract performance, name and date (year)
-        name, year, performance, nation, this_date, city, position, date, line_num = data_source.get_stats(words, lines, line_num)
-
-        if year < earliest:
-            earliest = year
+        if (num_words > 7 and words[0] == "1" and processing == 0):
+            processing = 1
+        if (processing == 0):
+            continue
+        if not words[0].isdigit():
+            break
+        num_chars = len(words[num_words-1])
+        date = int(words[num_words-1][num_chars-4:])
+        if date < earliest:
+            earliest = date
 
     return earliest
-
-
-#def find_earliest_year(lines, this_year):
-#    # find earliest year
-#    earliest = this_year
-#    processing = 0
-#    for line in lines:
-#        # Skip empty lines
-#        if not line.strip():
-#            continue
-#        words = line.split()
-#        num_words = len(words)
-#        # check for done with outdoor list
-#        if (num_words < 8 and processing == 1):
-#            break
-#        if (num_words > 7 and words[0] == "1" and processing == 0):
-#            processing = 1
-#        if (processing == 0):
-#            continue
-#        if not words[0].isdigit():
-#            break
-#        num_chars = len(words[num_words-1])
-#        date = int(words[num_words-1][num_chars-4:])
-#        if date < earliest:
-#            earliest = date
-#
-#    return earliest
 
 #
 # check if one performance is worse than another
