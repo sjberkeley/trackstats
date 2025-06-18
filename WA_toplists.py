@@ -119,28 +119,42 @@ class WA_toplists(Alltime):
     #
     def get_stats(self, words, lines, index):
         performance = lines[index+2].strip()
-        if len(lines[index+5]) == 0:           # no wind, so one line is missing
+        if len(lines[index+5]) == 0:            # no wind, so one line is missing
             index = index - 1
         name = lines[index+9].strip()
         if len(lines[index+13]) == 0:           # no date of birth, so one line is missing
             index = index - 1
+            date = "05 JAN 1961"
+        else:
+            date = lines[index+13].strip()
+        if len(date) == 11:
+            year = int(date[7:11])
+            month = utils.month_num(date[3:6])
+            day = int(date[0:2])
+            dob = datetime(year, month, day)
+        elif len(date) == 4:
+            dob = datetime(int(date), 1, 5)
+        else:
+            dob = datetime(1961, 1, 5)
         nation = lines[index+17].strip()
         if len(lines[index+20]) == 0:           # no position, so one line is missing
             index = index - 1
             position = ""
         else:
-            position = lines[index+20]
+            position = lines[index+20].strip()
         city = lines[index+24].strip()
+
         date = lines[index+27].strip()
         year = int(date[7:11])
         month = utils.month_num(date[3:6])
         day = int(date[0:2])
         this_date = datetime(year, month, day)
+
         if index + 35 < len(lines) and len(lines[index+35].strip()) > 40:   # Decathlon/Heptathlon score
             index = index + 4
         index = index + 35
     
-        return name, year, performance, nation, this_date, city, position, date, index
+        return name, year, performance, nation, this_date, city, position, date, dob, index
     #
     # strip the preamble from a single page of WA performances
     #

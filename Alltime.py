@@ -102,7 +102,35 @@ class Alltime:
                     name += " " + words[index]
                 index = index + 1
     
-        index = index + 2
+        index = index + 1
+
+        date = words[index]
+        if len(date) == 2:
+            year = 1900 + int(date)
+            month = 1
+            day = 1
+            index = index + 1
+        elif len(date) == 8:
+            year2 = int(date[6:8])
+            if year2 < 25:
+                year = 2000 + year2
+            else:
+                year = 1900 + year2
+            month = int(date[3:5])
+            day = int(date[0:2])
+            index = index + 1
+        else:        # assume no dob, so don't increment index
+            year = 1961
+            month = 1
+            day = 1
+        if month < 1:
+            month = 1
+        if month > 12:
+            month = 12    
+        if day > 31:
+            day = 31
+        dob = datetime(year, month, day)
+
         position = "*"
         if utils.is_numeric(words[index][0]) or words[index] == "D" or words[index] == "q" or words[index] == "*":
             position = words[index]
@@ -145,7 +173,7 @@ class Alltime:
             day = 31
         this_date = datetime(year, month, day)
     
-        return name, year, performance, nation, this_date, city, position, date, line_num
+        return name, year, performance, nation, this_date, city, position, date, dob, line_num
 
 #
 # find the earliest year in which a mark is posted
@@ -164,7 +192,7 @@ class Alltime:
                 break
 
             # extract performance, name and date (year)
-            name, year, performance, nation, this_date, city, position, date, line_num = self.get_stats(words, lines, line_num)
+            name, year, performance, nation, this_date, city, position, date, dob, line_num = self.get_stats(words, lines, line_num)
 
             if year < earliest:
                 earliest = year
