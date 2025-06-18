@@ -55,7 +55,7 @@ def build_csv(gender, event, num_perfs):
 
         # extract performance, name and date (year)
         counter += 1
-        name, year, performance, nation, this_date, city, position, date, line_num = data_source.get_stats(words, lines, line_num)
+        name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
 
         # populate dictionary
         if name in athletes.keys():

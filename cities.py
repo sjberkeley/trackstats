@@ -56,7 +56,7 @@ for gender in ("men", "women"):
                 break
 
             # extract performance, name and date (year)
-            name, perf_year, performance, nation, this_date, city, position, perf_date, line_num = data_source.get_stats(words, lines, line_num)
+            name, perf_year, performance, nation, this_date, city, position, perf_date, dob, line_num = data_source.get_stats(words, lines, line_num)
             score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
             if city in total_scores.keys():
                 scores = total_scores[city]

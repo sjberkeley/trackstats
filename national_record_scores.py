@@ -44,7 +44,7 @@ for gender in ("men", "women"):
                 break
 
             # extract performance, name and date (year)
-            name, year, performance, nation, this_date, city, position, date, line_num = data_source.get_stats(words, lines, line_num)
+            name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
             if nation == country:
                 score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
                 if len(score) < 4:
