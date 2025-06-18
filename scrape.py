@@ -14,7 +14,7 @@ from WA_toplists import WA_toplists
 #
 #gender, event, field_event = utils.get_args(sys.argv)
 def build_csv(gender, event, num_perfs):
-    data_source = Alltime()
+    data_source = WA_toplists()
     #gender = "men"
     #event = "800 metres"
     field_event = utils.is_field_event(event)

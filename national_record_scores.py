@@ -20,7 +20,7 @@ file1 = open("scores.sorted", "w")
 for gender in ("men", "women"):
     score_maps = {}
     utils.init_score_maps(event_name_map, score_maps)
-    urls = data_source.get_urls(gender)
+    urls = data_source.get_urls(gender, False)
 
     for url in urls:
         if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
