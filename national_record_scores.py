@@ -14,13 +14,13 @@ event_name_map = {}
 
 #gender, event, field_event = utils.get_args(sys.argv)
 
-country = "IRL"
+country = "GBR"
 file1 = open("scores.sorted", "w")
 
 for gender in ("men", "women"):
     score_maps = {}
     utils.init_score_maps(event_name_map, score_maps)
-    urls = data_source.get_urls(gender, False)
+    urls = data_source.get_urls(gender, True)
 
     for url in urls:
         if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":

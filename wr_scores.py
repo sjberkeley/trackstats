@@ -7,6 +7,8 @@
 import requests
 from datetime import datetime
 import utils         # my utils
+from Alltime import Alltime
+from WA_toplists import WA_toplists
 
 event_name_map = {}
 

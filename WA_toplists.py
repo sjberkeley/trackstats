@@ -13,7 +13,7 @@ class WA_toplists(Alltime):
     def get_urls(self, gender, bestOnly):
         root = "https://worldathletics.org/records/all-time-toplists/"
         if bestOnly:
-            best = "?bestResultsOnly=true"
+            best = "?bestResultsOnly=true"    # &ageCategory=u20"
         else:
             best = "?bestResultsOnly=false"
 

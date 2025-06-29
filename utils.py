@@ -122,6 +122,9 @@ def worse_than(field_event, perf1, perf2):
 
 # TODO: Doesn't support the no-hundredths case yet ...
 def hms_to_seconds(perf_str):
+    if perf_str[-1] == "h":        # hand timed
+        perf_str = perf_str[:-1]
+
     ch = -1
     cm = -1
     hundredths = False

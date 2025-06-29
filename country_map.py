@@ -4,6 +4,8 @@
 
 from datetime import datetime
 import utils         # my utils
+from Alltime import Alltime
+from WA_toplists import WA_toplists
 
 #
 # main program
@@ -12,6 +14,8 @@ import utils         # my utils
 def build_country_csv():
     gender = "women"
     #event = "800 metres"
+    data_source = WA_toplists()
+
 
     #build country code map
     start = False
@@ -59,31 +63,40 @@ def build_country_csv():
     record_counts["GU"] = 0
     code_map["TAN"] = "TZ"    
     record_counts["TZ"] = 0
+    code_map["URS"] = "RU"    
+    record_counts["RU"] = 0
+    code_map["TCH"] = "CZ"    
+    record_counts["CZ"] = 0
+    code_map["YUG"] = "RS"    # Serbia for now
+    record_counts["RS"] = 0
 
     for gender in ("men", "women"):
-        if gender == "men":
-            urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-        else:
-            urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+        urls = data_source.get_urls(gender, False)
     
         for url in urls:
+            #if url != "800 metres":
+            #    continue
             if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay": # or url == "Javelin throw" \
                 #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk" \
                 #or url == "3000m steeplechase" or url == "Pole vault" or url == "Hammer throw" or url == "Triple jump":
                 continue
-            lines = utils.get_lines_from_url(urls[url])
+
+            print(gender, " ", url)
+            lines = data_source.get_lines_from_urls(urls[url])
             # process data
             processing = 0
             last_date = datetime.now()
-            for line in lines:
-                status, words, processing = utils.strip_preamble(line, processing)
+            num_lines = len(lines)
+            line_num = 0
+            while line_num < num_lines:
+                status, words, processing, line_num = data_source.strip_preamble(lines, line_num, processing)
                 if status == 0:
                     continue
                 elif status == 1:
                     break
     
                 # extract performance, name and date (year)
-                name, year, performance, nation, this_date, city, position, date = utils.get_stats(words)
+                name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
                 if this_date < last_date:
                     if not nation in code_map:
                         print("missing " + nation)

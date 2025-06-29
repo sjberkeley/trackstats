@@ -7,6 +7,8 @@ import utils         # my utils
 import bar_chart_race2 as bcrace
 import pandas as pd
 import utils
+from Alltime import Alltime
+from WA_toplists import WA_toplists
 
 
 def build_scores_csv(file_name, gender):    

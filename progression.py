@@ -4,6 +4,8 @@
 
 from datetime import datetime
 import utils         # my utils
+from Alltime import Alltime
+from WA_toplists import WA_toplists
 
 #
 # main program
@@ -15,32 +17,39 @@ def build_record_csv():
 
     this_year = datetime.now().year
 
-    if gender == "men":
-        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-    else:
-        urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+    data_source = WA_toplists()
+
+    urls = data_source.get_urls(gender, True)
 
     latest_earliest_date = 0
     events = {}
     for url in urls:
+        #if url != "1500 metres":
+            #continue
+
         if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay" or url == "Javelin throw" \
             or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk" \
             or url == "3000m steeplechase" or url == "Pole vault" or url == "Hammer throw" or url == "Triple jump":
             continue
-        lines = utils.get_lines_from_url(urls[url])
+
+        print(gender, " ", url)
+        lines = data_source.get_lines_from_urls(urls[url])
         # process data
         processing = 0
+        num_lines = len(lines)
+        line_num = 0
         last_date = 0
         records = []
-        for line in lines:
-            status, words, processing = utils.strip_preamble(line, processing)
+        while line_num < num_lines:
+
+            status, words, processing, line_num = data_source.strip_preamble(lines, line_num, processing)
             if status == 0:
                 continue
             elif status == 1:
                 break
 
             # extract performance, name and date (year)
-            name, date, performance, nation, this_date, city, position, full_date = utils.get_stats(words)
+            name, date, performance, nation, this_date, city, position, full_date, dob, line_num = data_source.get_stats(words, lines, line_num)
             if last_date == 0:
                 last_date = this_year
                 records.append(performance)

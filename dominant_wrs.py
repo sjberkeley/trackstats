@@ -6,6 +6,8 @@ from datetime import datetime
 import utils         # my utils
 import pandas as pd
 import utils
+from Alltime import Alltime
+from WA_toplists import WA_toplists
 
 #
 # main program
@@ -18,13 +20,12 @@ dates = {}
 earliest = {}
 all_lines = {}
 max_comps = 500
+data_source = WA_toplists()
 
 for gender in ("men", "women"):
-
-    if gender == "men":
-        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-    else:
-        urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+    urls = data_source.get_urls(gender, False)
+    #if gender == "women":
+        #continue
 
     for url in urls:
         if url != "200 metres":
@@ -36,22 +37,25 @@ for gender in ("men", "women"):
 
         event = url        
         #print(gender, " ", event)
-        lines = utils.get_lines_from_url(urls[url])
+        lines = data_source.get_lines_from_urls(urls[url])
 
         gender_event = gender + event
         all_lines[gender_event] = lines
 
         # process data
         processing = 0
-        for line in lines:
-            status, words, processing = utils.strip_preamble(line, processing)
+        num_lines = len(lines)
+        line_num = 0
+        while line_num < num_lines:
+
+            status, words, processing, line_num = data_source.strip_preamble(lines, line_num, processing)
             if status == 0:
                 continue
             elif status == 1:
                 break
 
             # extract performance, name and date (year)
-            name, year, performance, nation, this_date, city, position, date = utils.get_stats(words)
+            name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
             if not position.isnumeric():    # not a final
                 continue
             # populate dictionary
@@ -85,15 +89,17 @@ for gender_event in all_lines.keys():
     lines = all_lines[gender_event]
     wr_date = "9999.99.99"
     processing = 0
-    for line in lines:
-        status, words, processing = utils.strip_preamble(line, processing)
+    num_lines = len(lines)
+    line_num = 0
+    while line_num < num_lines:
+        status, words, processing, line_num = data_source.strip_preamble(lines, line_num, processing)
         if status == 0:
             continue
         elif status == 1:
             break
 
         # extract performance, name and date (year)
-        name, year, performance, nation, this_date, city, position, date = utils.get_stats(words)
+        name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
         ymd = date[6:10] + "." + date[3:5] + "." + date[0:2]
         WR = False
         if ymd < wr_date:     # it's a world record
