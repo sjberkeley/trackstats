@@ -17,59 +17,61 @@ class WA_toplists(Alltime):
         else:
             best = "?bestResultsOnly=false"
 
+        age = "/senior"                       # u20 or u18
+
         urls = {}
         if gender == "men":
-            urls["100 metres"] = root + "sprints/100-metres/all/men/senior" + best
-            urls["200 metres"] = root + "sprints/200-metres/all/men/senior" + best
-            urls["400 metres"] = root + "sprints/400-metres/all/men/senior" + best
-            urls["800 metres"] = root + "middlelong/800-metres/all/men/senior" + best
-            urls["1500 metres"] = root + "middlelong/1500-metres/all/men/senior" + best
-            urls["1 Mile"] = root + "middlelong/one-mile/all/men/senior" + best
-            urls["3000 metres"] = root + "middlelong/3000-metres/all/men/senior" + best
-            urls["5000 metres"] = root + "middlelong/5000-metres/all/men/senior" + best
-            urls["10000 metres"] = root + "middlelong/10000-metres/all/men/senior" + best
-            urls["half-marathon"] = root + "road-running/half-marathon/all/men/senior" + best
-            urls["marathon"] = root + "road-running/marathon/all/men/senior" + best
-            urls["3000m steeplechase"] = root + "middlelong/3000-metres-steeplechase/all/men/senior" + best
-            urls["110m hurdles"] = root + "hurdles/110-metres-hurdles/all/men/senior" + best
-            urls["400m hurdles"] = root + "hurdles/400-metres-hurdles/all/men/senior" + best
-            urls["High jump"] = root + "jumps/high-jump/all/men/senior" + best
-            urls["Pole vault"] = root + "jumps/pole-vault/all/men/senior" + best
-            urls["Long jump"] = root + "jumps/long-jump/all/men/senior" + best
-            urls["Triple jump"] = root + "jumps/triple-jump/all/men/senior" + best
-            urls["Shot put"] = root + "throws/shot-put/all/men/senior" + best
-            urls["Discus throw"] = root + "throws/discus-throw/all/men/senior" + best
-            urls["Hammer throw"] = root + "throws/hammer-throw/all/men/senior" + best
-            urls["Javelin throw"] = root + "throws/javelin-throw/all/men/senior" + best
-            urls["Decathlon"] = root + "combined-events/decathlon/all/men/senior" + best
-            urls["20 km race walk"] = root + "race-walks/20-kilometres-race-walk/all/men/senior" + best
-            urls["50 km race walk"] = root + "race-walks/50-kilometres-race-walk/all/men/senior" + best
+            urls["100 metres"] = root + "sprints/100-metres/all/men" + age + best
+            urls["200 metres"] = root + "sprints/200-metres/all/men" + age + best
+            urls["400 metres"] = root + "sprints/400-metres/all/men" + age + best
+            urls["800 metres"] = root + "middlelong/800-metres/all/men" + age + best
+            urls["1500 metres"] = root + "middlelong/1500-metres/all/men" + age + best
+            urls["1 Mile"] = root + "middlelong/one-mile/all/men" + age + best
+            urls["3000 metres"] = root + "middlelong/3000-metres/all/men" + age + best
+            urls["5000 metres"] = root + "middlelong/5000-metres/all/men" + age + best
+            urls["10000 metres"] = root + "middlelong/10000-metres/all/men" + age + best
+            urls["half-marathon"] = root + "road-running/half-marathon/all/men" + age + best
+            urls["marathon"] = root + "road-running/marathon/all/men" + age + best
+            urls["3000m steeplechase"] = root + "middlelong/3000-metres-steeplechase/all/men" + age + best
+            urls["110m hurdles"] = root + "hurdles/110-metres-hurdles/all/men" + age + best
+            urls["400m hurdles"] = root + "hurdles/400-metres-hurdles/all/men" + age + best
+            urls["High jump"] = root + "jumps/high-jump/all/men" + age + best
+            urls["Pole vault"] = root + "jumps/pole-vault/all/men" + age + best
+            urls["Long jump"] = root + "jumps/long-jump/all/men" + age + best
+            urls["Triple jump"] = root + "jumps/triple-jump/all/men" + age + best
+            urls["Shot put"] = root + "throws/shot-put/all/men" + age + best
+            urls["Discus throw"] = root + "throws/discus-throw/all/men" + age + best
+            urls["Hammer throw"] = root + "throws/hammer-throw/all/men" + age + best
+            urls["Javelin throw"] = root + "throws/javelin-throw/all/men" + age + best
+            urls["Decathlon"] = root + "combined-events/decathlon/all/men" + age + best
+            urls["20 km race walk"] = root + "race-walks/20-kilometres-race-walk/all/men" + age + best
+            urls["50 km race walk"] = root + "race-walks/50-kilometres-race-walk/all/men" + age + best
         else:
-            urls["100 metres"] = root + "sprints/100-metres/all/women/senior" + best
-            urls["200 metres"] = root + "sprints/200-metres/all/women/senior" + best
-            urls["400 metres"] = root + "sprints/400-metres/all/women/senior" + best
-            urls["800 metres"] = root + "middlelong/800-metres/all/women/senior" + best
-            urls["1500 metres"] = root + "middlelong/1500-metres/all/women/senior" + best
-            urls["1 Mile"] = root + "middlelong/one-mile/all/women/senior" + best
-            urls["3000 metres"] = root + "middlelong/3000-metres/all/women/senior" + best
-            urls["5000 metres"] = root + "middlelong/5000-metres/all/women/senior" + best
-            urls["10000 metres"] = root + "middlelong/10000-metres/all/women/senior" + best
-            urls["half-marathon"] = root + "road-running/half-marathon/all/women/senior" + best
-            urls["marathon"] = root + "road-running/marathon/all/women/senior" + best
-            urls["3000m steeplechase"] = root + "middlelong/3000-metres-steeplechase/all/women/senior" + best
-            urls["100m hurdles"] = root + "hurdles/100-metres-hurdles/all/women/senior" + best
-            urls["400m hurdles"] = root + "hurdles/400-metres-hurdles/all/women/senior" + best
-            urls["High jump"] = root + "jumps/high-jump/all/women/senior" + best
-            urls["Pole vault"] = root + "jumps/pole-vault/all/women/senior" + best
-            urls["Long jump"] = root + "jumps/long-jump/all/women/senior" + best
-            urls["Triple jump"] = root + "jumps/triple-jump/all/women/senior" + best
-            urls["Shot put"] = root + "throws/shot-put/all/women/senior" + best
-            urls["Discus throw"] = root + "throws/discus-throw/all/women/senior" + best
-            urls["Hammer throw"] = root + "throws/hammer-throw/all/women/senior" + best
-            urls["Javelin throw"] = root + "throws/javelin-throw/all/women/senior" + best
-            urls["Heptathlon"] = root + "combined-events/heptathlon/all/women/senior" + best
-            urls["20 km race walk"] = root + "race-walks/20-kilometres-race-walk/all/women/senior" + best
-            urls["50 km race walk"] = root + "race-walks/50-kilometres-race-walk/all/women/senior" + best
+            urls["100 metres"] = root + "sprints/100-metres/all/women" + age + best
+            urls["200 metres"] = root + "sprints/200-metres/all/women" + age + best
+            urls["400 metres"] = root + "sprints/400-metres/all/women" + age + best
+            urls["800 metres"] = root + "middlelong/800-metres/all/women" + age + best
+            urls["1500 metres"] = root + "middlelong/1500-metres/all/women" + age + best
+            urls["1 Mile"] = root + "middlelong/one-mile/all/women" + age + best
+            urls["3000 metres"] = root + "middlelong/3000-metres/all/women" + age + best
+            urls["5000 metres"] = root + "middlelong/5000-metres/all/women" + age + best
+            urls["10000 metres"] = root + "middlelong/10000-metres/all/women" + age + best
+            urls["half-marathon"] = root + "road-running/half-marathon/all/women" + age + best
+            urls["marathon"] = root + "road-running/marathon/all/women" + age + best
+            urls["3000m steeplechase"] = root + "middlelong/3000-metres-steeplechase/all/women" + age + best
+            urls["100m hurdles"] = root + "hurdles/100-metres-hurdles/all/women" + age + best
+            urls["400m hurdles"] = root + "hurdles/400-metres-hurdles/all/women" + age + best
+            urls["High jump"] = root + "jumps/high-jump/all/women" + age + best
+            urls["Pole vault"] = root + "jumps/pole-vault/all/women" + age + best
+            urls["Long jump"] = root + "jumps/long-jump/all/women" + age + best
+            urls["Triple jump"] = root + "jumps/triple-jump/all/women" + age + best
+            urls["Shot put"] = root + "throws/shot-put/all/women" + age + best
+            urls["Discus throw"] = root + "throws/discus-throw/all/women" + age + best
+            urls["Hammer throw"] = root + "throws/hammer-throw/all/women" + age + best
+            urls["Javelin throw"] = root + "throws/javelin-throw/all/women" + age + best
+            urls["Heptathlon"] = root + "combined-events/heptathlon/all/women" + age + best
+            urls["20 km race walk"] = root + "race-walks/20-kilometres-race-walk/all/women" + age + best
+            urls["50 km race walk"] = root + "race-walks/50-kilometres-race-walk/all/women" + age + best
 
         return urls
     
@@ -149,6 +151,15 @@ class WA_toplists(Alltime):
         month = utils.month_num(date[3:6])
         day = int(date[0:2])
         this_date = datetime(year, month, day)
+
+        # transform date into alltime-athletics format
+        day_zero = ""
+        if day < 10:
+            day_zero = "0"
+        month_zero = ""
+        if month < 10:
+            month_zero = "0"
+        date = day_zero + str(day) + "." + month_zero + str(month) + "." + str(year)
 
         if index + 35 < len(lines) and len(lines[index+35].strip()) > 40:   # Decathlon/Heptathlon score
             index = index + 4

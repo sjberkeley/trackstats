@@ -105,7 +105,7 @@ class Alltime:
         index = index + 1
 
         date = words[index]
-        if len(date) == 2:
+        if len(date) == 2 and date[1:2] != "=":    # no dob for Jackline Chelal in womens half-marathon
             year = 1900 + int(date)
             month = 1
             day = 1
@@ -123,10 +123,13 @@ class Alltime:
             year = 1961
             month = 1
             day = 1
+
         if month < 1:
             month = 1
         if month > 12:
-            month = 12    
+            month = 12
+        if day < 1:
+            day = 1    
         if day > 31:
             day = 31
         dob = datetime(year, month, day)

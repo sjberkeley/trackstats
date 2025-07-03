@@ -1,7 +1,7 @@
 #
 # world records ranked by WA score
 #
-# After running this, run "sort -r scores.sorted"
+# After running this, run "sort -r wr_scores.sorted"
 #
 
 import requests
@@ -11,6 +11,7 @@ from Alltime import Alltime
 from WA_toplists import WA_toplists
 
 event_name_map = {}
+data_source = WA_toplists()
 
 #gender, event, field_event = utils.get_args(sys.argv)
 
@@ -19,10 +20,7 @@ file1 = open("wr_scores.sorted", "w")
 for gender in ("men", "women"):
     score_maps = {}
     utils.init_score_maps(event_name_map, score_maps)
-    if gender == "men":
-        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-    else:
-        urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+    urls = data_source.get_urls(gender, True)
 
     for url in urls:
         if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
@@ -33,18 +31,21 @@ for gender in ("men", "women"):
 
         event = url        
         print(gender, " ", event)
-        lines = utils.get_lines_from_url(urls[url])
+        lines = data_source.get_lines_from_urls(urls[url])
         # process data
         processing = 0
-        for line in lines:
-            status, words, processing = utils.strip_preamble(line, processing)
+        num_lines = len(lines)
+        line_num = 0
+        while line_num < num_lines:
+
+            status, words, processing, line_num = data_source.strip_preamble(lines, line_num, processing)
             if status == 0:
                 continue
             elif status == 1:
                 break
 
             # extract performance, name and date (year)
-            name, year, performance, nation, this_date, city, position, date = utils.get_stats(words)
+            name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
             score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
             if len(score) < 4:
                 file1.write(" ")

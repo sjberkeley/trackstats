@@ -21,14 +21,13 @@ all_year_dates = {}
 max_range = 12
 max_meet = 3
 
+data_source = WA_toplists()
+
 for gender in ("men", "women"):
     score_maps = {}
     utils.init_score_maps(event_name_map, score_maps)
 
-    if gender == "men":
-        urls = utils.get_urls("http://www.alltime-athletics.com/men.htm")
-    else:
-        urls = utils.get_urls("http://www.alltime-athletics.com/women.htm")
+    urls = data_source.get_urls(gender, True)
 
     for url in urls:
         #if url != "110m hurdles" and url != "100 metres" and url != "400 metres":
@@ -41,11 +40,15 @@ for gender in ("men", "women"):
         event = url        
         print(gender, " ", event)
         rank = 0
-        lines = utils.get_lines_from_url(urls[url])
+        lines = data_source.get_lines_from_urls(urls[url])
         # process data
         processing = 0
-        for line in lines:
-            status, words, processing = utils.strip_preamble(line, processing)
+        index = 0
+        num_lines = len(lines)
+        line_num = 0
+        while line_num < num_lines:
+
+            status, words, processing, line_num = data_source.strip_preamble(lines, line_num, processing)
             if status == 0:
                 continue
             elif status == 1:
@@ -64,7 +67,7 @@ for gender in ("men", "women"):
 #            else:
 #                break
             
-            name, date, performance, nation, this_date, city, position, full_date = utils.get_stats(words)
+            name, date, performance, nation, this_date, city, position, full_date, dob, line_num = data_source.get_stats(words, lines, line_num)
 
             raw_score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
             score = int(raw_score) * multiplier
