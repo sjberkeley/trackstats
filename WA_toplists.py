@@ -13,11 +13,11 @@ class WA_toplists(Alltime):
     def get_urls(self, gender, bestOnly):
         root = "https://worldathletics.org/records/all-time-toplists/"
         if bestOnly:
-            best = "?bestResultsOnly=true"    # &ageCategory=u20"
+            best = "?bestResultsOnly=true&ageCategory=senior"
         else:
             best = "?bestResultsOnly=false"
 
-        age = "/senior"                       # u20 or u18
+        age = "/senior"                       # senior, u20 or u18
 
         urls = {}
         if gender == "men":
@@ -82,11 +82,16 @@ class WA_toplists(Alltime):
         while page_num < num_pages:
             page_num = page_num + 1
             paged_url = url + "&page=" + str(page_num)
+            #paged_url = "https://mastersrankings.com/rankings/"
             lines = utils.get_lines_from_url(paged_url)
 
             processing = 0
             num_lines = len(lines)
             line_num = 0
+
+            #for line in range(num_lines):
+            #    print(lines[line])
+
             while line_num < num_lines:
                 if lines[line_num] == "                >>":
                     if lines[line_num-3] == "                >":

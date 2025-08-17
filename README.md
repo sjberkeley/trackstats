@@ -17,4 +17,5 @@ Other dependencies:
 
 1. ffmpeg (required by bar_chart_race)
 2. Homebrew (to install ffmpeg)
+3. Selenium (for Masters Rankings drop down inputs)
 
