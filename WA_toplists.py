@@ -169,7 +169,10 @@ class WA_toplists(Alltime):
         if index + 35 < len(lines) and len(lines[index+35].strip()) > 40:   # Decathlon/Heptathlon score
             index = index + 4
         index = index + 35
-    
+
+        if name == "Elaine THOMPSON":
+            name = "Elaine THOMPSON-HERAH"
+
         return name, year, performance, nation, this_date, city, position, date, dob, index
     #
     # strip the preamble from a single page of WA performances
