@@ -56,6 +56,11 @@ def build_csv(gender, event, num_perfs):
         # extract performance, name and date (year)
         counter += 1
         name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
+        
+        # extract Moses' win streak 1977-1987
+        # if name == "Edwin MOSES":
+        #    reversed_date = date[6:10] + " " + date[3:5] + " " + date[0:2]
+        #    print(("%s  %s  %4s  %s") % (reversed_date, performance, position, city))
 
         # populate dictionary
         if name in athletes.keys():
