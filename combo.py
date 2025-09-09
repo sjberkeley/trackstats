@@ -6,6 +6,135 @@ import utils         # my utils
 from Alltime import Alltime
 from WA_toplists import WA_toplists
 
+def manual_updates(source_type, athletes):
+    if source_type == WA_toplists:
+        if "Calvin SMITH" in athletes.keys():
+            list = athletes["Calvin SMITH"]
+            list[4] = "46.39"       # Calvin Smith junior ran 44.81
+            list[5] = "1085"
+    
+    if source_type == Alltime:
+        if "Usain Bolt" in athletes.keys():
+            list = athletes["Usain Bolt"]
+            list[4] = "45.28"
+            list[5] = "1160"
+            list = athletes["Yohan Blake"]
+            list[4] = "46.32"
+            list[5] = "1090"
+            list = athletes["Wallace Spearmon"]
+            list[4] = "45.22"
+            list[5] = "1165"
+            list = athletes["Asafa Powell"]
+            list[4] = "45.94"
+            list[5] = "1115"
+            list = athletes["Obadele Thompson"]
+            list[4] = "45.38"
+            list[5] = "1154"
+            list = athletes["Noah Lyles"]
+            list[4] = "45.87"
+            list[5] = "1120"
+            list = athletes["Frank Fredericks"]
+            list[4] = "46.28"
+            list[5] = "1093"
+            list = athletes["Walter Dix"]
+            list[4] = "46.75"
+            list[5] = "1061"
+            list = athletes["Zharnel Hughes"]
+            list[4] = "46.58"
+            list[5] = "1073"
+            list = athletes["Erriyon Knighton"]
+            list[4] = "45.37"
+            list[5] = "1154"
+            list = athletes["Francis Obikwelu"]
+            list[4] = "46.29"
+            list[5] = "1092"
+            list = athletes["Calvin Smith"]
+            list[4] = "46.39"       # Calvin Smith junior ran 44.81
+            list[5] = "1085"
+            list = athletes["Dennis Mitchell"]
+            list[4] = "46.75"
+            list[5] = "1162"
+            list = athletes["Isaac Makwala"]
+            list[0] = "10.22"
+            list[1] = "1138"
+            list = athletes["Steven Gardiner"]
+            list[0] = "10.35"
+            list[1] = "1089"
+            list = athletes["Jereem Richards"]
+            list[0] = "10.19"
+            list[1] = "1142"
+            list = athletes["Xavier Carter"]
+            list[0] = "10.00"
+            list[1] = "1206"
+            list = athletes["Jacory Patterson"]
+            list[0] = "10.11"
+            list[1] = "1169"
+            list[4] = "43.98"
+            list[5] = "1252"
+        
+        if "Marita Koch" in athletes.keys():
+            list = athletes["Merlene Ottey"]
+            list[4] = "51.12"
+            list[5] = "1161"
+            list = athletes["Evelyn Ashford"]
+            list[4] = "51.08"
+            list[5] = "1162"
+            list = athletes["Veronica Campbell-Brown"]
+            list[4] = "52.24"
+            list[5] = "1117"
+            list = athletes["Sherone Simpson"]
+            list[4] = "51.25"
+            list[5] = "1156"
+            list = athletes["Kerron Stewart"]
+            list[4] = "51.83"
+            list[5] = "1133"
+            list = athletes["Brittany Brown"]
+            list[4] = "51.15"
+            list[5] = "1160"
+            list = athletes["Chandra Cheeseborough"]
+            list[0] = "11.13"
+            list[1] = "1172"
+            list = athletes["Kathy Cook"]
+            list[0] = "11.10"
+            list[1] = "1178"
+            list = athletes["Irena Szewinska"]
+            list[0] = "11.13"
+            list[1] = "1172"
+            list = athletes["Cathy Freeman"]
+            list[0] = "11.24"
+            list[1] = "1148"
+            list = athletes["Salwa Eid Naser"]
+            list[0] = "11.24"
+            list[1] = "1148"
+            list[2] = "22.45"
+            list[3] = "1191"
+            list = athletes["Rhasidat Adeleke"]
+            list[0] = "11.13"
+            list[1] = "1172"
+            list = athletes["Dina Asher-Smith"]
+            list[4] = "52.13"
+            list[5] = "1121"
+            if num_events == 4:
+                list = athletes["Shaunae Miller-Uibo"]
+                list[6] = "2:12.86"
+                list[7] = "983"
+                list = athletes["Irina Privalova"]
+                list[6] = "2:09.40"
+                list[7] = "1000"
+                list = athletes["Christine Mboma"]
+                list[6] = "2:03.27"
+                list[7] = "1104"
+                list = athletes["Aminatou Seyni"]
+                list[6] = "2:18.86"
+                list[7] = "849"
+        
+        #if "Hicham El Guerrouj" in athletes.keys():
+            #list = athletes["Hicham El Guerrouj"]
+            #list[10] = "8:06.61"
+            #list[11] = "1274"
+
+# main program
+
 event_name_map = {}
 score_maps = {}
 utils.init_score_maps(event_name_map, score_maps)
@@ -27,9 +156,9 @@ for gender in ("men", "women"):
         continue
 
     for url in urls:
-        if url != "800 metres" and url != "1500 metres" and url != "3000 metres":
-            #and url != "5000 metres" and url != "2000 metres" and url != "2 Miles":
-        #if url != "100 metres" and url != "200 metres" and url != "400 metres":
+        if url != "100 metres" and url != "200 metres" and url != "400 metres":
+        #if url != "800 metres" and url != "1500 metres":
+        #and url != "10000 metres" and url != "half-marathon" and url != "marathon":
         #if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
             #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk":
             #or url == "Javelin throw" \
@@ -37,7 +166,7 @@ for gender in ("men", "women"):
             continue
 
         event = url        
-        print(gender, " ", event)
+        #print(gender, " ", event)
         lines = data_source.get_lines_from_urls(urls[url])
         # process data
         processing = 0
@@ -54,6 +183,8 @@ for gender in ("men", "women"):
 
             # extract performance, name and date (year)
             name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
+            #if nation != "IRL":
+            #    continue
             score = utils.get_WA_score(gender, event, performance, event_name_map, score_maps)
 
             # populate dictionary
@@ -71,136 +202,18 @@ for gender in ("men", "women"):
                 list[index + 1] = score
         event_num = event_num + 1
 
-# manual updates
-if source_type == WA_toplists:
-    if "Calvin SMITH" in athletes.keys():
-        list = athletes["Calvin SMITH"]
-        list[4] = "46.39"       # Calvin Smith junior ran 44.81
-        list[5] = "1085"
-
-if source_type == Alltime:
-    if "Usain Bolt" in athletes.keys():
-        list = athletes["Usain Bolt"]
-        list[4] = "45.28"
-        list[5] = "1160"
-        list = athletes["Yohan Blake"]
-        list[4] = "46.32"
-        list[5] = "1090"
-        list = athletes["Wallace Spearmon"]
-        list[4] = "45.22"
-        list[5] = "1165"
-        list = athletes["Asafa Powell"]
-        list[4] = "45.94"
-        list[5] = "1115"
-        list = athletes["Obadele Thompson"]
-        list[4] = "45.38"
-        list[5] = "1154"
-        list = athletes["Noah Lyles"]
-        list[4] = "45.87"
-        list[5] = "1120"
-        list = athletes["Frank Fredericks"]
-        list[4] = "46.28"
-        list[5] = "1093"
-        list = athletes["Walter Dix"]
-        list[4] = "46.75"
-        list[5] = "1061"
-        list = athletes["Zharnel Hughes"]
-        list[4] = "46.58"
-        list[5] = "1073"
-        list = athletes["Erriyon Knighton"]
-        list[4] = "45.37"
-        list[5] = "1154"
-        list = athletes["Francis Obikwelu"]
-        list[4] = "46.29"
-        list[5] = "1092"
-        list = athletes["Calvin Smith"]
-        list[4] = "46.39"       # Calvin Smith junior ran 44.81
-        list[5] = "1085"
-        list = athletes["Dennis Mitchell"]
-        list[4] = "46.75"
-        list[5] = "1162"
-        list = athletes["Isaac Makwala"]
-        list[0] = "10.22"
-        list[1] = "1138"
-        list = athletes["Steven Gardiner"]
-        list[0] = "10.35"
-        list[1] = "1089"
-        list = athletes["Jereem Richards"]
-        list[0] = "10.19"
-        list[1] = "1142"
-        list = athletes["Xavier Carter"]
-        list[0] = "10.00"
-        list[1] = "1206"
-        list = athletes["Jacory Patterson"]
-        list[0] = "10.11"
-        list[1] = "1169"
-        list[4] = "43.98"
-        list[5] = "1252"
-    
-    if "Marita Koch" in athletes.keys():
-        list = athletes["Merlene Ottey"]
-        list[4] = "51.12"
-        list[5] = "1161"
-        list = athletes["Evelyn Ashford"]
-        list[4] = "51.08"
-        list[5] = "1162"
-        list = athletes["Veronica Campbell-Brown"]
-        list[4] = "52.24"
-        list[5] = "1117"
-        list = athletes["Sherone Simpson"]
-        list[4] = "51.25"
-        list[5] = "1156"
-        list = athletes["Kerron Stewart"]
-        list[4] = "51.83"
-        list[5] = "1133"
-        list = athletes["Brittany Brown"]
-        list[4] = "51.15"
-        list[5] = "1160"
-        list = athletes["Chandra Cheeseborough"]
-        list[0] = "11.13"
-        list[1] = "1172"
-        list = athletes["Kathy Cook"]
-        list[0] = "11.10"
-        list[1] = "1178"
-        list = athletes["Irena Szewinska"]
-        list[0] = "11.13"
-        list[1] = "1172"
-        list = athletes["Cathy Freeman"]
-        list[0] = "11.24"
-        list[1] = "1148"
-        list = athletes["Salwa Eid Naser"]
-        list[0] = "11.24"
-        list[1] = "1148"
-        list[2] = "22.45"
-        list[3] = "1191"
-        list = athletes["Rhasidat Adeleke"]
-        list[0] = "11.13"
-        list[1] = "1172"
-        list = athletes["Dina Asher-Smith"]
-        list[4] = "52.13"
-        list[5] = "1121"
-        if num_events == 4:
-            list = athletes["Shaunae Miller-Uibo"]
-            list[6] = "2:12.86"
-            list[7] = "983"
-            list = athletes["Irina Privalova"]
-            list[6] = "2:09.40"
-            list[7] = "1000"
-            list = athletes["Christine Mboma"]
-            list[6] = "2:03.27"
-            list[7] = "1104"
-            list = athletes["Aminatou Seyni"]
-            list[6] = "2:18.86"
-            list[7] = "849"
-    
-    #if "Hicham El Guerrouj" in athletes.keys():
-        #list = athletes["Hicham El Guerrouj"]
-        #list[10] = "8:06.61"
-        #list[11] = "1274"
+# manual updates for marks below the performance cutoff of alltime-athletics
+manual_updates(source_type, athletes)
 
 # now create a map with each athlete's aggregate score as the key
 done_with = {}
 count = 0
+
+html_page = False   # HTML table or plain text list
+if html_page:
+    file1 = open("combo.html", "w")
+    html = "<table border='1' style='border-collapse:collapse;'>\n"
+
 for athlete in athletes.keys():
     if done_with.get(athlete) != None:
         continue
@@ -210,11 +223,14 @@ for athlete in athletes.keys():
         if done_with.get(name) != None:
             continue
         list = athletes[name]
-        if list[0] == "0" or list[2] == "0":  # or list[4] == "0" or list[6] == "0" or list[8] == "0" or list[10] == "0":
-            continue
         total_score = 0
+        skip = False
         for ii in range(0, num_events):
+            if list[ii * 2 + 1] == "0":
+                skip = True
             total_score = total_score + int(list[ii * 2 + 1])
+        if skip:
+            continue
         if total_score > max_score:
             max_score = total_score
             max_name = name
@@ -222,20 +238,26 @@ for athlete in athletes.keys():
     if max_score > 0:
         list = athletes[max_name]
         count = count + 1
-        if num_events == 2:
-            print(("%3d. %4d %27s %8s (%4s) %8s (%4s)") % \
-              (count, max_score, max_name, list[0], list[1], list[2], list[3]))
-        elif num_events == 3 and list[4] != "0":
-            print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s)") % \
-              (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5]))
-        elif num_events == 4:
-            print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
-              (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7]))
-        elif num_events == 5:
-            print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
-              (count, max_score, max_name, list[0], list[1], list[2], list[3], list[4], list[5], list[6], list[7], list[8], list[9]))
-        elif num_events == 6:    # 1500 through 5000 in distance order
-            print(("%3d. %4d %27s %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s) %8s (%4s)") % \
-              (count, max_score, max_name, list[0], list[1], list[2], list[3], list[8], list[9], list[4], list[5], list[10], list[11], list[6], list[7]))
+
+        if html_page:
+            html += "  <tr>\n"
+            html += "    <td style='padding:5px;'>" + str(count) + "</td>\n"
+            html += "    <td style='padding:5px;'>" + str(max_score) + "        </td>\n"
+            html += "    <td style='padding:5px;'>" + max_name + "        </td>\n"
+            for mark in range(0, num_events*2, 2):
+                html += "    <td style='padding:5px;'>" + list[mark] + "(" + list[mark+1] + ")        </td>\n"
+            html += "  </tr>\n"
+        else:
+            print(("%3d. %4d %27s") % \
+              (count, max_score, max_name), end="")
+            for mark in range(0, num_events*2, 2):
+                print(("%8s (%4s)") % \
+                  (list[mark], list[mark+1]), end="")
+            print("")
         done_with[max_name] = True
+
+if html_page:
+    html += "</table>"
+    file1.write(html)
+    file1.close
 
