@@ -48,8 +48,8 @@ for gender in ("men", "women"):
 
             # extract performance, name and date (year)
             name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
-            if position == str(place):
-                print(("%3s %9s %25s %40s %10s") % (position, performance, name, city, date))
+            if position[0:1] == str(place):
+                print(("%3s %9s %25s %50s %11s") % (position[0:1], performance, name, city, date))
                 place = place + 1
                 if place > 20:
                     break
