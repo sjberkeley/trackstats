@@ -14,7 +14,7 @@ event_name_map = {}
 
 #gender, event, field_event = utils.get_args(sys.argv)
 
-country = "GBR"
+country = "IRL"
 file1 = open("scores.sorted", "w")
 
 for gender in ("men", "women"):
