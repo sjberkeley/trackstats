@@ -1,5 +1,5 @@
 #
-# Best marks for place in each event
+# Best marks for place in each event. Output option plain text or html table.
 #
 
 import utils         # my utils
@@ -13,9 +13,13 @@ event_name_map = {}
 #gender, event, field_event = utils.get_args(sys.argv)
 
 #file1 = open("marks_for_place", "w")
+html_page = True   # HTML table or plain text list
+if html_page:
+    file1 = open("marks_for_place.html", "w")
+    html = "<table border='1' style='border-collapse:collapse;'>\n"
 
 for gender in ("men", "women"):
-    #if gender == "women":
+    #if gender == "men":
     #    continue
 
     score_maps = {}
@@ -31,10 +35,16 @@ for gender in ("men", "women"):
             #or url == "3000m steeplechase" or url == "Pole vault" or url == "Hammer throw" or url == "Triple jump":
             continue
 
-        event = url     
-        print(" ")   
-        print(("%20s %6s") % (event, gender))
-        print(" ")
+        event = url
+        if html_page:
+            html += "  <tr>\n"
+            html += "    <td colspan='5' style='padding:5px; background-color:lightblue;'><b>" + event + " - " + gender + "</b></td>\n"
+            html += "  </tr>\n"
+            print(("%20s %6s") % (event, gender))
+        else:     
+            print(" ")   
+            print(("%20s %6s") % (event, gender))
+            print(" ")
         lines = data_source.get_lines_from_urls(urls[url])
         # process data
         processing = 0
@@ -70,7 +80,7 @@ for gender in ("men", "women"):
                     else:
                         break
                 pos = int(string1)
-
+            # groups of tied athletes
             if len(prev_data) == 0:
                 prev_data.append(pos)
                 prev_data.append(performance)
@@ -90,7 +100,7 @@ for gender in ("men", "women"):
                 prev_data.append(name)
                 prev_data.append(city)
                 prev_data.append(date)
-
+            # best marks for place
             if pos <= len(mfp):
                 data = mfp[pos-1]
                 if data[0] == "":
@@ -124,12 +134,10 @@ for gender in ("men", "women"):
                         data.append(dates)
                     mfp.append(data)
                     mark = performance
-
-
-
+        # output
         prev_range_label = ""
         for ii in range(len(mfp)):
-            if ii >= 20:
+            if ii >= 20:        # discard places higher than 20
                 break
             data = mfp[ii]
             mark = data[0]
@@ -161,15 +169,56 @@ for gender in ("men", "women"):
                             break
                         data = tied[kk]
                         if kk == jj and range_label != prev_range_label:
-                            print(("%5s %9s %25s %50s %11s") % (range_label, data[1], data[2], data[3], data[4]))
+                            if html_page:
+                                html += "  <tr>\n"
+                                html += "    <td style='padding:5px;'>" + range_label + "</td>\n"
+                                for mm in range(1, 5):
+                                    html += "    <td style='padding:5px;'>" + data[mm] + "</td>\n"
+                                html += "  </tr>\n"
+                            else:
+                                print(("%5s %9s %25s %50s %11s") % (range_label, data[1], data[2], data[3], data[4]))
                         else:
-                            print(("%41s %50s %11s") % (data[2], data[3], data[4]))
+                            if html_page:
+                                html += "  <tr>\n"
+                                html += "    <td style='padding:5px;'> </td>\n"
+                                html += "    <td style='padding:5px;'> </td>\n"
+                                for mm in range(2, 5):
+                                    html += "    <td style='padding:5px;'>" + data[mm] + "</td>\n"
+                                html += "  </tr>\n"
+                            else:
+                                print(("%41s %50s %11s") % (data[2], data[3], data[4]))
                     skip = count
                     prev_range_label = range_label
             # print regular mark/group of marks 
             if mark != "":
-                print(("%5s %9s %25s %50s %11s") % (ii+1, mark, names[0], cities[0], dates[0]))
-            for jj in range(1, len(names)):
-                print(("%41s %50s %11s") % (names[jj], cities[jj], dates[jj]))
-            
+                if html_page:
+                    html += "  <tr>\n"
+                    html += "    <td style='padding:5px;'>" + str(ii+1) + "</td>\n"
+                    html += "    <td style='padding:5px;'>" + str(mark) + "</td>\n"
+                    html += "    <td style='padding:5px;'>" + names[0] + "</td>\n"
+                    html += "    <td style='padding:5px;'>" + cities[0] + "</td>\n"
+                    html += "    <td style='padding:5px;'>" + dates[0] + "</td>\n"
+                    html += "  </tr>\n"
+                else:
+                    print(("%5s %9s %25s %50s %11s") % (ii+1, mark, names[0], cities[0], dates[0]))
+                for jj in range(1, len(names)):
+                    if html_page:
+                        html += "  <tr>\n"
+                        html += "    <td style='padding:5px;'> </td>\n"
+                        html += "    <td style='padding:5px;'> </td>\n"
+                        html += "    <td style='padding:5px;'>" + names[jj] + "</td>\n"
+                        html += "    <td style='padding:5px;'>" + cities[jj] + "</td>\n"
+                        html += "    <td style='padding:5px;'>" + dates[jj] + "</td>\n"
+                        html += "  </tr>\n"
+                    else:
+                        print(("%41s %50s %11s") % (names[jj], cities[jj], dates[jj]))
+
+        if html_page:
+            html += "<br>\n"
+
+if html_page:
+    html += "</table>"
+    file1.write(html)
+    file1.close
+
 #file1.close
