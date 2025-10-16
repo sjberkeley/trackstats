@@ -15,16 +15,16 @@ event_name_map = {}
 #file1 = open("marks_for_place", "w")
 
 for gender in ("men", "women"):
-    if gender == "women":
-        continue
+    #if gender == "women":
+    #    continue
 
     score_maps = {}
     utils.init_score_maps(event_name_map, score_maps)
     urls = data_source.get_urls(gender, False)
 
     for url in urls:
-        if url != "High jump":
-            continue
+        #if url != "High jump":
+        #    continue
         if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
             #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk":
             #or url == "Javelin throw" \
@@ -32,31 +32,15 @@ for gender in ("men", "women"):
             continue
 
         event = url     
-        print("")   
+        print(" ")   
         print(("%20s %6s") % (event, gender))
-        print("")
+        print(" ")
         lines = data_source.get_lines_from_urls(urls[url])
         # process data
         processing = 0
         num_lines = len(lines)
         line_num = 0
         place = 1
-        #tied_names = []
-        #tied_sequence = 0    # not in progress
-        #current_performance = ""
-        #current_name = ""
-        #current_city = ""
-        #current_date = ""
-        #current_mark = ""
-        #mark = ""
-
-        #positions = []
-        #performances = []
-        #names = []
-        #cities = []
-        #dates = []
-        #current_perf = ""
-
         mfp = []
         tied = []
         num_tied = 0
@@ -141,10 +125,12 @@ for gender in ("men", "women"):
                     mfp.append(data)
                     mark = performance
 
-            if place > 20:
-                break
 
+
+        prev_range_label = ""
         for ii in range(len(mfp)):
+            if ii >= 20:
+                break
             data = mfp[ii]
             mark = data[0]
             names = data[1]
@@ -174,15 +160,16 @@ for gender in ("men", "women"):
                         if tied[kk][0] != pos2:
                             break
                         data = tied[kk]
-                        if kk == jj:
-                            print(("%3s %9s %25s %50s %11s") % (range_label, data[1], data[2], data[3], data[4]))
+                        if kk == jj and range_label != prev_range_label:
+                            print(("%5s %9s %25s %50s %11s") % (range_label, data[1], data[2], data[3], data[4]))
                         else:
-                            print(("%39s %50s %11s") % (data[2], data[3], data[4]))
+                            print(("%41s %50s %11s") % (data[2], data[3], data[4]))
                     skip = count
-
+                    prev_range_label = range_label
+            # print regular mark/group of marks 
             if mark != "":
-                print(("%3s %9s %25s %50s %11s") % (ii+1, mark, names[0], cities[0], dates[0]))
+                print(("%5s %9s %25s %50s %11s") % (ii+1, mark, names[0], cities[0], dates[0]))
             for jj in range(1, len(names)):
-                print(("%39s %50s %11s") % (names[jj], cities[jj], dates[jj]))
+                print(("%41s %50s %11s") % (names[jj], cities[jj], dates[jj]))
             
 #file1.close
