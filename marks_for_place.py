@@ -13,13 +13,13 @@ event_name_map = {}
 #gender, event, field_event = utils.get_args(sys.argv)
 
 #file1 = open("marks_for_place", "w")
-html_page = True   # HTML table or plain text list
+html_page = False   # HTML table or plain text list
 if html_page:
     file1 = open("marks_for_place.html", "w")
     html = "<table border='1' style='border-collapse:collapse;'>\n"
 
 for gender in ("men", "women"):
-    #if gender == "men":
+    #if gender == "women":
     #    continue
 
     score_maps = {}
@@ -27,7 +27,7 @@ for gender in ("men", "women"):
     urls = data_source.get_urls(gender, False)
 
     for url in urls:
-        #if url != "High jump":
+        #if url != "200 metres":
         #    continue
         if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
             #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk":
@@ -39,12 +39,11 @@ for gender in ("men", "women"):
         if html_page:
             html += "  <tr>\n"
             html += "    <td colspan='5' style='padding:5px; background-color:lightblue;'><b>" + event + " - " + gender + "</b></td>\n"
-            html += "  </tr>\n"
-            print(("%20s %6s") % (event, gender))
-        else:     
-            print(" ")   
-            print(("%20s %6s") % (event, gender))
-            print(" ")
+            html += "  </tr>\n"    
+        print(" ")
+        #print(("\033[1m%20s %6s\033[0m") % (event, gender))
+        print(("%20s %6s") % (event, gender))
+        print(" ")
         lines = data_source.get_lines_from_urls(urls[url])
         # process data
         processing = 0
@@ -65,11 +64,15 @@ for gender in ("men", "women"):
 
             # extract performance, name and date (year)
             name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
+            # filter out non-digit characters in the position (h, sf, etc.), except f (final)
+            final = True
             if len(position) == 0:
                 pos = 1
             elif not position[0].isdigit():
                 pos = 1
             else:
+                #if not position.isdigit():
+                #    print(position)
                 poslen = len(position)
                 string1 = ""
                 string2 = ""
@@ -77,9 +80,15 @@ for gender in ("men", "women"):
                     if position[ii].isdigit():
                         string2 = string1 + position[ii]
                         string1 = string2
+                    elif position[ii] != "f":
+                        final = False
+                        break
                     else:
                         break
                 pos = int(string1)
+
+            if not final:
+                continue
             # groups of tied athletes
             if len(prev_data) == 0:
                 prev_data.append(pos)
