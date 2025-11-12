@@ -27,8 +27,8 @@ for gender in ("men", "women"):
     urls = data_source.get_urls(gender, False)
 
     for url in urls:
-        #if url != "200 metres":
-        #    continue
+        if is_field_event(url):
+            continue
         if url == "4x100m relay" or url == "4x400m relay" or url == "mixed 4x400m relay":
             #or url == "50 km race walk" or url == "half-marathon" or url == "20 km race walk":
             #or url == "Javelin throw" \
@@ -63,7 +63,8 @@ for gender in ("men", "women"):
                 break
 
             # extract performance, name and date (year)
-            name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
+            bare_name, year, performance, nation, this_date, city, position, date, dob, line_num = data_source.get_stats(words, lines, line_num)
+            name = bare_name + " (" + nation + ")"
             # filter out non-digit characters in the position (h, sf, etc.), except f (final)
             final = True
             if len(position) == 0:
@@ -185,7 +186,7 @@ for gender in ("men", "women"):
                                     html += "    <td style='padding:5px;'>" + data[mm] + "</td>\n"
                                 html += "  </tr>\n"
                             else:
-                                print(("%5s %9s %25s %50s %11s") % (range_label, data[1], data[2], data[3], data[4]))
+                                print(("%5s %9s %30s %50s %11s") % (range_label, data[1], data[2], data[3], data[4]))
                         else:
                             if html_page:
                                 html += "  <tr>\n"
@@ -195,7 +196,7 @@ for gender in ("men", "women"):
                                     html += "    <td style='padding:5px;'>" + data[mm] + "</td>\n"
                                 html += "  </tr>\n"
                             else:
-                                print(("%41s %50s %11s") % (data[2], data[3], data[4]))
+                                print(("%46s %50s %11s") % (data[2], data[3], data[4]))
                     skip = count
                     prev_range_label = range_label
             # print regular mark/group of marks 
@@ -209,7 +210,7 @@ for gender in ("men", "women"):
                     html += "    <td style='padding:5px;'>" + dates[0] + "</td>\n"
                     html += "  </tr>\n"
                 else:
-                    print(("%5s %9s %25s %50s %11s") % (ii+1, mark, names[0], cities[0], dates[0]))
+                    print(("%5s %9s %30s %50s %11s") % (ii+1, mark, names[0], cities[0], dates[0]))
                 for jj in range(1, len(names)):
                     if html_page:
                         html += "  <tr>\n"
@@ -220,7 +221,7 @@ for gender in ("men", "women"):
                         html += "    <td style='padding:5px;'>" + dates[jj] + "</td>\n"
                         html += "  </tr>\n"
                     else:
-                        print(("%41s %50s %11s") % (names[jj], cities[jj], dates[jj]))
+                        print(("%46s %50s %11s") % (names[jj], cities[jj], dates[jj]))
 
         if html_page:
             html += "<br>\n"
