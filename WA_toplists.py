@@ -92,10 +92,14 @@ class WA_toplists(Alltime):
             #for line in range(num_lines):
             #    print(lines[line])
 
+            missing = False
             while line_num < num_lines:
                 if lines[line_num] == "                >>":
                     if lines[line_num-3] == "                >":
-                        num_pages = int(lines[line_num-5])
+                        if lines[line_num-5].isdigit():
+                            num_pages = int(lines[line_num-5])
+                        else:
+                            missing = True
 
                 status, words, processing, line_num = self.strip_one_page_preamble(lines, line_num, processing)
                 if status == 0:
@@ -108,7 +112,10 @@ class WA_toplists(Alltime):
 
                 all_lines.append(lines[line_num])
 
-            print("page ",page_num," of ",num_pages)
+            if missing:
+                print("page ",page_num," missing data")
+            else:
+                print("page ",page_num," of ",num_pages)
             if page_num == num_pages:
                 break
 

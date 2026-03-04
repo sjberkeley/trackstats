@@ -210,11 +210,44 @@ def get_lines_from_url(url):
         exit
 
     # Parse the HTML content using BeautifulSoup
-    soup = BeautifulSoup(response.content, "html.parser")
-    
+    soup = BeautifulSoup(response.content, "html.parser")  # alternative lxml
+
+############################################################### 
+#    # Start a session so cookies persist
+#    session = requests.Session()
+#    
+#    # Login credentials (use correct field names!)
+#    payload = {
+#        "username": "sjberkeley@gmail.com",
+#        "password": "Rudisha14091$"
+#    }
+#    
+#    # Send POST request to login
+#    response = session.post(url, data=payload)
+#    
+#    # Check if login succeeded
+#    if response.ok:
+#        print("Login successful")
+#    else:
+#        print("Login failed")
+#    
+#    # Access a protected page
+#    protected_url = "https://mastersrankings.com/rankings/"
+#    
+#    page = session.get(protected_url)
+#
+#    soup = BeautifulSoup(page.content, "html.parser")
+############################################################### 
+
     # Get the plain text representation of the HTML content
     plain_text = soup.get_text()
-    
+
+    # starting Feb 2026, simple get_text missed some data in mens' 100m.
+    # Unsuccessful solution to use find_all and then join text from all items.
+    #all_items = soup.find_all()
+    #text_list = [item.get_text() for item in all_items]
+    #plain_text = "\n".join(text_list)
+
     # Split the text into lines
     lines = plain_text.splitlines()
 
@@ -372,15 +405,41 @@ def month_num(month):
 # Get the urls of the pages to scrape
 #
 def get_urls(links_url):
-    response = requests.get(links_url)
 
-    # Check if the request was successful (status code 200)
-    if response.status_code != 200:
-        print("Error:", response.status_code)
-        exit()
+    # Start a session so cookies persist
+    session = requests.Session()
+    
+    # Login credentials (use correct field names!)
+    payload = {
+        "username": "your_username",
+        "password": "your_password"
+    }
+    
+    # Send POST request to login
+    response = session.post(login_url, data=payload)
+    
+    # Check if login succeeded
+    if response.ok:
+        print("Login successful")
+    else:
+        print("Login failed")
+    
+    # Access a protected page
+    protected_url = "https://example.com/protected"
+    
+    page = session.get(protected_url)
 
-    # Parse the HTML content using BeautifulSoup
-    soup = BeautifulSoup(response.content, "html.parser")
+    soup = BeautifulSoup(page.content, "html.parser")
+
+#    response = requests.get(links_url)
+#
+#    # Check if the request was successful (status code 200)
+#    if response.status_code != 200:
+#        print("Error:", response.status_code)
+#        exit()
+#
+#    # Parse the HTML content using BeautifulSoup
+#    soup = BeautifulSoup(response.content, "html.parser")
 
     # Extract all the links on the page
     links = soup.find_all("a")
@@ -499,4 +558,132 @@ def strip_preamble(line, processing):
             status = 1
 
     return status, words, processing
+
+# supporting combo.py
+def manual_updates(source_type, athletes):
+    #if source_type == WA_toplists:
+        #if "Calvin SMITH" in athletes.keys():
+            #list = athletes["Calvin SMITH"]
+            #list[4] = "46.39"       # Calvin Smith junior ran 44.81
+            #list[5] = "1085"
+    
+    if source_type == Alltime:
+        if "Usain Bolt" in athletes.keys():
+            list = athletes["Usain Bolt"]
+            list[4] = "45.28"
+            list[5] = "1160"
+            list = athletes["Yohan Blake"]
+            list[4] = "46.32"
+            list[5] = "1090"
+            list = athletes["Wallace Spearmon"]
+            list[4] = "45.22"
+            list[5] = "1165"
+            list = athletes["Asafa Powell"]
+            list[4] = "45.94"
+            list[5] = "1115"
+            list = athletes["Obadele Thompson"]
+            list[4] = "45.38"
+            list[5] = "1154"
+            list = athletes["Noah Lyles"]
+            list[4] = "45.87"
+            list[5] = "1120"
+            list = athletes["Frank Fredericks"]
+            list[4] = "46.28"
+            list[5] = "1093"
+            list = athletes["Walter Dix"]
+            list[4] = "46.75"
+            list[5] = "1061"
+            list = athletes["Zharnel Hughes"]
+            list[4] = "46.58"
+            list[5] = "1073"
+            list = athletes["Erriyon Knighton"]
+            list[4] = "45.37"
+            list[5] = "1154"
+            list = athletes["Francis Obikwelu"]
+            list[4] = "46.29"
+            list[5] = "1092"
+            list = athletes["Calvin Smith"]
+            list[4] = "46.39"       # Calvin Smith junior ran 44.81
+            list[5] = "1085"
+            list = athletes["Dennis Mitchell"]
+            list[4] = "46.75"
+            list[5] = "1162"
+            list = athletes["Isaac Makwala"]
+            list[0] = "10.22"
+            list[1] = "1138"
+            list = athletes["Steven Gardiner"]
+            list[0] = "10.35"
+            list[1] = "1089"
+            list = athletes["Jereem Richards"]
+            list[0] = "10.19"
+            list[1] = "1142"
+            list = athletes["Xavier Carter"]
+            list[0] = "10.00"
+            list[1] = "1206"
+            list = athletes["Jacory Patterson"]
+            list[0] = "10.11"
+            list[1] = "1169"
+            list[4] = "43.98"
+            list[5] = "1252"
+        
+        if "Marita Koch" in athletes.keys():
+            list = athletes["Merlene Ottey"]
+            list[4] = "51.12"
+            list[5] = "1161"
+            list = athletes["Evelyn Ashford"]
+            list[4] = "51.08"
+            list[5] = "1162"
+            list = athletes["Veronica Campbell-Brown"]
+            list[4] = "52.24"
+            list[5] = "1117"
+            list = athletes["Sherone Simpson"]
+            list[4] = "51.25"
+            list[5] = "1156"
+            list = athletes["Kerron Stewart"]
+            list[4] = "51.83"
+            list[5] = "1133"
+            list = athletes["Brittany Brown"]
+            list[4] = "51.15"
+            list[5] = "1160"
+            list = athletes["Chandra Cheeseborough"]
+            list[0] = "11.13"
+            list[1] = "1172"
+            list = athletes["Kathy Cook"]
+            list[0] = "11.10"
+            list[1] = "1178"
+            list = athletes["Irena Szewinska"]
+            list[0] = "11.13"
+            list[1] = "1172"
+            list = athletes["Cathy Freeman"]
+            list[0] = "11.24"
+            list[1] = "1148"
+            list = athletes["Salwa Eid Naser"]
+            list[0] = "11.24"
+            list[1] = "1148"
+            list[2] = "22.45"
+            list[3] = "1191"
+            list = athletes["Rhasidat Adeleke"]
+            list[0] = "11.13"
+            list[1] = "1172"
+            list = athletes["Dina Asher-Smith"]
+            list[4] = "52.13"
+            list[5] = "1121"
+            if num_events == 4:
+                list = athletes["Shaunae Miller-Uibo"]
+                list[6] = "2:12.86"
+                list[7] = "983"
+                list = athletes["Irina Privalova"]
+                list[6] = "2:09.40"
+                list[7] = "1000"
+                list = athletes["Christine Mboma"]
+                list[6] = "2:03.27"
+                list[7] = "1104"
+                list = athletes["Aminatou Seyni"]
+                list[6] = "2:18.86"
+                list[7] = "849"
+        
+        #if "Hicham El Guerrouj" in athletes.keys():
+            #list = athletes["Hicham El Guerrouj"]
+            #list[10] = "8:06.61"
+            #list[11] = "1274"
 
