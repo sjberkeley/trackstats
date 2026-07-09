@@ -179,6 +179,8 @@ class WA_toplists(Alltime):
 
         if name == "Elaine THOMPSON":
             name = "Elaine THOMPSON-HERAH"
+        if name == "Femke BOL":
+            name = "Femke BROEDERS-BOL"
 
         return name, year, performance, nation, this_date, city, position, date, dob, index
     #
