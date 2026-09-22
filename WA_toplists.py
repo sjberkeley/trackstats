@@ -181,6 +181,14 @@ class WA_toplists(Alltime):
             name = "Elaine THOMPSON-HERAH"
         if name == "Femke BOL":
             name = "Femke BROEDERS-BOL"
+        if name == "Natalia KACZMAREK":
+            name = "Natalia BUKOWIECKA"
+        if name == "Shaunae MILLER":
+            name = "Shaunae MILLER_UIBO"
+        if name == "Sanya RICHARDS":
+            name = "Sanya RICHARDS-ROSS"
+        if name == "Sydney MCLAUGHLIN":
+            name = "Sydney MCLAUGHLIN-LEVRONE"
 
         return name, year, performance, nation, this_date, city, position, date, dob, index
     #
